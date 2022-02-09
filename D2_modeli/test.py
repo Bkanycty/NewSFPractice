@@ -1,18 +1,3 @@
-# CREATE TABLE PRODUCTS (
-#     product_id INT AUTO_INCREMENT NOT NULL,
-#     name CHAR(255) NOT NULL,
-#     price FLOAT NOT NULL,
-#
-#     PRIMARY KEY (product_id)
-# );
-#
-# CREATE TABLE STAFF (
-#     staff_id INT AUTO_INCREMENT NOT NULL,
-#     full_name CHAR(255) NOT NULL,
-#     position CHAR(255) NOT NULL,
-#     labor_contract INT NOT NULL,
-#
-#     PRIMARY KEY (staff_id)
-# );
-
-
+cashier1 = Staff.objects.create(full_name="Иванов Иван Иванович", position=Staff.cashier, labor_contract=1754)
+cashier2 = Staff.objects.create(full_name = "Петров Петр Петрович", position = Staff.cashier, labor_contract = 4355)
+direct = Staff.objects.create(full_name = "Максимов Максим Максимович", position = Staff.director, labor_contract = 1254)
