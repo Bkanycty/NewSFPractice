@@ -39,9 +39,11 @@ class Category(models.Model):
     # Имеет единственное поле: название категории.
     # Поле должно быть уникальным (в определении поля необходимо написать параметр unique = True).
     name = models.CharField(max_length=64, unique=True)
+    subscribers = models.ManyToManyField(User)
 
     def __str__(self):  # __unicode__ on Python 2
         return str(self.name)
+
 
 
 class Post(models.Model):
@@ -64,7 +66,7 @@ class Post(models.Model):
     dateCreation = models.DateTimeField(auto_now_add=True)
 
     # связь «многие ко многим» с моделью Category (с дополнительной моделью PostCategory);
-    postCategory = models.ManyToManyField(Category, through='postCategory')
+    postCategory = models.ManyToManyField(Category, through='PostCategory')
 
     # заголовок статьи/новости;
     title = models.CharField(max_length=128)
@@ -91,6 +93,9 @@ class Post(models.Model):
         self.rating -= 1
         self.save()
 
+    def __str__(self):  # __unicode__ on Python 2
+        return str(f'Пост (id: {self.pk}, заголовок: {self.title})')
+
 
 class PostCategory(models.Model):
     #     Промежуточная модель для связи «многие ко многим»:
@@ -99,6 +104,9 @@ class PostCategory(models.Model):
 
     # связь «один ко многим» с моделью Category.
     categoryThrough = models.ForeignKey(Category, on_delete=models.CASCADE)
+
+    def __str__(self):  # __unicode__ on Python 2
+        return str(f'{self.postThrough} <---> Категория ({self.categoryThrough}: {self.categoryThrough.pk})')
 
 
 class Comment(models.Model):

@@ -1,0 +1,20 @@
+{% extends 'flatpages/default.html' %}
+
+{% block title %} Новости {% endblock title %}
+
+{% block content %}
+{% if is_not_author %}
+<h1>Вы пока не можете публиковать статьи<button> <a href="news/upgrade/"> Стать автором </a> </button></h1>
+
+{% else %}
+<h3>Создание статьи</h3>
+<form method="POST" action="{% url 'npw' %}"  enctype="multipart/form-data">
+    {% csrf_token %}
+    <label for="title">Заголовок</label>
+    <input type="text" name="title">
+    <label for="text">Текст</label>
+    <input type="text" name="text">
+    <input type="submit" value="Опубликовать">
+</form>
+{% endif %}
+{% endblock content %}

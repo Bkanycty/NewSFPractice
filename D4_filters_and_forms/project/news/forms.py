@@ -7,7 +7,7 @@ from django.contrib.auth.models import Group
 class NewsForm(ModelForm):
     class Meta:
         model = Post
-        fields = ['author', 'title', 'categoryType', 'postCategory', 'text']
+        fields = ['title', 'categoryType', 'postCategory', 'text']
 
 
 class BasicSignupForm(SignupForm):

@@ -1,14 +1,26 @@
 # from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, \
     DeleteView  # импортируем класс получения деталей объекта
-from .models import Post
+from .models import Post, Category, Author, PostCategory
 from .filters import NewsFilter
 from .forms import NewsForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.shortcuts import render, reverse, redirect
+from django.views import View
+from django.core.mail import send_mail, EmailMultiAlternatives
+from django.template.loader import render_to_string
+
+from datetime import datetime
+
+
+class CategoriesList(ListView):
+    model = Category
+    template_name = 'categories.html'
+    context_object_name = 'categories'
+    queryset = Category.objects.order_by('name')
 
 
 class NewsList(ListView):
@@ -50,6 +62,50 @@ class NewsCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
         context['is_not_author'] = not self.request.user.groups.filter(name='authors').exists()
         return context
 
+    def post(self, request, *args, **kwargs):
+
+        title = request.POST['title']
+        text = request.POST['text']
+        post_category_id = request.POST['postCategory']
+        category_id = Category.objects.get(id=post_category_id).id
+        category_object = Category.objects.get(id=post_category_id)
+        if Author.objects.filter(authorUser__username=request.user.username).exists():
+            author = Author.objects.get(authorUser__username=request.user.username).id
+        else:
+            author = Author.objects.create(authorUser=request.user).id
+        new_post = Post.objects.create(author_id=author, title=title, text=text)
+        new_post.save()
+
+        new_postcategory = PostCategory.objects.create(postThrough=new_post, categoryThrough=category_object)
+        new_postcategory.save()
+
+        category_name = Category.objects.get(id=category_id).name
+
+        qs = Category.objects.filter(name=category_name).values('subscribers__username', 'subscribers__email')
+        for object in qs:
+            subscriber_username = object.get('subscribers__username')
+            # получаем наш html
+            html_content = render_to_string(
+                'news_updated.html',
+                {
+                    'subscriber_username': subscriber_username,
+                    'new_post': new_post
+                }
+            )
+            msg = EmailMultiAlternatives(
+                subject=f'{new_post.title}',
+                body=f"Здравствуй, {subscriber_username}. Новая статья в твоём любимом разделе!",
+                # это то же, что и message
+                from_email='b.kanycty@yandex.ru',
+                to=[object.get('subscribers__email')],  # это то же, что и recipients_list
+            )
+
+            msg.attach_alternative(html_content, "text/html")  # добавляем html
+
+            msg.send()  # отсылаем
+
+        return redirect('news_create')
+
 
 # дженерик для редактирования объекта
 class NewsUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
@@ -87,3 +143,123 @@ def upgrade_me(request):
     if not request.user.groups.filter(name='authors').exists():
         authors_group.user_set.add(user)
     return redirect('/news/')
+
+
+class Celebrities(ListView):
+    model = Post
+    template_name = 'celebrities.html'
+    context_object_name = 'celebrities'
+    queryset = Post.objects.filter(postCategory__name='Знаменитости').order_by('-dateCreation')
+
+
+@login_required
+def subscribe_celebrities(request):
+    user = request.user
+    Category.objects.get(name='Знаменитости').subscribers.add(user)
+
+    return redirect('/news/Знаменитости/')
+
+
+class Games(ListView):
+    model = Post
+    template_name = 'games.html'
+    context_object_name = 'games'
+    queryset = Post.objects.filter(postCategory__name='Игры').order_by('-dateCreation')
+
+
+@login_required
+def subscribe_games(request):
+    user = request.user
+    Category.objects.get(name='Игры').subscribers.add(user)
+
+    return redirect('/news/Игры/')
+
+
+class Cooking(ListView):
+    model = Post
+    template_name = 'cooking.html'
+    context_object_name = 'cooking'
+    queryset = Post.objects.filter(postCategory__name='Кулинария').order_by('-dateCreation')
+
+
+@login_required
+def subscribe_cooking(request):
+    user = request.user
+    Category.objects.get(name='Кулинария').subscribers.add(user)
+
+    return redirect('/news/Кулинария/')
+
+
+class News(ListView):
+    model = Post
+    template_name = 'news.html'
+    context_object_name = 'news'
+    queryset = Post.objects.filter(postCategory__name='Новости').order_by('-dateCreation')
+
+
+@login_required
+def subscribe_news(request):
+    user = request.user
+    Category.objects.get(name='Новости').subscribers.add(user)
+
+    return redirect('/news/Новости/')
+
+
+class Politics(ListView):
+    model = Post
+    template_name = 'politics.html'
+    context_object_name = 'politics'
+    queryset = Post.objects.filter(postCategory__name='Политика').order_by('-dateCreation')
+
+
+@login_required
+def subscribe_politics(request):
+    user = request.user
+    Category.objects.get(name='Политика').subscribers.add(user)
+
+    return redirect('/news/Политика/')
+
+
+class Sport(ListView):
+    model = Post
+    template_name = 'sport.html'
+    context_object_name = 'sport'
+    queryset = Post.objects.filter(postCategory__name='Спорт').order_by('-dateCreation')
+
+
+@login_required
+def subscribe_sport(request):
+    user = request.user
+    Category.objects.get(name='Спорт').subscribers.add(user)
+
+    return redirect('/news/Спорт/')
+
+
+class Technologies(ListView):
+    model = Post
+    template_name = 'technologies.html'
+    context_object_name = 'technologies'
+    queryset = Post.objects.filter(postCategory__name='Технологии').order_by('-dateCreation')
+
+
+@login_required
+def subscribe_technologies(request):
+    user = request.user
+    Category.objects.get(name='Технологии').subscribers.add(user)
+
+    return redirect('/news/Технологии/')
+
+
+class Humor(ListView):
+    model = Post
+    template_name = 'humor.html'
+    context_object_name = 'humor'
+    queryset = Post.objects.filter(postCategory__name='Юмор').order_by('-dateCreation')
+
+
+@login_required
+def subscribe_humor(request):
+    user = request.user
+    Category.objects.get(name='Юмор').subscribers.add(user)
+
+    return redirect('/news/Юмор/')
