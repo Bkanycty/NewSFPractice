@@ -6,7 +6,7 @@
     <title>Document</title>
 </head>
 <body>
-    <h2>Здравствуй, {{ subscriber_username }}. Новая статья в твоём любимом разделе!</h2>
+    <h2>Здравствуй, {{ subscriber_username }}. Новая <a href="http://127.0.0.1:8000/news/{{ new_post.id }}">статья</a> в твоём любимом разделе!</h2>
     <p> {{ new_post.preview }} </p>
 </body>
 </html>

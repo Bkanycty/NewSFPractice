@@ -6,11 +6,13 @@
 
 
 
+
 </style>
 <style>
 .dva {
   text-align: left;
 }
+
 
 
 
@@ -42,6 +44,7 @@ a.button1:hover {
   transition: .5s linear;
   background-position: -200% 0, 0 0;
 }
+
 
 
 
@@ -95,29 +98,7 @@ a.button1:hover {
     </tr>
     {% endfor %}
 </table>
-<!--<form method="GET">-->
-<!--    {{ posts_category.form }}-->
-<!--    <input type="submit" value="Выбрать">-->
-<!--</form>-->
-<!--<form action="/news">-->
-<!--    <button>Сброс</button>-->
-<!--</form>-->
-<!--<table>-->
-<!--    <tr>-->
-<!--        <td>Заголовок</td>-->
-<!--        <td>Автор</td>-->
-<!--        <td>Дата публикации</td>-->
-<!--        <td>Предпросмотр</td>-->
-<!--    </tr>-->
-<!--    {% for news in posts_category.qs %}-->
-<!--    <tr>-->
-<!--        <td><a href="{% url 'news_detail' news.id %}">{{ news.title|censor }}</a>-->
-<!--        <td>{{ news.author.authorUser }}</td>-->
-<!--        <td>{{ news.dateCreation|date:'d-M-Y h:m' }}</td>-->
-<!--        <td>{{ news.preview|censor }}</td>-->
-<!--    </tr>-->
-<!--    {% endfor %}-->
-<!--</table>-->
+
 {% if is_paginated %}
 
 {% if page_obj.has_previous %}
