@@ -67,44 +67,20 @@ class NewsCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
         title = request.POST['title']
         text = request.POST['text']
         post_category_id = request.POST['postCategory']
-        category_id = Category.objects.get(id=post_category_id).id
         category_object = Category.objects.get(id=post_category_id)
         if Author.objects.filter(authorUser__username=request.user.username).exists():
             author = Author.objects.get(authorUser__username=request.user.username).id
         else:
             author = Author.objects.create(authorUser=request.user).id
         new_post = Post.objects.create(author_id=author, title=title, text=text)
-        new_post.save()
 
         new_postcategory = PostCategory.objects.create(postThrough=new_post, categoryThrough=category_object)
+
         new_postcategory.save()
+        new_post.save()
 
-        category_name = Category.objects.get(id=category_id).name
 
-        qs = Category.objects.filter(name=category_name).values('subscribers__username', 'subscribers__email')
-        for object in qs:
-            subscriber_username = object.get('subscribers__username')
-            # получаем наш html
-            html_content = render_to_string(
-                'news_updated.html',
-                {
-                    'subscriber_username': subscriber_username,
-                    'new_post': new_post
-                }
-            )
-            msg = EmailMultiAlternatives(
-                subject=f'{new_post.title}',
-                body=f"Здравствуй, {subscriber_username}. Новая статья в твоём любимом разделе!",
-                # это то же, что и message
-                from_email='b.kanycty@yandex.ru',
-                to=[object.get('subscribers__email')],  # это то же, что и recipients_list
-            )
-
-            msg.attach_alternative(html_content, "text/html")  # добавляем html
-
-            msg.send()  # отсылаем
-
-        return redirect('news_create')
+        return redirect('news_list')
 
 
 # дженерик для редактирования объекта

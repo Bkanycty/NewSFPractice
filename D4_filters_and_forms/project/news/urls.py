@@ -5,7 +5,7 @@ from .views import NewsList, NewsDetail, NewsSearch, NewsCreate, NewsUpdate, New
     subscribe_humor
 
 urlpatterns = [
-    path('', NewsList.as_view()),
+    path('', NewsList.as_view(), name='news_list'),
     path('search/', NewsSearch.as_view()),
     path('<int:pk>/', NewsDetail.as_view(), name='news_detail'),  # Ссылка на детали товара
     path('add/', NewsCreate.as_view(), name='news_create'),  # Ссылка на создание товара
