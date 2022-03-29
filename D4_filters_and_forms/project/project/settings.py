@@ -165,7 +165,6 @@ EMAIL_HOST_USER = 'b.kanycty'  # ваше имя пользователя, на�
 EMAIL_HOST_PASSWORD = 'hrqgjsmxnhcgjkqh'  # пароль от почты
 EMAIL_USE_SSL = True  # Яндекс использует ssl, подробнее о том, что это, почитайте в дополнительных источниках, но включать его здесь обязательно
 
-
 ADMINS = [
     ('bkanycty', 'kiselyevsk@gmail.com'),
     # список всех админов в формате ('имя', 'их почта')
@@ -178,3 +177,10 @@ APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
 
 # если задача не выполняется за 25 секунд, то она автоматически снимается, можете поставить время побольше, но как правило, это сильно бьёт по производительности сервера
 APSCHEDULER_RUN_NOW_TIMEOUT = 25  # Seconds
+
+CELERY_BROKER_URL = 'redis://:BLY0MjINrwrsSOfmFyofEuqmwWSxcYhY@redis-17174.c250.eu-central-1-1.ec2.cloud.redislabs.com:17174/0'
+CELERY_RESULT_BACKEND = 'redis://:BLY0MjINrwrsSOfmFyofEuqmwWSxcYhY@redis-17174.c250.eu-central-1-1.ec2.cloud.redislabs.com:17174/0'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_REDIS_MAX_CONNECTIONS = 1

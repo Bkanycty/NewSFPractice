@@ -1,4 +1,3 @@
-# from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, \
     DeleteView  # импортируем класс получения деталей объекта
 from .models import Post, Category, Author, PostCategory
@@ -8,12 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.shortcuts import render, reverse, redirect
-from django.views import View
-from django.core.mail import send_mail, EmailMultiAlternatives
-from django.template.loader import render_to_string
-
-from datetime import datetime
+from django.shortcuts import redirect
 
 
 class CategoriesList(ListView):
@@ -78,7 +72,6 @@ class NewsCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
 
         new_postcategory.save()
         new_post.save()
-
 
         return redirect('news_list')
 
