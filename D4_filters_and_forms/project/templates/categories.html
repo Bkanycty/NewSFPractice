@@ -23,6 +23,7 @@ a.button1:hover {
   transition: .5s linear;
   background-position: -200% 0, 0 0;
 }
+
 </style>
 
 
@@ -34,8 +35,11 @@ a.button1:hover {
 
 {% block content %}
 <br><br><br><br><br><br><br><br><br><br><br><br>
+{% load cache %}
+    {% cache 5 cats %}
 {% for category in categories %}
 <a href="/news/{{ category.name }}" class="button1">{{ category.name }}</a>
 
 {% endfor %}
+    {% endcache %}
 {% endblock content %}

@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import Sum
+from django.core.cache import cache
 
 
 class Author(models.Model):
@@ -38,12 +39,11 @@ class Category(models.Model):
     # Категории новостей/статей — темы, которые они отражают (спорт, политика, образование и т. д.).
     # Имеет единственное поле: название категории.
     # Поле должно быть уникальным (в определении поля необходимо написать параметр unique = True).
-    name = models.CharField(max_length=64, unique=True)
+    name = models.CharField(max_length=64, unique=True, verbose_name='Категория')
     subscribers = models.ManyToManyField(User)
 
     def __str__(self):  # __unicode__ on Python 2
         return str(self.name)
-
 
 
 class Post(models.Model):
@@ -60,19 +60,19 @@ class Post(models.Model):
         (NEWS, 'Новость'),
         (ARTICLE, 'Статья')
     )
-    categoryType = models.CharField(max_length=2, choices=CATEGORY_CHOICES, default=ARTICLE)
+    categoryType = models.CharField(max_length=2, choices=CATEGORY_CHOICES, default=ARTICLE, verbose_name='Тип')
 
     # автоматически добавляемая дата и время создания;
     dateCreation = models.DateTimeField(auto_now_add=True)
 
     # связь «многие ко многим» с моделью Category (с дополнительной моделью PostCategory);
-    postCategory = models.ManyToManyField(Category, through='PostCategory')
+    postCategory = models.ManyToManyField(Category, through='PostCategory', verbose_name='Категория')
 
     # заголовок статьи/новости;
-    title = models.CharField(max_length=128)
+    title = models.CharField(max_length=128, verbose_name='Оглавление')
 
     # текст статьи/новости;
-    text = models.TextField()
+    text = models.TextField(verbose_name='Текст')
 
     # рейтинг статьи/новости.
     rating = models.SmallIntegerField(default=0)
@@ -96,6 +96,19 @@ class Post(models.Model):
     def __str__(self):  # __unicode__ on Python 2
         return str(f'Пост (id: {self.pk}, заголовок: {self.title})')
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)  # сначала вызываем метод родителя, чтобы объект сохранился
+        cache.delete(f'post-{self.pk}')  # затем удаляем его из кэша, чтобы сбросить его
+
+    @property
+    def has_rating(self):
+        if self.rating > 0:
+            return 'Положительный'
+        elif self.rating < 0:
+            return 'Отрицательный'
+        else:
+            return 'Без рейтинга'
+
 
 class PostCategory(models.Model):
     #     Промежуточная модель для связи «многие ко многим»:
@@ -105,8 +118,8 @@ class PostCategory(models.Model):
     # связь «один ко многим» с моделью Category.
     categoryThrough = models.ForeignKey(Category, on_delete=models.CASCADE)
 
-    def __str__(self):  # __unicode__ on Python 2
-        return str(f'{self.postThrough} <---> Категория ({self.categoryThrough}: {self.categoryThrough.pk})')
+    # def __str__(self):  # __unicode__ on Python 2
+    #     return str(f'{self.postThrough} <---> Категория ({self.categoryThrough}: {self.categoryThrough.pk})')
 
 
 class Comment(models.Model):

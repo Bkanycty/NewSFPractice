@@ -1,0 +1,17 @@
+2022-05-31 18:25:01,049 INFO basehttp "GET /news/ HTTP/1.1" 200 9632
+2022-05-31 18:25:01,517 INFO basehttp "GET /products/ HTTP/1.1" 200 8731
+2022-05-31 18:28:47,086 INFO autoreload Watching for file changes with StatReloader
+2022-05-31 18:28:59,628 INFO basehttp "GET /news/ HTTP/1.1" 200 9632
+2022-05-31 18:29:00,027 INFO basehttp "GET /products/ HTTP/1.1" 200 8731
+2022-05-31 18:29:22,303 INFO autoreload C:\NewSFPractice\D4_filters_and_forms\project\project\settings.py changed, reloading.
+2022-05-31 18:29:27,223 INFO basehttp "GET /news/ HTTP/1.1" 200 9632
+2022-05-31 18:29:27,641 INFO basehttp "GET /products/ HTTP/1.1" 200 8731
+2022-05-31 18:30:14,565 INFO basehttp "GET / HTTP/1.1" 200 2947
+2022-05-31 18:30:16,953 INFO basehttp "GET /news/ HTTP/1.1" 200 9632
+2022-05-31 18:30:17,370 INFO basehttp "GET /products/ HTTP/1.1" 200 8731
+2022-05-31 18:30:30,301 INFO autoreload Watching for file changes with StatReloader
+2022-05-31 18:30:33,703 INFO basehttp "GET /news/ HTTP/1.1" 200 9632
+2022-05-31 18:30:34,036 INFO basehttp "GET /products/ HTTP/1.1" 200 8731
+2022-05-31 18:30:53,633 INFO autoreload C:\NewSFPractice\D4_filters_and_forms\project\project\settings.py changed, reloading.
+2022-05-31 18:30:57,877 INFO basehttp "GET /news/ HTTP/1.1" 200 9632
+2022-05-31 18:30:58,184 INFO basehttp "GET /products/ HTTP/1.1" 200 8731

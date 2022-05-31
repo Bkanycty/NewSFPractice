@@ -16,12 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from .views import Home
+from django.views.decorators.cache import cache_page
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('pages/', include('django.contrib.flatpages.urls')),
     path('products/', include('simpleapp.urls')),
     path('news/', include('news.urls')),
     path('accounts/', include('allauth.urls')),
-    path('', Home.as_view())
+    path('', cache_page(60 * 5)(Home.as_view()))
     # делаем так, чтобы все адреса из нашего приложения (simpleapp/urls.py) сами автоматически подключались когда мы их добавим.
 ]

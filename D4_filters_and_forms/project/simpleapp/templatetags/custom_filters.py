@@ -23,3 +23,5 @@ def censor(value):
         else:
             value_censored.append(word)
     return " ".join(value_censored)
+
+
