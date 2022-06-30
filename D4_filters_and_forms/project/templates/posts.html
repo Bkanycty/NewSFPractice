@@ -59,28 +59,29 @@ a.button1:hover {
 {% if not posts %}
 <h1> Новостей нет </h1>
 {% else %}
+{% load i18n %}
 
 
-<h1>Свежие новости: {{ posts|length }}</h1><h4><a href="{% url 'news_create' %}">|добавить новость|</a></h4>
+<h1>{% trans "Свежие новости" as fresh_news %} {{ fresh_news }}: {{ posts|length }}</h1><h4><a href="{% url 'news_create' %}">{% trans "|добавить новость|" as publish_news %} {{ publish_news }}</a></h4>
 <p>
 <form action="search">
 
 
-    <button> Найти другие новости</button>
+    <button> {% trans "Найти другие новости" as find_news %} {{ find_news }}</button>
 
     <br><br>
     <div class="dva">
-        <h6><a href="{% url 'category_selection' %}" class="button1">Выбрать категорию</a>
+        <h6><a href="{% url 'category_selection' %}" class="button1">{% trans "Выбрать категорию" as choose_category %} {{ choose_category }}</a>
         </h6></div>
     <br>
 </form>
 <hr>
 <table>
     <tr>
-        <td>Категория</td>
-        <td>Заголовок</td>
-        <td>Дата публикации</td>
-        <td>Предпросмотр</td>
+        <td>{% trans "Категория" as category %} {{ category }}</td>
+        <td>{% trans "Заголовок" as title %} {{ title }}</td>
+        <td>{% trans "Дата публикации" as cr_date %} {{ cr_date }}</td>
+        <td>{% trans "Предпросмотр" as preview %} {{ preview }}</td>
     </tr>
     {% for post in posts %}
     <tr>
@@ -90,8 +91,8 @@ a.button1:hover {
         </td>
         <td>
             <a href="{% url 'news_detail' post.id %}">{{ post.title }}</a>
-            <a href="{% url 'news_update' post.id %}"><u> |Редактировать| </u></a>
-            <a href="{% url 'news_delete' post.id %}"><u> |Удалить| </u></a>
+            <a href="{% url 'news_update' post.id %}"><u> {% trans "|Редактировать|" as edit %} {{ edit }} </u></a>
+            <a href="{% url 'news_delete' post.id %}"><u> {% trans "|Удалить|" as delete %} {{ delete }} </u></a>
         </td>
         <td>{{ post.dateCreation|date:'d-M-Y h:m' }}</td>
         <td>{{ post.preview|censor }}</td>
@@ -102,8 +103,8 @@ a.button1:hover {
 {% if is_paginated %}
 
 {% if page_obj.has_previous %}
-<a href="?page=1">Начало</a>
-<a href="?page={{ page_obj.previous_page_number }}">Назад</a>
+<a href="?page=1">{% trans "Начало" as home %} {{ home }}</a>
+<a href="?page={{ page_obj.previous_page_number }}">{% trans "Назад" as back %} {{ back }}</a>
 {% endif %}
 
 {% for num in page_obj.paginator.page_range %}
@@ -115,8 +116,8 @@ a.button1:hover {
 {% endfor %}
 
 {% if page_obj.has_next %}
-<a href="?page={{ page_obj.next_page_number }}">Вперед</a>
-<a href="?page={{ page_obj.paginator.num_pages }}">Конец</a>
+<a href="?page={{ page_obj.next_page_number }}">{% trans "Вперед" as foward %} {{ foward }}</a>
+<a href="?page={{ page_obj.paginator.num_pages }}">{% trans "Конец" as end %} {{ end }}</a>
 {% endif %}
 
 {% endif %}

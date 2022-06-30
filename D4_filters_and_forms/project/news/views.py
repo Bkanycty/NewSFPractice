@@ -1,3 +1,6 @@
+from django.shortcuts import render
+from django.http import HttpResponse
+from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, \
     DeleteView  # импортируем класс получения деталей объекта
 from .models import Post, Category, Author, PostCategory
@@ -9,21 +12,64 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.shortcuts import redirect
 from django.core.cache import cache
+from django.utils.translation import gettext as _  # импортируем функцию для перевода
+
+from django.utils import timezone
+
+import pytz  # импортируем стандартный модуль для работы с часовыми поясами
+
+
+# Create your views here.
+
+class Index(View):
+    def get(self, request):
+        string = _('Привет мир')
+
+        return HttpResponse(string)
 
 
 class CategoriesList(ListView):
-    model = Category
+    # model = Category
     template_name = 'categories.html'
     context_object_name = 'categories'
     queryset = Category.objects.order_by('name')
 
+    def get(self, request):
+        # . Translators: This message appears on the home page only
+        models = Category.objects.all()
+
+        context = {
+            'models': models,
+        }
+
+        return HttpResponse(render(request, 'categories.html', context))
+
 
 class NewsList(ListView):
-    model = Post
+    # model = Post
     template_name = 'posts.html'
     context_object_name = 'posts'
     queryset = Post.objects.order_by('-dateCreation')
     paginate_by = 10
+
+    def get(self, request):
+        current_time = timezone.localtime()
+
+        # .  Translators: This message appears on the home page only
+        posts = Post.objects.all()
+
+        context = {
+            'posts': posts,
+            'current_time': current_time,
+            'timezones': pytz.common_timezones  # добавляем в контекст все доступные часовые пояса
+        }
+
+        return HttpResponse(render(request, 'posts.html', context))
+
+    #  по пост-запросу будем добавлять в сессию часовой пояс, который и будет обрабатываться написанным нами ранее middleware
+    def post(self, request):
+        request.session['django_timezone'] = request.POST['timezone']
+        return redirect('/news/')
 
 
 # дженерик для получения деталей о товаре
@@ -174,7 +220,7 @@ def subscribe_cooking(request):
 class News(ListView):
     model = Post
     template_name = 'news.html'
-    context_object_name = 'news'
+    context_object_name = 'cat_news'
     queryset = Post.objects.filter(postCategory__name='Новости').order_by('-dateCreation')
 
 

@@ -28,17 +28,18 @@ a.button1:hover {
 
 
 {% extends 'flatpages/default.html' %}
+{% load i18n %}
 {% load custom_filters %}
 {% block title %}
-Категории новостей
+{% trans "Категории новостей" as news_categories %} {{ news_categories }}
 {% endblock title %}
 
 {% block content %}
 <br><br><br><br><br><br><br><br><br><br><br><br>
 {% load cache %}
     {% cache 5 cats %}
-{% for category in categories %}
-<a href="/news/{{ category.name }}" class="button1">{{ category.name }}</a>
+{% for model in models %}
+<a href="/news/{{ model.name }}" class="button1">{{ model.name }}</a>
 
 {% endfor %}
     {% endcache %}

@@ -15,8 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from .views import Home
+from .views import Home, NewsViewset, ArticlesViewset
 from django.views.decorators.cache import cache_page
+from rest_framework import routers
+# from news import views
+from project import views
+
+router = routers.DefaultRouter()
+router.register(r'News', views.NewsViewset)
+router.register(r'Articles', views.ArticlesViewset)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,6 +31,8 @@ urlpatterns = [
     path('products/', include('simpleapp.urls')),
     path('news/', include('news.urls')),
     path('accounts/', include('allauth.urls')),
-    path('', cache_page(60 * 5)(Home.as_view()))
+    path('api/', include(router.urls)),
+    path('', cache_page(5)(Home.as_view())),
+    path('i18n/', include('django.conf.urls.i18n'))  # подключаем встроенные эндопинты для работы с локализацией
     # делаем так, чтобы все адреса из нашего приложения (simpleapp/urls.py) сами автоматически подключались когда мы их добавим.
 ]

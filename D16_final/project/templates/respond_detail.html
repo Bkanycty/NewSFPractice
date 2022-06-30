@@ -1,0 +1,25 @@
+{% extends 'default.html' %}
+
+{% block title %}
+{{ respond.text }}
+{% endblock title %}
+
+{% load static %}
+{% block content %}
+Дата публикации: {{ respond.post.dateCreation|date:'d-M-Y h:m' }}
+<br>
+Автор объявления: {{ respond.post.author }}
+<br>
+Объявление: <a href="{% url 'post_detail' respond.post.id %}">{{ respond.post.title }}</a>
+<br>
+<p><h2>Текст отклика: {{ respond.text }}</h2></p>
+{% if user not in respond.accepted_by.all %}
+    <td>
+        <a href="{% url 'accept_respond' respond.id user %}"> <button>Принять</button> </a>
+{% else %}
+    <td>|Принято| </td>
+{% endif %}
+<td><a href="{% url 'respond_delete' respond.id %}"><u> <button>Удалить</button> </u></a></td>
+
+
+{% endblock content %}

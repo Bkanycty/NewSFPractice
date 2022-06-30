@@ -1,0 +1,20 @@
+{% extends 'default.html' %}
+
+{% block title %} Новости {% endblock title %}
+
+{% block content %}
+{% if user.is_not_authenticated %}
+<h1>Вы пока не можете публиковать объявления<a> Зарегистрируйтесь </a> </h1>
+
+{% else %}
+<h3>Создание объявления</h3>
+<form method="POST">
+    {% csrf_token %}
+
+    {{ form.media }}
+    {{ form.as_p }}
+
+    <input type="submit" value="Опубликовать">
+</form>
+{% endif %}
+{% endblock content %}

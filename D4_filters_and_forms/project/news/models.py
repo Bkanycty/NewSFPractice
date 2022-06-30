@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import Sum
 from django.core.cache import cache
+from django.utils.translation import gettext as _
+from django.utils.translation import pgettext_lazy  # импортируем «ленивый» геттекст с подсказкой
 
 
 class Author(models.Model):
@@ -9,7 +11,7 @@ class Author(models.Model):
     # Имеет следующие поля:
     # cвязь «один к одному» с встроенной моделью пользователей User;
 
-    authorUser = models.OneToOneField(User, on_delete=models.CASCADE)
+    authorUser = models.OneToOneField(User, help_text=_('Автор'), verbose_name=_('Автор'), on_delete=models.CASCADE)
     ratingAuthor = models.SmallIntegerField(default=0)
 
     # рейтинг пользователя. Ниже будет дано описание того, как этот рейтинг можно посчитать.
@@ -39,7 +41,7 @@ class Category(models.Model):
     # Категории новостей/статей — темы, которые они отражают (спорт, политика, образование и т. д.).
     # Имеет единственное поле: название категории.
     # Поле должно быть уникальным (в определении поля необходимо написать параметр unique = True).
-    name = models.CharField(max_length=64, unique=True, verbose_name='Категория')
+    name = models.CharField(max_length=64, unique=True, help_text=_('Название категории'), verbose_name=_('Категория'))
     subscribers = models.ManyToManyField(User)
 
     def __str__(self):  # __unicode__ on Python 2
@@ -51,7 +53,7 @@ class Post(models.Model):
     # Каждый объект может иметь одну или несколько категорий.
     # Соответственно, модель должна включать следующие поля:
     # связь «один ко многим» с моделью Author;
-    author = models.ForeignKey(Author, on_delete=models.CASCADE)
+    author = models.ForeignKey(Author, verbose_name=_('Автор'), help_text=_('Автор'), on_delete=models.CASCADE)
 
     # поле с выбором — «статья» или «новость»;
     NEWS = 'NW'
@@ -60,19 +62,19 @@ class Post(models.Model):
         (NEWS, 'Новость'),
         (ARTICLE, 'Статья')
     )
-    categoryType = models.CharField(max_length=2, choices=CATEGORY_CHOICES, default=ARTICLE, verbose_name='Тип')
+    categoryType = models.CharField(max_length=2, choices=CATEGORY_CHOICES, default=ARTICLE, verbose_name=_('Тип'))
 
     # автоматически добавляемая дата и время создания;
-    dateCreation = models.DateTimeField(auto_now_add=True)
+    dateCreation = models.DateTimeField(auto_now_add=True, verbose_name=_('Дата создания'))
 
     # связь «многие ко многим» с моделью Category (с дополнительной моделью PostCategory);
-    postCategory = models.ManyToManyField(Category, through='PostCategory', verbose_name='Категория')
+    postCategory = models.ManyToManyField(Category, through='PostCategory', verbose_name=_('Категория'))
 
     # заголовок статьи/новости;
-    title = models.CharField(max_length=128, verbose_name='Оглавление')
+    title = models.CharField(max_length=128, verbose_name=_('Оглавление'))
 
     # текст статьи/новости;
-    text = models.TextField(verbose_name='Текст')
+    text = models.TextField(verbose_name=_('Текст'))
 
     # рейтинг статьи/новости.
     rating = models.SmallIntegerField(default=0)

@@ -1,10 +1,16 @@
 from django.contrib import admin
 from .models import Author, Category, Post, Comment, PostCategory
+from modeltranslation.admin import \
+    TranslationAdmin  # импортируем модель амдинки (вспоминаем модуль про переопределение стандартных админ-инструментов)
+
+
+class CategoryAdmin(TranslationAdmin):
+    model = Category
 
 
 # напишем уже знакомую нам функцию обнуления товара на складе
 def nullify_rating(modeladmin, request,
-                    queryset):  # все аргументы уже должны быть вам знакомы, самые нужные из них это request — объект хранящий информацию о запросе и queryset — грубо говоря набор объектов, которых мы выделили галочками.
+                   queryset):  # все аргументы уже должны быть вам знакомы, самые нужные из них это request — объект хранящий информацию о запросе и queryset — грубо говоря набор объектов, которых мы выделили галочками.
     queryset.update(rating=0)
 
 

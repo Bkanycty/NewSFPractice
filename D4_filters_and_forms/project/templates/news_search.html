@@ -1,13 +1,16 @@
 {% extends 'flatpages/default.html' %}
 {% load custom_filters %}
+{% load i18n %}
 {% block title %}
-Новости
+{% trans "Новости" as N %}
+{{ N }}
 {% endblock title %}
 
 <!-- В контенте на странице мы выводим все товары -->
 {% block content %}
 {% if not news %}
-<h1> Новостей нет </h1>
+<h1> {% trans "Новостей нет" as no_news %}
+{{ no_news }}</h1>
 {% else %}
 <p>
 <form method="GET">

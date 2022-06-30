@@ -60,7 +60,7 @@ a.button1:hover {
         <td>Дата публикации</td>
         <td>Предпросмотр</td>
     </tr>
-    {% for post in news %}
+    {% for post in cat_news %}
     <tr>
         <td>
             <a href="{% url 'news_detail' post.id %}">{{ post.title }}</a>
