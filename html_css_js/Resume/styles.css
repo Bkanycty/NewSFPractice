@@ -1,0 +1,268 @@
+@font-face {
+    src: url('fonts/PTSerif-Regular.ttf');
+    font-family: PTSerif-Regular;
+}
+
+@font-face {
+    src: url('fonts/PTSans-Regular.ttf');
+    font-family: PTSans-Regular;
+}
+
+@font-face {
+    src: url('fonts/PTSans-Italic.ttf');
+    font-family: PTSans-Italic;
+}
+
+@font-face {
+    src: url('fonts/PTSans-Bold.ttf');
+    font-family: PTSans-Bold;
+}
+
+.accent {
+    color: blue;
+    font-style: italic;
+    opacity: 85%
+}
+
+
+
+.italic {
+    font-family: PTSans-Italic;
+}
+
+.bold {
+    font-family: PTSans-Bold;
+}
+
+.grid-wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 32vw);
+    grid-template-rows: auto;
+    vertical-align: top;
+    grid-gap: 1vw;
+}
+
+h1 {
+    margin: 0vw 1vw;
+}
+
+h4 {
+   margin: 0vw 1vw;
+}
+
+.subtitle {
+    padding-top: 20px;
+    color: blue;
+    text-transform: uppercase;
+}
+
+.margin1 {
+    margin: 0vw 1vw
+}
+
+.photo {
+    margin-left: 25%;
+    text-align: right;
+}
+
+
+
+
+* {
+  box-sizing: border-box;
+}
+
+/* Set a background color */
+body {
+  background-color: #D3D3D3;
+  font-family: PTSans-Regular, Arial, sans-serif;
+}
+
+/* The actual timeline (the vertical ruler) */
+.timeline {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* The actual timeline (the vertical ruler) */
+.timeline::after {
+    content: '';
+    position: absolute;
+    width: 6px;
+    background-color: white;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    margin-left: -3px;
+}
+
+/* Container around content */
+.container {
+  padding: 10px 40px;
+  position: relative;
+  background-color: inherit;
+  width: 50%;
+}
+
+/* The circles on the timeline */
+.container::after {
+  content: '';
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  right: -17px;
+  background-color: white;
+  border: 4px solid #FF9F55;
+  top: 15px;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+/* Place the container to the left */
+.left {
+  left: 0;
+}
+
+/* Place the container to the right */
+.right {
+  left: 50%;
+}
+
+/* Add arrows to the left container (pointing right) */
+.left::before {
+  content: " ";
+  height: 0;
+  position: absolute;
+  top: 22px;
+  width: 0;
+  z-index: 1;
+  right: 30px;
+  border: medium solid white;
+  border-width: 10px 0 10px 10px;
+  border-color: transparent transparent transparent white;
+}
+
+/* Add arrows to the right container (pointing left) */
+.right::before {
+  content: " ";
+  height: 0;
+  position: absolute;
+  top: 22px;
+  width: 0;
+  z-index: 1;
+  left: 30px;
+  border: medium solid white;
+  border-width: 10px 10px 10px 0;
+  border-color: transparent white transparent transparent;
+}
+
+/* Fix the circle for containers on the right side */
+.right::after {
+  left: -16px;
+}
+
+/* The actual content */
+.content {
+  padding: 20px 30px;
+  background-color: white;
+  position: relative;
+  border-radius: 6px;
+}
+
+/* Media queries - Responsive timeline on screens less than 600px wide */
+@media screen and (max-width: 600px) {
+/* Place the timelime to the left */
+  .timeline::after {
+    left: 31px;
+  }
+
+/* Full-width containers */
+  .container {
+    width: 100%;
+    padding-left: 70px;
+    padding-right: 25px;
+  }
+
+/* Make sure that all arrows are pointing leftwards */
+  .container::before {
+    left: 60px;
+    border: medium solid white;
+    border-width: 10px 10px 10px 0;
+    border-color: transparent white transparent transparent;
+  }
+
+/* Make sure all circles are at the same spot */
+  .left::after, .right::after {
+    left: 15px;
+  }
+
+/* Make all right containers behave like the left ones */
+  .right {
+    left: 0%;
+  }
+}
+
+.title {
+    margin: 0px;
+    font-family: PTSerif-Regular;
+}
+
+.text {
+    margin: 0px;
+    font-family: PTSans-Regular;
+}
+
+.birthday {
+
+    opacity: 75%;
+}
+
+p {
+    font-family: PTSans-Regular;
+}
+
+.timeline-title {
+    margin: 0px;
+    font-family: PTSerif-Regular;
+}
+
+.timeline-subtitle {
+    margin-left: 10px;
+    font-family: PTSans-Regular;
+    opacity: 75%;
+}
+
+.timeline-text {
+    margin: 0px;
+    font-family: PTSans-Regular;
+}
+
+.collapsible {
+  background-color: rgba(176, 224, 230, 100%);
+  color: #444;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  border-radius: 10px;
+}
+
+.active, .collapsible:hover {
+  background-color: LightSkyBlue;
+}
+
+.collapsible-content {
+  padding: 0 18px;
+  background-color: white;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+
+.first-plan {
+    position: relative;
+    z-index: 1;
+}

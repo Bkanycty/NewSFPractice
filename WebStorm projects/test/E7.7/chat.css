@@ -1,0 +1,11 @@
+.btn {
+    background: lightblue;
+    border: none;
+}
+.input_field {
+    border-color: lightblue;
+}
+.chat_box {
+    border: solid lightblue;
+    padding: 10px;
+}

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="chat.css">
+    <title>Title</title>
+</head>
+<body>
+    <form id="input-form">
+    </form><br>
+    <script>
+        const inputForm = document.getElementById("input-form")
+        const w = window.innerWidth*0.9
+        const h = window.innerHeight*0.9
+        inputForm.innerHTML = `<input class="input_field" type="text" style="width: ${w}px">
+    <input id="send-button" class="btn" type="submit" value="Отправить">`
+    </script>
+<div id="chat-box" class="chat_box">
+    <p align="right">Начало переписки</p>
+    <p align="left">Начало переписки</p>
+</div>
+<script src="chat.js"></script>
+</body>
+</html>
