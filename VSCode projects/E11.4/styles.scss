@@ -1,0 +1,7 @@
+@import "variables.scss";
+header {
+    margin: 0px;
+    & h1 {
+        color: $base_red;
+    }
+}
