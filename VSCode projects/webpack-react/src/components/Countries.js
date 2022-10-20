@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
-import Table from "react-bootstrap/Table";
 
 
 function Countries() {
     const [countries, setCountries] = useState([]);
     if(!countries.length) {
-        axios.get("C:\NewSFPractice\VSCode projects\webpack-react\text.json").then(res => {
+        axios.get("https://restcountries.eu/rest/v2/all").then(res => {
             console.log(res);
             setCountries(res.data);
         });
