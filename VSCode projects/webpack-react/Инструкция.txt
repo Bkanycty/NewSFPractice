@@ -1,0 +1,130 @@
+Разворачиваем приложение на webpack+react
+
+####################################################################################
+Создаем папку с названием приложения
+В ней создаем 
+папки: 
+- src
+
+файлы:
+- webpack.config.js с содержимым:
+
+const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+
+module.exports = {
+    entry: "./src/index.js",
+    output: {
+        path: path.join(__dirname, "/dist"),
+        filename: "bundle.js"
+    },
+    module: {
+        rules: [
+            {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: "babel-loader"
+                }
+            },
+            {
+                test: /\.css$/,
+                use: ["style-loader", "css-loader"]
+            }
+        ]
+    },
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: "./src/index.html"
+        })
+    ]
+}
+
+- .babelrc с содержимым:
+
+{
+    "presets": ["@babel/preset-env", "@babel/preset-react"]
+}
+
+####################################################################################
+В папке src создаем
+папки:
+- components
+- styles
+
+файлы:
+- index.js с содержимым:
+
+import React from "react";
+import ReactDOM from "react-dom";
+
+import App from "./components/App";
+
+ReactDOM.render(<App/>, document.getElementById("root"));
+
+------------------------------------------------------------------------------------
+- index.html с содержимым:
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Заголовок</title>
+    </head>
+    <body>
+        <div id="root"></div>
+    </body>
+</html>
+
+####################################################################################
+Инициализируем проект: npm init -y
+Устанавливаем webpack: npm i webpack webpack-cli
+Устанавливаем babel: npm i @babel/core babel-loader @babel/preset-env @babel/preset-react
+Устанавливаем react: npm i react react-dom
+Устанавливаем лоадеры: npm install style-loader css-loader
+Устанавливаем плагин: npm i html-webpack-plugin
+
+####################################################################################
+Добавляем скрипты в файл package.json:
+
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack --mode development --watch",
+    "build": "webpack --mode production"
+  },
+
+####################################################################################
+Запускаем:
+npm start
+
+####################################################################################
+В папке components создаем 
+файлы:
+- App.js с содержимым:
+
+import React, { Component } from "react";
+import "../styles/App.css";
+
+class App extends Component {
+    render() {
+        return (
+        <div>
+            <h1>Hello World</h1>
+        </div>
+        );
+    }
+}
+
+export default App;
+
+####################################################################################
+В папке Styles создаем
+файлы:
+- App.css
+
+####################################################################################
+Устанавливаем webpack-dev-server: npm i webpack-dev-server
+И меняем скрипт старта в package.json на:
+ "start": "webpack-dev-server --mode development --open",
+
+Запускаем: npm start
