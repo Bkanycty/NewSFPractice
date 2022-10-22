@@ -5,7 +5,7 @@ import axios from "axios";
 function Countries() {
     const [countries, setCountries] = useState([]);
     if(!countries.length) {
-        axios.get("https://restcountries.eu/rest/v2/all").then(res => {
+        axios.get("C:\text.html").then(res => {
             console.log(res);
             setCountries(res.data);
         });
