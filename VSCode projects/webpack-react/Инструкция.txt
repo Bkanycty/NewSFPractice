@@ -128,3 +128,9 @@ export default App;
  "start": "webpack-dev-server --mode development --open",
 
 Запускаем: npm start
+
+####################################################################################
+npm install -g json-server
+
+Установка mock-сервера
+Запуск mock-сервера: json-server --watch database.json

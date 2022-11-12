@@ -1,0 +1,15 @@
+{
+    "countries": [
+        {"name": "Afghanistan",
+        "alpha3Code": "AFG",
+        "capital": "Kabul"},
+        {"name": "Russia",
+        "alpha3Code": "RUS",
+        "capital": "Moskow"},
+        {"name": "Belarus",
+        "alpha3Code": "BEL",
+        "capital": "Minsk"},
+        {"name": "United States",
+        "alpha3Code": "USA"}
+    ]
+}
