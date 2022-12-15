@@ -1,8 +1,6 @@
 /D1_znakomstvo_s_Django/D1_venv/
 pythonProject/.idea
-/VSCode projects/E13/node_modules
-/VSCode projects/react F4/node_modules
-/VSCode projects/webpack-react/node_modules
+/VSCode projects
 /fullstack-projects/F9 project/venv
 /fullstack-projects/F9 project/client.py
 /fullstack-projects/F9 project/server.py
