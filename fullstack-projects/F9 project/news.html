@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<meta charset="utf-8" />
+<html lang="en">
+  
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Новости</title>
+<script>
+      document.addEventListener("DOMContentLoaded", () => {
+      console.log('loaded');
+      
+      var conn = null;
+      function log(msg) {
+        var control = $('#log');
+        control.html(control.html() + msg + '<br/>');
+        control.scrollTop(control.scrollTop() + 1000);
+      }
+      function connect() {
+        disconnect();
+        var wsUri = (window.location.protocol=='https:'&&'wss://'||'ws://')+window.location.host;
+        conn = new WebSocket(wsUri);
+        log('Подключаемся...');
+        conn.onopen = function() {
+          log('Подключились.');
+          update_ui();
+        };
+        conn.onmessage = function(e) {
+          log(e.data);
+        };
+        conn.onclose = function() {
+          log('Отключились.');
+          conn = null;
+          update_ui();
+        };
+      }
+      function disconnect() {
+        if (conn != null) {
+          log('Отключаемся...');
+          conn.close();
+          conn = null;
+          update_ui();
+        }
+      }
+      function update_ui() {
+        if (conn == null) {
+          $('#status').text('Оффлайн');
+          $('#connect').html('Подключиться');
+        } else {
+          $('#status').text('Онлайн (' + conn.protocol + ')');
+          $('#connect').html('Отключиться');
+        }
+      }
+      $('#connect').click(function() {
+        if (conn == null) {
+          connect();
+        } else {
+          disconnect();
+        }
+        update_ui();
+        return false;
+      });
+
+      connect();
+    });
+</script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+
+</head>
+
+<body>
+<h1 style="text-align: center;">Новостной портал</h1>
+<div>
+  <button id="connect">Получать новости</button>&nbsp;|&nbsp;Status:
+  <span id="status">Отключен</span>
+</div>
+<div id="log"
+     style="width:100%;height:15em;overflow:auto;border:1px solid black">
+</div>
+<script>
+  function sendPost() {
+    var date = new Date().getFullYear()+'.'+ new Date().getMonth() + '.' + new Date().getDay() + ' ' + new Date().getHours() + ':' + new Date().getMinutes() + ':' + new Date().getSeconds();
+    let text=`Новость: ${date} Я выполнил задание, поздравьте меня &#9786;`;
+    let response = fetch('http://localhost:8080/news', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'text/html',
+      },
+      body: text
+    });
+  }
+
+</script>
+<form>
+  <br>
+  <button type="button" onclick={sendPost()} onsubmit=>отправить новость через POST (тест)</button>
+</form>
+</body>
+</html>

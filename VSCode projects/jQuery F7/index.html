@@ -1,0 +1,142 @@
+<!doctype html>
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $("#result").html("Здесь будет засшифрованный текст");
+                $("#decrypted-text").html("Расшифрованный текст будет здесь");
+                $("#original-text").css("margin-top", "1vw");
+            });
+        </script>
+    </head>
+<body>
+    <div>
+        <form>
+            <p>Введите число смещений (по умолчанию 1)</p>
+            <input type="text" title="Число смещений" value="1" id="n">
+        </form>
+    </div>
+    <div>
+        <script>
+            function encrypt() {
+                let n = Number(document.getElementById("n").value);
+                let text = document.getElementById("original-text").value;
+                let encryptedText = "";
+                let abc = ["а","б","в","г","д","е","ё","ж","з","и","й","к","л","м","н","о","п","р","с","т","у","ф","х","ц","ч","ш","щ","ъ","ы","ь","э","ю","я"]
+                let upperAbc = ["А","Б","В","Г","Д","Е","Ё","Ж","З","И","Й","К","Л","М","Н","О","П","Р","С","Т","У","Ф","Х","Ц","Ч","Ш","Щ","Ъ","Ы","Ь","Э","Ю","Я"]
+                for (let char of text) {
+                    if (abc.includes(char)) {
+                        if (n >= 0) {
+                            let newCharIndex = (abc.indexOf(char) + n);
+                            while (newCharIndex > 32) {
+                                newCharIndex -= 33;
+                            };
+                            let newChar = abc[newCharIndex];
+                            encryptedText += newChar;
+                        } else {
+                            let newCharIndex = (abc.indexOf(char) + n);
+                            while (newCharIndex < 0) {
+                                newCharIndex += 33;
+                            };
+                            let newChar = abc[newCharIndex];
+                            encryptedText += newChar;
+                        };
+                        
+                    } else if (upperAbc.includes(char)) {
+                        if (n >= 0) {
+                            let newCharIndex = (upperAbc.indexOf(char) + n);
+                            while (newCharIndex > 32) {
+                                newCharIndex -= 33;
+                            };
+                            let newChar = upperAbc[newCharIndex];
+                            encryptedText += newChar;
+                        } else {
+                            let newCharIndex = (upperAbc.indexOf(char) + n);
+                            while (newCharIndex < 0) {
+                                newCharIndex += 33;
+                            };
+                            let newChar = upperAbc[newCharIndex];
+                            encryptedText += newChar;
+                        };
+                    } else {
+                        encryptedText += char;
+                    };
+                };
+                $("#result").css("color", "red");
+                $("#result").html(encryptedText);
+            }
+        </script>
+        <form>
+            <input title="original-text" type="text" id="original-text">
+            <button type="button" title="encrypt" id="original-text-button" onclick="encrypt()">encrypt</button>
+        </form>
+    </div>
+
+    <div id="result">
+
+    </div>
+
+    <div>
+        <script>
+            function decrypt() {
+                let n = Number(document.getElementById("n").value);
+                console.log(n);
+                let text = document.getElementById("encrypted-text").value;
+                let encryptedText = "";
+                let abc = ["а","б","в","г","д","е","ё","ж","з","и","й","к","л","м","н","о","п","р","с","т","у","ф","х","ц","ч","ш","щ","ъ","ы","ь","э","ю","я"]
+                let upperAbc = ["А","Б","В","Г","Д","Е","Ё","Ж","З","И","Й","К","Л","М","Н","О","П","Р","С","Т","У","Ф","Х","Ц","Ч","Ш","Щ","Ъ","Ы","Ь","Э","Ю","Я"]
+                for (let char of text) {
+                    if (abc.includes(char)) {
+                        if (n >= 0) {
+                            let newCharIndex = (abc.indexOf(char) + n);
+                            while (newCharIndex > 32) {
+                                newCharIndex -= 33;
+                            };
+                            let newChar = abc[newCharIndex];
+                            encryptedText += newChar;
+                        } else {
+                            let newCharIndex = (abc.indexOf(char) + n);
+                            while (newCharIndex < 0) {
+                                newCharIndex += 33;
+                            };
+                            let newChar = abc[newCharIndex];
+                            encryptedText += newChar;
+                        };
+                        
+                    } else if (upperAbc.includes(char)) {
+                        if (n >= 0) {
+                            let newCharIndex = (upperAbc.indexOf(char) + n);
+                            while (newCharIndex > 32) {
+                                newCharIndex -= 33;
+                            };
+                            let newChar = upperAbc[newCharIndex];
+                            encryptedText += newChar;
+                        } else {
+                            let newCharIndex = (upperAbc.indexOf(char) + n);
+                            while (newCharIndex < 0) {
+                                newCharIndex += 33;
+                            };
+                            let newChar = upperAbc[newCharIndex];
+                            encryptedText += newChar;
+                        };
+                    } else {
+                        encryptedText += char;
+                    };
+                };
+                $("#decrypted-text").css("color", "green");
+                $("#decrypted-text").html(encryptedText);
+        }
+
+        </script>
+        <form>
+            <input title="encrypted-text" type="text" id="encrypted-text">
+            <button type="button" title="decrypt" id="decrypt-text-button" onclick="decrypt()">decrypt</button>
+        </form>
+    </div>
+
+    <div id="decrypted-text">
+        
+    </div>
+</body>
+</html>

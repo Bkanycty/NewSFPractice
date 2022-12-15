@@ -1,0 +1,16 @@
+.calc-form {
+    width: max-content;
+    position: relative;
+    left: 20%;
+    right: 30%;
+    border: 2px solid white;
+    border-radius: 5px;
+    padding: 1vw;
+    margin-top: 2vw;
+}
+
+.results {
+    position: relative;
+    left: 20%;
+    margin-top: 1vw;
+}

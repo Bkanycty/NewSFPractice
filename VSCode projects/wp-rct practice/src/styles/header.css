@@ -7,32 +7,33 @@
         align-items: center;
         align-content: center;
         align-self: center;
-        position: fixed;
+        position: sticky;
         top: 1rem;
         right: 0;
         left: 0;
         justify-content: flex-end;
         padding: 0;
         margin: 0;
+        margin-bottom: 1vw;
         white-space: nowrap;
     }
 
     .header-logo {
         margin-left: 5rem;
         padding: 0rem 4rem;
-        height: 5vw;
+        height: 3vw;
         background-color: yellowgreen;
         display: inline-flex;
         align-items: center;
     }
 
     .header-navbar {
-        height: 5vw;
+        height: 3vw;
         display: flex;
         justify-content: flex-end;
         align-self: center;
         margin-left: auto;
-        margin-right: 4rem;
+        margin-right: 15vw;
     }
 
     .header-navbar-button {
@@ -51,7 +52,7 @@
     }
 
     .header-logout-button {
-        height: 5vw;
+        height: 3vw;
         color: brown;
 }
 }

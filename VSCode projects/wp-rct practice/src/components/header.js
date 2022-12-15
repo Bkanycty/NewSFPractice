@@ -9,9 +9,11 @@ function Header() {
     return (
         <>
             <header>
-                <button className="header-logo" onClick={() => console.log(window.innerWidth)}>Худеть - легко :)</button>
+                <div className="header-logo">
+                    <Link to="/" className="header-logo">Худеть - легко</Link>
+                </div>
                 <div className="header-navbar">
-                    <Link to="/calculator" className="header-navbar-button">Calculator</Link>
+                    <Link to="/calculator" className="header-navbar-button">Калькулятор</Link>
                     <a href="http://localhost:8080/" className="header-navbar-button" onClick={() => console.log("Клик по кнопке " + btn2)}>{btn2}</a>
                 </div>
                 <div className="header-navbar header-logout">

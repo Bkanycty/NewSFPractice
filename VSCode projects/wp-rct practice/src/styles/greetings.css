@@ -12,7 +12,6 @@
 
 .greet {
     position: relative;
-    top: 3rem;
     box-shadow: 5px 5px 10px 1px rgba(153, 205, 50, 0.668);
     border: solid 2px rgba(153, 205, 50, 0.668);
 }
@@ -24,7 +23,7 @@
 
 .step-1 {
     position: absolute;
-    top: 15%; left: 40%;
+    left: 40%;
 }
 
 .step-2 {
