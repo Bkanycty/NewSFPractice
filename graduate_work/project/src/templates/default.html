@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+        {% block title %}
+        {% endblock title %}
+    </title>
+
+    {% load static %}
+    <link href="{% static 'css/default.css' %}" rel="stylesheet"/>
+    {% block head %}
+    {% endblock head %}
+</head>
+
+<body>
+    <header>
+        <div class="header-first">
+            <div><img id="header-logo" class="logo" alt="Логотип" src="{% static 'images/Logotype_accent_RGB_1.jpg' %}" onclick='window.location.href="/";'></div>
+            <div><a class="contact-info"><h1>+7-8352-20-12-09, telegram</h1></a></div>
+            {% if not user.is_authenticated %}
+                <div>
+                    <a class="authorization" href="/accounts/login/"><h1>Войти</h1></a>
+                </div>
+            {% else %}
+                <div>
+                    <a class="authorization" href="/accounts/logout/"><h1>Выйти</h1></a>
+                </div>
+            {% endif %}
+        </div>
+        <div class="header-second">
+            <h1>Электронная сервисная книжка "Мой Силант"</h1>
+        </div>
+    </header>
+
+    {% block body %}
+    {% endblock body %}
+
+    <footer>
+        <div>
+            <a class="contact-info"><h1>+7-8352-20-12-09, telegram</h1></a>
+        </div>
+        <div>
+            <a class="my-silant"><h1>Мой силант 2022</h1></a>
+        </div>
+    </footer>
+    <script>
+        function log_width() {
+            console.log('resolutuon: ' + window.innerWidth + 'x' + window.innerHeight)
+        }
+    </script>
+</body>
+</html>

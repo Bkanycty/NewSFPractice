@@ -1,0 +1,876 @@
+{% extends 'default.html' %}
+{% block head %}
+{% load static %}
+    <link href="{% static 'css/group_css/registered.css' %}" rel="stylesheet"/>
+<script>
+    function place_svg() {
+        function getCoords(elem) {
+        let box = elem.getBoundingClientRect();
+
+            return {
+                top: box.top + window.pageYOffset,
+                right: box.right + window.pageXOffset,
+                bottom: box.bottom + window.pageYOffset,
+                left: box.left + window.pageXOffset
+            };
+        };
+
+        document.getElementById('general-svg').style.top = getCoords(document.getElementById('general')).top
+        document.getElementById('general-svg').style.left = getCoords(document.getElementById('general')).left
+        document.getElementById('maintenances-svg').style.top = getCoords(document.getElementById('maintenances')).top
+        document.getElementById('maintenances-svg').style.left = getCoords(document.getElementById('maintenances')).left
+        document.getElementById('reclamations-svg').style.top = getCoords(document.getElementById('reclamations')).top
+        document.getElementById('reclamations-svg').style.left = getCoords(document.getElementById('reclamations')).left
+    };
+    document.addEventListener("DOMContentLoaded", place_svg);
+    window.addEventListener('resize', place_svg);
+</script>
+{% endblock head %}
+{% block title %}
+    Мой Силант {{ user }}
+{% endblock title %}
+{% block body %}
+<main>
+    <div class="user"><h1>{{ user.first_name }} {{ user.last_name }}</h1></div>
+    <div id="tab-description" class="user"><h2>Информация о комплектации и технических характеристиках Вашей техники</h2></div>
+<div class="tabs">
+    <button id="general" class="tabs-btn chosen-tab" onclick="general_information();place_svg();">
+        <h1 id="general-tab-button-text">Общая инфо</h1>
+        <svg id="general-svg" width="210px" height="70px" viewBox="0 0 180 60">
+            <polyline points="179,1 179,59 1,59 1,1 179,1" class="bg-line" />
+            <polyline points="179,1 179,59 1,59 1,1 179,1" class="hl-line" />
+        </svg>
+    </button>
+    <button id="maintenances" class="tabs-btn" onclick="maintenances();place_svg();">
+        <h1 id="maintenances-tab-button-text">ТО</h1>
+        <svg id="maintenances-svg" width="210px" height="70px" viewBox="0 0 180 60">
+            <polyline points="179,1 179,59 1,59 1,1 179,1" class="bg-line" />
+            <polyline points="179,1 179,59 1,59 1,1 179,1" class="hl-line" />
+        </svg>
+    </button>
+    <button id="reclamations" class="tabs-btn" onclick="reclamations();place_svg();">
+        <h1 id="reclamations-tab-button-text">Рекламации</h1>
+        <svg id="reclamations-svg" width="210px" height="70px" viewBox="0 0 180 60">
+            <polyline points="179,1 179,59 1,59 1,1 179,1" class="bg-line" />
+            <polyline points="179,1 179,59 1,59 1,1 179,1" class="hl-line" />
+        </svg>
+    </button>
+</div>
+<table id="general-info-tab" class="search-results">
+    {% if is_admin %}
+        <button id="general-info-tab-btn" type="button" class="add-btn" onclick='window.location.href="{% url 'machine_create' %}";'><span class="add-btn-span">Добавить машину</span></button>
+    {% elif is_manager %}
+        <button id="general-info-tab-btn" type="button" class="add-btn" onclick='window.location.href="{% url 'machine_create' %}";'><span class="add-btn-span">Добавить машину</span></button>
+    {% endif %}
+    <form class="search-form" method="get">
+        <tr class="border-bottom border-left border-right form-head" align="center">
+            <td class="form-data">
+                <select id="general-filter-machine-model" class="form-select" onchange="general_filter()">
+                    <OPTION value="">---------</OPTION>
+                    {% if is_admin %}
+                        {% for machine_model in machine_models %}
+                            <OPTION value="{{ machine_model.name }}">{{ machine_model.name }}</OPTION>
+                        {% endfor %}
+                    {% elif is_manager %}
+                        {% for machine_model in machine_models %}
+                            <OPTION value="{{ machine_model.name }}">{{ machine_model.name }}</OPTION>
+                        {% endfor %}
+                    {% elif is_client %}
+                        {% for machine_model in client_machine_model_set %}
+                            <OPTION value="{{ machine_model.name }}">{{ machine_model.name }}</OPTION>
+                        {% endfor %}
+                    {% elif is_service %}
+                        {% for machine_model in service_machine_model_set %}
+                            <OPTION value="{{ machine_model.name }}">{{ machine_model.name }}</OPTION>
+                        {% endfor %}
+                    {% endif %}
+                </select>
+            </td>
+            <td>
+                <input id="general-filter-machine-factory-number" class="text-form" type="text" onkeydown="if (event.keyCode == 13) {event.preventDefault(); general_filter()};">
+            </td>
+            <td class="form-data">
+                <select id="general-filter-engine-model" class="form-select" onchange="general_filter()">
+                    <OPTION value="">---------</OPTION>
+                    {% if is_admin %}
+                        {% for engine_model in engine_models %}
+                            <OPTION value="{{ engine_model.name }}">{{ engine_model.name }}</OPTION>
+                        {% endfor %}
+                    {% elif is_manager %}
+                        {% for engine_model in engine_models %}
+                            <OPTION value="{{ engine_model.name }}">{{ engine_model.name }}</OPTION>
+                        {% endfor %}
+                    {% elif is_client %}
+                        {% for engine_model in client_engine_model_set %}
+                            <OPTION value="{{ engine_model.name }}">{{ engine_model.name }}</OPTION>
+                        {% endfor %}
+                    {% elif is_service %}
+                        {% for engine_model in service_engine_model_set %}
+                            <OPTION value="{{ engine_model.name }}">{{ engine_model.name }}</OPTION>
+                        {% endfor %}
+                    {% endif %}
+                </select>
+            </td>
+            <td></td>
+            <td class="form-data">
+                <select id="general-filter-transmission-model" class="form-select" onchange="general_filter()">
+                    <OPTION value="">---------</OPTION>
+                    {% if is_admin %}
+                        {% for transmission_model in transmission_models %}
+                            <OPTION value="{{ transmission_model.name }}">{{ transmission_model.name }}</OPTION>
+                        {% endfor %}
+                    {% elif is_manager %}
+                        {% for transmission_model in transmission_models %}
+                            <OPTION value="{{ transmission_model.name }}">{{ transmission_model.name }}</OPTION>
+                        {% endfor %}
+                    {% elif is_client %}
+                        {% for transmission_model in client_transmission_model_set %}
+                            <OPTION value="{{ transmission_model.name }}">{{ transmission_model.name }}</OPTION>
+                        {% endfor %}
+                    {% elif is_service %}
+                        {% for transmission_model in service_transmission_model_set %}
+                            <OPTION value="{{ transmission_model.name }}">{{ transmission_model.name }}</OPTION>
+                        {% endfor %}
+                    {% endif %}
+                </select>
+            </td>
+            <td></td>
+            <td class="form-data">
+                <select id="general-filter-drive-axle-model" class="form-select" onchange="general_filter()">
+                    <OPTION value="">---------</OPTION>
+                    {% if is_admin %}
+                        {% for drive_axle_model in drive_axle_models %}
+                            <OPTION value="{{ drive_axle_model.name }}">{{ drive_axle_model.name }}</OPTION>
+                        {% endfor %}
+                    {% elif is_manager %}
+                        {% for drive_axle_model in drive_axle_models %}
+                            <OPTION value="{{ drive_axle_model.name }}">{{ drive_axle_model.name }}</OPTION>
+                        {% endfor %}
+                    {% elif is_client %}
+                        {% for drive_axle_model in client_drive_axle_model_set %}
+                            <OPTION value="{{ drive_axle_model.name }}">{{ drive_axle_model.name }}</OPTION>
+                        {% endfor %}
+                    {% elif is_service %}
+                        {% for drive_axle_model in service_drive_axle_model_set %}
+                            <OPTION value="{{ drive_axle_model.name }}">{{ drive_axle_model.name }}</OPTION>
+                        {% endfor %}
+                    {% endif %}
+                </select>
+            </td>
+            <td></td>
+            <td class="form-data">
+                <select id="general-filter-steering-axle-model" class="form-select" onchange="general_filter()">
+                    <OPTION value="">---------</OPTION>
+                    {% if is_admin %}
+                        {% for steering_axle_model in steering_axle_models %}
+                            <OPTION value="{{ steering_axle_model.name }}">{{ steering_axle_model.name }}</OPTION>
+                        {% endfor %}
+                    {% elif is_manager %}
+                        {% for steering_axle_model in steering_axle_models %}
+                            <OPTION value="{{ steering_axle_model.name }}">{{ steering_axle_model.name }}</OPTION>
+                        {% endfor %}
+                    {% elif is_client %}
+                        {% for steering_axle_model in client_steering_axle_model_set %}
+                            <OPTION value="{{ steering_axle_model.name }}">{{ steering_axle_model.name }}</OPTION>
+                        {% endfor %}
+                    {% elif is_service %}
+                        {% for steering_axle_model in service_steering_axle_model_set %}
+                            <OPTION value="{{ steering_axle_model.name }}">{{ steering_axle_model.name }}</OPTION>
+                        {% endfor %}
+                    {% endif %}
+                </select>
+            </td>
+            <td colspan="7"><button class="submit-button link-row" type="button" onclick="reset_general_filters()">Сбросить фильтры</td>
+        </tr>
+    </form>
+    <tr class="table-head">
+        <th>Модель машины</th><th>Зав. № машины</th><th>Модель двигателя</th><th>Зав. № двигателя</th><th>Модель трансмиссии</th><th>Зав. № трансмиссии</th><th>Модель ведущего моста</th><th>Зав. № ведущего моста</th><th>Модель управляемого моста</th><th>Зав. № управляемого моста</th><th>Договор поставки №, дата</th><th>Дата отгрузки с завода</th><th>Грузополучатель</th><th>Адрес поставки</th><th>Комплектация</th><th>Сервисная компания</th>
+    </tr>
+    <tbody class="search-results-body" id="general-tab-table-data">
+        {% if is_admin %}
+            {% for machine in machines %}
+            <tr id="machine-id-{{ machine.id }}" class="link-row" onclick='window.location.href="{% url 'machine_detail' machine.id %}";' >
+                <td>{{ machine.machine_model }}</td>
+                <td>{{ machine.machine_factory_number }}</td>
+                <td>{{ machine.engine_model }}</a></td>
+                <td>{{ machine.engine_factory_number }}</td>
+                <td>{{ machine.transmission_model }}</a></td>
+                <td>{{ machine.transmission_factory_number }}</td>
+                <td>{{ machine.drive_axle_model }}</a></td>
+                <td>{{ machine.drive_axle_factory_number }}</td>
+                <td>{{ machine.steering_axle_model }}</a></td>
+                <td>{{ machine.steering_axle_factory_number }}</td>
+                <td>{{ machine.supply_contract }}</td>
+                <td>{{ machine.shipping_date }}</td>
+                <td>{{ machine.end_user }}</td>
+                <td>{{ machine.delivery_address }}</td>
+                <td>{{ machine.complete_set }}</td>
+                <td>{{ machine.service_company.first_name }}</td>
+            </tr>
+            {% endfor %}
+        {% elif is_manager %}
+            {% for machine in machines %}
+            <tr id="machine-id-{{ machine.id }}" class="link-row" onclick='window.location.href="{% url 'machine_detail' machine.id %}";' >
+                <td>{{ machine.machine_model }}</td>
+                <td>{{ machine.machine_factory_number }}</td>
+                <td>{{ machine.engine_model }}</a></td>
+                <td>{{ machine.engine_factory_number }}</td>
+                <td>{{ machine.transmission_model }}</a></td>
+                <td>{{ machine.transmission_factory_number }}</td>
+                <td>{{ machine.drive_axle_model }}</a></td>
+                <td>{{ machine.drive_axle_factory_number }}</td>
+                <td>{{ machine.steering_axle_model }}</a></td>
+                <td>{{ machine.steering_axle_factory_number }}</td>
+                <td>{{ machine.supply_contract }}</td>
+                <td>{{ machine.shipping_date }}</td>
+                <td>{{ machine.end_user }}</td>
+                <td>{{ machine.delivery_address }}</td>
+                <td>{{ machine.complete_set }}</td>
+                <td>{{ machine.service_company.first_name }}</td>
+            </tr>
+            {% endfor %}
+        {% elif is_client %}
+            {% for machine in client_machines %}
+            <tr id="machine-id-{{ machine.id }}" class="link-row" onclick='window.location.href="{% url 'machine_detail' machine.id %}";' >
+                <td>{{ machine.machine_model }}</td>
+                <td>{{ machine.machine_factory_number }}</td>
+                <td>{{ machine.engine_model }}</a></td>
+                <td>{{ machine.engine_factory_number }}</td>
+                <td>{{ machine.transmission_model }}</a></td>
+                <td>{{ machine.transmission_factory_number }}</td>
+                <td>{{ machine.drive_axle_model }}</a></td>
+                <td>{{ machine.drive_axle_factory_number }}</td>
+                <td>{{ machine.steering_axle_model }}</a></td>
+                <td>{{ machine.steering_axle_factory_number }}</td>
+                <td>{{ machine.supply_contract }}</td>
+                <td>{{ machine.shipping_date }}</td>
+                <td>{{ machine.end_user }}</td>
+                <td>{{ machine.delivery_address }}</td>
+                <td>{{ machine.complete_set }}</td>
+                <td>{{ machine.service_company.first_name }}</td>
+            </tr>
+            {% endfor %}
+        {% elif is_service %}
+            {% for machine in machines %}
+                {% if machine.service_company == user %}
+                <tr id="machine-id-{{ machine.id }}" class="link-row" onclick='window.location.href="{% url 'machine_detail' machine.id %}";' >
+                    <td>{{ machine.machine_model }}</td>
+                    <td>{{ machine.machine_factory_number }}</td>
+                    <td>{{ machine.engine_model }}</a></td>
+                    <td>{{ machine.engine_factory_number }}</td>
+                    <td>{{ machine.transmission_model }}</a></td>
+                    <td>{{ machine.transmission_factory_number }}</td>
+                    <td>{{ machine.drive_axle_model }}</a></td>
+                    <td>{{ machine.drive_axle_factory_number }}</td>
+                    <td>{{ machine.steering_axle_model }}</a></td>
+                    <td>{{ machine.steering_axle_factory_number }}</td>
+                    <td>{{ machine.supply_contract }}</td>
+                    <td>{{ machine.shipping_date }}</td>
+                    <td>{{ machine.end_user }}</td>
+                    <td>{{ machine.delivery_address }}</td>
+                    <td>{{ machine.complete_set }}</td>
+                    <td>{{ machine.service_company.first_name }}</td>
+                </tr>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    </tbody>
+</table>
+
+
+<table id="maintenance-tab" class="search-results" hidden>
+    <button hidden id="maintenance-tab-btn" type="button" class="add-btn" onclick='window.location.href="{% url 'maintenance_create' %}";'><span class="add-btn-span">Внести данные о ТО</span></button>
+    <form class="search-form">
+        <tr class="border-bottom border-left border-right form-head" align="center">
+            <td></td>
+            <td class="form-data">
+                <input id="maintenance-filter-machine-factory-number" class="text-form" type="text" onkeydown="if (event.keyCode == 13) {event.preventDefault(); maintenance_filter()};">
+            </td>
+            <td class="form-data">
+                <select id="maintenance-filter-maintenance-type" class="form-select" onchange="maintenance_filter()">
+                    <OPTION value="">---------</OPTION>
+                    {% if is_admin %}
+                        {% for maintenance_type in maintenance_types %}
+                            <OPTION value="{{ maintenance_type.name }}">{{ maintenance_type.name }}</OPTION>
+                        {% endfor %}
+                    {% elif is_manager %}
+                        {% for maintenance_type in maintenance_types %}
+                            <OPTION value="{{ maintenance_type.name }}">{{ maintenance_type.name }}</OPTION>
+                        {% endfor %}
+                    {% elif is_client %}
+                        {% for maintenance_type in client_maintenance_type_set %}
+                            <OPTION value="{{ maintenance_type.name }}">{{ maintenance_type.name }}</OPTION>
+                        {% endfor %}
+                    {% elif is_service %}
+                        {% for maintenance_type in service_maintenance_type_set %}
+                            <OPTION value="{{ maintenance_type.name }}">{{ maintenance_type.name }}</OPTION>
+                        {% endfor %}
+                    {% endif %}
+                </select>
+            </td>
+            <td colspan="4" align="center"><button class="submit-button link-row" type="button" onclick="reset_maintenance_filters()">Сбросить фильтры</td>
+            <td class="form-data">
+                <select id="maintenance-filter-service-company" class="form-select" onchange="maintenance_filter()">
+                    <OPTION value="">---------</OPTION>
+                    {% if is_admin %}
+                        {% for service_company in service_companies %}
+                            <OPTION value="{{ service_company.first_name }}">{{ service_company.first_name }}</OPTION>
+                        {% endfor %}
+                    {% elif is_manager %}
+                        {% for service_company in service_companies %}
+                            <OPTION value="{{ service_company.first_name }}">{{ service_company.first_name }}</OPTION>
+                        {% endfor %}
+                    {% elif is_client %}
+                        {% for service_company in client_service_company_set %}
+                            <OPTION value="{{ service_company.first_name }}">{{ service_company.first_name }}</OPTION>
+                        {% endfor %}
+                    {% elif is_service %}
+                        {% for service_company in service_service_company_set %}
+                            <OPTION value="{{ service_company.first_name }}">{{ service_company.first_name }}</OPTION>
+                        {% endfor %}
+                    {% endif %}
+                </select>
+            </td>
+        </tr>
+    </form>
+    <tr class="table-head">
+        <th>Модель</th><th>Заводской номер</th><th>Вид ТО</th><th>Дата проведения ТО</th><th>Наработка, м/час</th><th>№ заказ-наряда</th><th>Дата заказ-наряда</th><th>Организация, проводившая ТО</th>
+    </tr>
+    <tbody class="search-results-body" id="maintenance-tab-table-data">
+        {% if is_admin %}
+            {% for maintenance in maintenances %}
+                <tr id="maintenance-id-{{ maintenance.id }}" class="table-row link-row" onclick='window.location.href="{% url 'maintenance_detail' maintenance.id %}";'>
+                    <td>{{ maintenance.maintenance_machine.machine_model.name }}</td>
+                    <td>{{ maintenance.maintenance_machine.machine_factory_number }}</td>
+                    <td>{{ maintenance.maintenance_type }}</td>
+                    <td>{{ maintenance.maintenance_date }}</td>
+                    <td>{{ maintenance.running_time }}</a></td>
+                    <td>{{ maintenance.work_order_number }}</td>
+                    <td>{{ maintenance.work_order_date }}</a></td>
+                    <td>{{ maintenance.maintenance_service_company.first_name }}</td>
+                </tr>
+            {% endfor %}
+        {% elif is_manager %}
+            {% for maintenance in maintenances %}
+            <tr id="maintenance-id-{{ maintenance.id }}" class="table-row link-row" onclick='window.location.href="{% url 'maintenance_detail' maintenance.id %}";'>
+                <td>{{ maintenance.maintenance_machine.machine_model.name }}</td>
+                <td>{{ maintenance.maintenance_machine.machine_factory_number }}</td>
+                <td>{{ maintenance.maintenance_type }}</td>
+                <td>{{ maintenance.maintenance_date }}</td>
+                <td>{{ maintenance.running_time }}</a></td>
+                <td>{{ maintenance.work_order_number }}</td>
+                <td>{{ maintenance.work_order_date }}</a></td>
+                <td>{{ maintenance.maintenance_service_company.first_name }}</td>
+            </tr>
+            {% endfor %}
+        {% elif is_client %}
+            {% for maintenance in maintenances %}
+                {% if maintenance.maintenance_machine.client == user %}
+                    <tr id="maintenance-id-{{ maintenance.id }}" class="table-row link-row" onclick='window.location.href="{% url 'maintenance_detail' maintenance.id %}";'>
+                        <td>{{ maintenance.maintenance_machine.machine_model.name }}</td>
+                        <td>{{ maintenance.maintenance_machine.machine_factory_number }}</td>
+                        <td>{{ maintenance.maintenance_type }}</td>
+                        <td>{{ maintenance.maintenance_date }}</td>
+                        <td>{{ maintenance.running_time }}</a></td>
+                        <td>{{ maintenance.work_order_number }}</td>
+                        <td>{{ maintenance.work_order_date }}</a></td>
+                        <td>{{ maintenance.maintenance_service_company.first_name }}</td>
+                {% endif %}
+                    </tr>
+            {% endfor %}
+        {% elif is_service %}
+            {% for maintenance in maintenances %}
+            {% if maintenance.maintenance_service_company == user %}
+                <tr id="maintenance-id-{{ maintenance.id }}" class="table-row link-row" onclick='window.location.href="{% url 'maintenance_detail' maintenance.id %}";'>
+                    <td>{{ maintenance.maintenance_machine.machine_model.name }}</td>
+                    <td>{{ maintenance.maintenance_machine.machine_factory_number }}</td>
+                    <td>{{ maintenance.maintenance_type }}</td>
+                    <td>{{ maintenance.maintenance_date }}</td>
+                    <td>{{ maintenance.running_time }}</a></td>
+                    <td>{{ maintenance.work_order_number }}</td>
+                    <td>{{ maintenance.work_order_date }}</a></td>
+                    <td>{{ maintenance.maintenance_service_company.first_name }}</td>
+            {% endif %}
+                </tr>
+            {% endfor %}
+        {% endif %}
+    </tbody>
+</table>
+
+<table id="reclamations-tab" class="search-results" hidden>
+    {% if is_admin %}
+        <button hidden id="reclamations-tab-btn" type="button" class="add-btn" onclick='window.location.href="{% url 'reclamation_create' %}";'><span class="add-btn-span">Зарегистрировать рекламацию</span></button>
+    {% elif is_manager %}
+        <button hidden id="reclamations-tab-btn" type="button" class="add-btn" onclick='window.location.href="{% url 'reclamation_create' %}";'><span class="add-btn-span">Зарегистрировать рекламацию</span></button>
+    {% elif is_service %}
+        <button hidden id="reclamations-tab-btn" type="button" class="add-btn" onclick='window.location.href="{% url 'reclamation_create' %}";'><span class="add-btn-span">Зарегистрировать рекламацию</span></button>
+    {% endif %}
+    <form class="search-form" method="get">
+        <tr class="border-bottom border-left border-right form-head" align="center">
+            <td class="form-data"></td>
+            <td class="form-data"></td>
+            <td class="form-data"></td>
+            <td class="form-data">
+                <select id="reclamation-filter-broken-node" class="form-select" onchange="reclamation_filter()">
+                    <OPTION value="">---------</OPTION>
+                    {% if is_admin %}
+                        {% for broken_node in broken_nodes %}
+                            <OPTION value="{{ broken_node.name }}">{{ broken_node.name }}</OPTION>
+                        {% endfor %}
+                    {% elif is_manager %}
+                        {% for broken_node in broken_nodes %}
+                            <OPTION value="{{ broken_node.name }}">{{ broken_node.name }}</OPTION>
+                        {% endfor %}
+                    {% elif is_client %}
+                        {% for broken_node in client_broken_node_set %}
+                            <OPTION value="{{ broken_node.name }}">{{ broken_node.name }}</OPTION>
+                        {% endfor %}
+                    {% elif is_service %}
+                        {% for broken_node in service_broken_node_set %}
+                            <OPTION value="{{ broken_node.name }}">{{ broken_node.name }}</OPTION>
+                        {% endfor %}
+                    {% endif %}
+                </select>
+            </td>
+            <td class="form-data"></td>
+            <td class="form-data">
+                <select id="reclamation-filter-recovery-method" class="form-select" onchange="reclamation_filter()">
+                    <OPTION value="">---------</OPTION>
+                    {% if is_admin %}
+                        {% for recovery_method in recovery_methods %}
+                            <OPTION value="{{ recovery_method.name }}">{{ recovery_method.name }}</OPTION>
+                        {% endfor %}
+                    {% elif is_manager %}
+                        {% for recovery_method in recovery_methods %}
+                            <OPTION value="{{ recovery_method.name }}">{{ recovery_method.name }}</OPTION>
+                        {% endfor %}
+                    {% elif is_client %}
+                        {% for recovery_method in client_recovery_method_set %}
+                            <OPTION value="{{ recovery_method.name }}">{{ recovery_method.name }}</OPTION>
+                        {% endfor %}
+                    {% elif is_service %}
+                        {% for recovery_method in service_recovery_method_set %}
+                            <OPTION value="{{ recovery_method.name }}">{{ recovery_method.name }}</OPTION>
+                        {% endfor %}
+                    {% endif %}
+                </select>
+            </td>
+            <td colspan="2"><button class="submit-button link-row" type="button" onclick="reset_reclamation_filters()">Сбросить фильтры</td>
+            <td class="form-data">
+                <select id="reclamation-filter-service-company" class="form-select" onchange="reclamation_filter()">
+                    <OPTION value="">---------</OPTION>
+                    {% if is_admin %}
+                        {% for service_company in service_companies %}
+                            <OPTION value="{{ service_company.first_name }}">{{ service_company.first_name }}</OPTION>
+                        {% endfor %}
+                    {% elif is_manager %}
+                        {% for service_company in service_companies %}
+                            <OPTION value="{{ service_company.first_name }}">{{ service_company.first_name }}</OPTION>
+                        {% endfor %}
+                    {% elif is_client %}
+                        {% for service_company in client_reclamation_service_company_set %}
+                            <OPTION value="{{ service_company.first_name }}">{{ service_company.first_name }}</OPTION>
+                        {% endfor %}
+                    {% elif is_service %}
+                        {% for service_company in service_reclamation_service_company_set %}
+                            <OPTION value="{{ service_company.first_name }}">{{ service_company.first_name }}</OPTION>
+                        {% endfor %}
+                    {% endif %}
+                </select>
+            </td>
+        </tr>
+    </form>
+    <tr class="table-head">
+        <th>Машина</th><th>Дата отказа</th><th>Наработка, м/час</th><th>Узел отказа</th><th>Описание отказа</th><th>Способ восстановления</th><th>Используемые запасные части</th><th>Дата восстановления</th>
+    </tr>
+    <tbody class="search-results-body" id="reclamation-tab-table-data">
+        {% if is_admin %}
+            {% for reclamation in reclamations %}
+                <tr id="reclamation-id-{{ reclamation.id }}" class="table-row link-row" onclick='window.location.href="{% url 'reclamation_detail' reclamation.id %}";'>
+                    <td>{{ reclamation.reclamation_machine }}</td>
+                    <td>{{ reclamation.breakdown_date }}</td>
+                    <td>{{ reclamation.running_time }}</td>
+                    <td>{{ reclamation.broken_node }}</td>
+                    <td>{{ reclamation.breakdown_description }}</a></td>
+                    <td>{{ reclamation.recovery_method }}</td>
+                    <td>{{ reclamation.spare_parts_used }}</a></td>
+                    <td>{{ reclamation.recovery_date }}</td>
+                    <td>{{ reclamation.reclamation_service_company.first_name }}</td>
+                </tr>
+            {% endfor %}
+        {% elif is_manager %}
+            {% for reclamation in reclamations %}
+            <tr id="reclamation-id-{{ reclamation.id }}" class="table-row link-row" onclick='window.location.href="{% url 'reclamation_detail' reclamation.id %}";'>
+                <td>{{ reclamation.reclamation_machine }}</td>
+                <td>{{ reclamation.breakdown_date }}</td>
+                <td>{{ reclamation.running_time }}</td>
+                <td>{{ reclamation.broken_node }}</td>
+                <td>{{ reclamation.breakdown_description }}</a></td>
+                <td>{{ reclamation.recovery_method }}</td>
+                <td>{{ reclamation.spare_parts_used }}</a></td>
+                <td>{{ reclamation.recovery_date }}</td>
+                <td>{{ reclamation.reclamation_service_company.first_name }}</td>
+            </tr>
+            {% endfor %}
+        {% elif is_client %}
+            {% for reclamation in reclamations %}
+                {% if reclamation.reclamation_machine.client == user %}
+                    <tr id="reclamation-id-{{ reclamation.id }}" class="table-row link-row" onclick='window.location.href="{% url 'reclamation_detail' reclamation.id %}";'>
+                        <td>{{ reclamation.reclamation_machine }}</td>
+                        <td>{{ reclamation.breakdown_date }}</td>
+                        <td>{{ reclamation.running_time }}</td>
+                        <td>{{ reclamation.broken_node }}</td>
+                        <td>{{ reclamation.breakdown_description }}</a></td>
+                        <td>{{ reclamation.recovery_method }}</td>
+                        <td>{{ reclamation.spare_parts_used }}</a></td>
+                        <td>{{ reclamation.recovery_date }}</td>
+                        <td>{{ reclamation.reclamation_service_company.first_name }}</td>
+                {% endif %}
+                    </tr>
+            {% endfor %}
+        {% elif is_service %}
+            {% for reclamation in reclamations %}
+            {% if reclamation.reclamation_service_company == user %}
+                <tr id="reclamation-id-{{ reclamation.id }}" class="table-row link-row" onclick='window.location.href="{% url 'reclamation_detail' reclamation.id %}";'>
+                    <td>{{ reclamation.reclamation_machine }}</td>
+                    <td>{{ reclamation.breakdown_date }}</td>
+                    <td>{{ reclamation.running_time }}</td>
+                    <td>{{ reclamation.broken_node }}</td>
+                    <td>{{ reclamation.breakdown_description }}</a></td>
+                    <td>{{ reclamation.recovery_method }}</td>
+                    <td>{{ reclamation.spare_parts_used }}</a></td>
+                    <td>{{ reclamation.recovery_date }}</td>
+                    <td>{{ reclamation.reclamation_service_company.first_name }}</td>
+            {% endif %}
+                </tr>
+            {% endfor %}
+        {% endif %}
+</table>
+
+<script type="text/javascript">
+    function general_information() {
+        var logo = document.getElementById("header-logo")
+        var tabDescription = document.getElementById("tab-description")
+        var generalTabButton = document.getElementById("general");
+        var maintenancesTabButton = document.getElementById("maintenances");
+        var reclamationsTabButton = document.getElementById("reclamations");
+
+        var generalTabData = document.getElementById("general-info-tab");
+        var addMachine = document.getElementById('general-info-tab-btn');
+        var maintenancesTabData = document.getElementById("maintenance-tab");
+        var addMaintenance = document.getElementById('maintenance-tab-btn');
+        var reclamationsTabData = document.getElementById("reclamations-tab");
+        var addReclamation = document.getElementById('reclamations-tab-btn');
+
+        logo.src = "{% static 'images/Logotype_accent_RGB_1.jpg' %}"
+        tabDescription.innerHTML = "<h2>Информация о комплектации и технических характеристиках Вашей техники</h2>";
+        generalTabButton.classList.add("chosen-tab");
+        maintenancesTabButton.classList.remove("chosen-tab");
+        reclamationsTabButton.classList.remove("chosen-tab-red");
+
+        generalTabData.hidden = false;
+        if (addMachine) {addMachine.hidden = false;};
+        maintenancesTabData.hidden = true;
+        if (addMaintenance) {addMaintenance.hidden = true;};
+        reclamationsTabData.hidden = true;
+        if (addReclamation) {addReclamation.hidden = true;};
+    };
+</script>
+
+<script type="text/javascript">
+    function maintenances() {
+        var logo = document.getElementById("header-logo")
+        var tabDescription = document.getElementById("tab-description")
+        var generalTabButton = document.getElementById("general");
+        var maintenancesTabButton = document.getElementById("maintenances");
+        var reclamationsTabButton = document.getElementById("reclamations");
+
+        var generalTabData = document.getElementById("general-info-tab");
+        var addMachine = document.getElementById('general-info-tab-btn');
+        var maintenancesTabData = document.getElementById("maintenance-tab");
+        var addMaintenance = document.getElementById('maintenance-tab-btn');
+        var reclamationsTabData = document.getElementById("reclamations-tab");
+        var addReclamation = document.getElementById('reclamations-tab-btn');
+
+        logo.src = "{% static 'images/Logotype_accent_RGB_1.jpg' %}"
+        tabDescription.innerHTML =  window.innerWidth <= 360 ? "<h2>Информация о проведённых ТО Вашей техники<br></br></h2>" : "<h2>Информация о проведённых ТО Вашей техники</h2>";
+        generalTabButton.classList.remove("chosen-tab");
+        maintenancesTabButton.classList.add("chosen-tab");
+        reclamationsTabButton.classList.remove("chosen-tab-red");
+
+        generalTabData.hidden = true;
+        if (addMachine) {addMachine.hidden = true;};
+        maintenancesTabData.hidden = false;
+        if (addMaintenance) {addMaintenance.hidden = false;};
+        reclamationsTabData.hidden = true;
+        if (addReclamation) {addReclamation.hidden = true;};
+    };
+</script>
+
+<script type="text/javascript">
+    function reclamations() {
+        var logo = document.getElementById("header-logo")
+        var tabDescription = document.getElementById("tab-description")
+        var generalTabButton = document.getElementById("general");
+        var maintenancesTabButton = document.getElementById("maintenances");
+        var reclamationsTabButton = document.getElementById("reclamations");
+
+        var generalTabData = document.getElementById("general-info-tab");
+        var addMachine = document.getElementById('general-info-tab-btn');
+        var maintenancesTabData = document.getElementById("maintenance-tab");
+        var addMaintenance = document.getElementById('maintenance-tab-btn');
+        var reclamationsTabData = document.getElementById("reclamations-tab");
+        var addReclamation = document.getElementById('reclamations-tab-btn');
+
+        logo.src = "{% static 'images/Logotype_accent_RGB_2.jpg' %}"
+        tabDescription.innerHTML = window.innerWidth <= 360 ? "<h2>Информация о поломках Вашей техники<br></br></h2>" : "<h2>Информация о поломках Вашей техники</h2>";
+        generalTabButton.classList.remove("chosen-tab");
+        maintenancesTabButton.classList.remove("chosen-tab");
+        reclamationsTabButton.classList.add("chosen-tab-red");
+
+        generalTabData.hidden = true;
+        if (addMachine) {addMachine.hidden = true;};
+        maintenancesTabData.hidden = true;
+        if (addMaintenance) {addMaintenance.hidden = true;};
+        reclamationsTabData.hidden = false;
+        if (addReclamation) {addReclamation.hidden = false;};
+    };
+</script>
+
+<script>
+    function maintenance_filter() {
+        var machine_factory_number = document.getElementById('maintenance-filter-machine-factory-number');
+        var maintenance_type = document.getElementById('maintenance-filter-maintenance-type');
+        var service_company = document.getElementById('maintenance-filter-service-company');
+        var filters = [];
+        
+        function show_all() {
+            var rows_to_show = document.getElementById('maintenance-tab-table-data').children;
+            for (var i = 0; i < rows_to_show.length; i+=1) {
+                var row = rows_to_show[i];
+                row.style.display = '';
+            };
+        };
+        show_all();
+
+        machine_factory_number.value != '' ? filters.push(machine_factory_number.value) : false;
+        maintenance_type.value != '' ? filters.push(maintenance_type.value) : false;
+        service_company.value != '' ? filters.push(service_company.value) : false;
+
+        if (filters.length != 0) {
+            var rows = document.getElementById('maintenance-tab-table-data').children;
+            for (var i = 0; i < rows.length; i+=1) {
+                var row = rows[i]; // Определяем строки для фильтрации
+                var data_to_filter = []; // Список значений в ячейках строки
+
+                for (var j = 0; j < row.children.length; j+=1) {
+                    var td = row.children[j].textContent;
+                    data_to_filter.push(td); // Закидываем содержимое ячеек в список
+                    };
+                    var check_list = []; // Список true/false значений
+                    for (let k = 0; k < filters.length; k+=1) {
+                        check_list.push(data_to_filter.includes(filters[k]));
+                    };
+                    let check = check_list.every(function(elem) { // функция проверки, все ли фильтры находятся в строке
+                        if (elem == true) {
+                            return true;
+                        } else {
+                            return false;
+                        };
+                    });
+                    if (check == false) { // если не все фильтры в строке, она скрывается
+                        let row_to_hide = document.getElementById(row.id);
+                        row_to_hide.style.display = 'none';
+                    };
+                };
+        }
+        else { // ничего не делаем, если все фильтры сброшены
+            ;
+            };
+    };
+</script>
+
+<script>
+    function general_filter() {
+        var machine_model = document.getElementById('general-filter-machine-model');
+        var machine_factory_number = document.getElementById('general-filter-machine-factory-number');
+        var engine_model = document.getElementById('general-filter-engine-model');
+        var transmission_model = document.getElementById('general-filter-transmission-model');
+        var drive_axle_model = document.getElementById('general-filter-drive-axle-model');
+        var steering_axle_model = document.getElementById('general-filter-steering-axle-model');
+        var filters = [];
+        
+        function show_all() {
+            var rows_to_show = document.getElementById('general-tab-table-data').children;
+            for (var i = 0; i < rows_to_show.length; i+=1) {
+                var row = rows_to_show[i];
+                row.style.display = '';
+            };
+        };
+        show_all();
+
+        machine_model.value != '' ? filters.push(machine_model.value) : false;
+        machine_factory_number.value != '' ? filters.push(machine_factory_number.value) : false;
+        engine_model.value != '' ? filters.push(engine_model.value) : false;
+        transmission_model.value != '' ? filters.push(transmission_model.value) : false;
+        drive_axle_model.value != '' ? filters.push(drive_axle_model.value) : false;
+        steering_axle_model.value != '' ? filters.push(steering_axle_model.value) : false;
+
+        if (filters.length != 0) {
+            var rows = document.getElementById('general-tab-table-data').children;
+            for (var i = 0; i < rows.length; i+=1) {
+                var row = rows[i]; // Определяем строки для фильтрации
+                var data_to_filter = []; // Список значений в ячейках строки
+
+                for (var j = 0; j < row.children.length; j+=1) {
+                    var td = row.children[j].textContent;
+                    data_to_filter.push(td); // Закидываем содержимое ячеек в список
+                    };
+                var check_list = []; // Список true/false значений
+                for (let k = 0; k < filters.length; k+=1) {
+                    check_list.push(data_to_filter.includes(filters[k]));
+                };
+                let check = check_list.every(function(elem) { // функция проверки, все ли фильтры находятся в строке
+                    if (elem == true) {
+                        return true;
+                    } else {
+                        return false;
+                    };
+                });
+                if (check == false) { // если не все фильтры в строке, она скрывается
+                    let row_to_hide = document.getElementById(row.id);
+                    row_to_hide.style.display = 'none';
+                };
+            };
+        }
+        else { // ничего не делаем, если все фильтры сброшены
+            ;
+            };
+    };
+</script>
+
+<script>
+    function reclamation_filter() {
+        var broken_node = document.getElementById('reclamation-filter-broken-node');
+        var recovery_method = document.getElementById('reclamation-filter-recovery-method');
+        var service_company = document.getElementById('reclamation-filter-service-company');
+        var filters = [];
+        
+        function show_all() {
+            var rows_to_show = document.getElementById('reclamation-tab-table-data').children;
+            for (var i = 0; i < rows_to_show.length; i+=1) {
+                var row = rows_to_show[i];
+                row.style.display = '';
+            };
+        };
+        show_all();
+
+        broken_node.value != '' ? filters.push(broken_node.value) : false;
+        recovery_method.value != '' ? filters.push(recovery_method.value) : false;
+        service_company.value != '' ? filters.push(service_company.value) : false;
+
+        if (filters.length != 0) {
+            var rows = document.getElementById('reclamation-tab-table-data').children;
+            for (var i = 0; i < rows.length; i+=1) {
+                var row = rows[i]; // Определяем строки для фильтрации
+                var data_to_filter = []; // Список значений в ячейках строки
+
+                for (var j = 0; j < row.children.length; j+=1) {
+                    var td = row.children[j].textContent;
+                    data_to_filter.push(td); // Закидываем содержимое ячеек в список
+                    };
+                var check_list = []; // Список true/false значений
+                for (let k = 0; k < filters.length; k+=1) {
+                    check_list.push(data_to_filter.includes(filters[k]));
+                };
+                let check = check_list.every(function(elem) { // функция проверки, все ли фильтры находятся в строке
+                    if (elem == true) {
+                        return true;
+                    } else {
+                        return false;
+                    };
+                });
+                if (check == false) { // если не все фильтры в строке, она скрывается
+                    let row_to_hide = document.getElementById(row.id);
+                    row_to_hide.style.display = 'none';
+                };
+            };
+        }
+        else { // ничего не делаем, если все фильтры сброшены
+            ;
+            };
+    };
+</script>
+
+<script>
+    function reset_maintenance_filters() {
+        var machine_factory_number = document.getElementById('maintenance-filter-machine-factory-number');
+        var maintenance_type = document.getElementById('maintenance-filter-maintenance-type');
+        var service_company = document.getElementById('maintenance-filter-service-company');
+
+        machine_factory_number.value = '';
+        maintenance_type.value = '';
+        service_company.value = '';
+
+        function show_all() {
+            var rows_to_show = document.getElementById('maintenance-tab-table-data').children;
+            for (var i = 0; i < rows_to_show.length; i+=1) {
+                var row = rows_to_show[i];
+                row.style.display = '';
+            };
+        };
+        show_all();
+    };
+</script>
+
+<script>
+    function reset_general_filters() {
+        var machine_model = document.getElementById('general-filter-machine-model');
+        var machine_factory_number = document.getElementById('general-filter-machine-factory-number');
+        var engine_model = document.getElementById('general-filter-engine-model');
+        var transmission_model = document.getElementById('general-filter-transmission-model');
+        var drive_axle_model = document.getElementById('general-filter-drive-axle-model');
+        var steering_axle_model = document.getElementById('general-filter-steering-axle-model');
+
+        machine_model.value = '';
+        machine_factory_number.value = '';
+        engine_model.value = '';
+        transmission_model.value = '';
+        drive_axle_model.value = '';
+        steering_axle_model.value = '';
+
+        function show_all() {
+            var rows_to_show = document.getElementById('general-tab-table-data').children;
+            for (var i = 0; i < rows_to_show.length; i+=1) {
+                var row = rows_to_show[i];
+                row.style.display = '';
+            };
+        };
+        show_all();
+    };
+</script>
+
+<script>
+    function reset_reclamation_filters() {
+        var broken_node = document.getElementById('reclamation-filter-broken-node');
+        var recovery_method = document.getElementById('reclamation-filter-recovery-method');
+        var service_company = document.getElementById('reclamation-filter-service-company');
+
+        broken_node.value = '';
+        recovery_method.value = '';
+        service_company.value = '';
+
+        function show_all() {
+            var rows_to_show = document.getElementById('reclamation-tab-table-data').children;
+            for (var i = 0; i < rows_to_show.length; i+=1) {
+                var row = rows_to_show[i];
+                row.style.display = '';
+            };
+        };
+        show_all();
+    };
+</script>
+
+</h3>
+</main>
+{% endblock body %}

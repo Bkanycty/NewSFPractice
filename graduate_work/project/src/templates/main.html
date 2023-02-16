@@ -1,0 +1,13 @@
+{% if is_not_authenticated %}
+    {% include 'group_templates/guest.html' %}
+{% elif is_admin %}
+    {% include 'group_templates/registered.html' %}
+{% elif is_manager %}
+    {% include 'group_templates/registered.html' %}
+{% elif is_client %}
+    {% include 'group_templates/registered.html' %}
+{% elif is_service %}
+    {% include 'group_templates/registered.html' %}
+{% else %}
+    Something else
+{% endif %}

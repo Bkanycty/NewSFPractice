@@ -1,0 +1,243 @@
+.user{
+    text-align: center;
+}
+
+.tabs{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    align-self: center;
+    align-content: center;
+}
+
+.link-row:hover{
+    background: var(--silant-blue);
+    color:var(--silant-white);
+    cursor:pointer;
+}
+
+.search-results{
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1vw;
+    margin-right: 50%;
+    text-align: left;
+    border: 2px solid var(--silant-blue);
+    border-radius: 10px;
+    align-self: center;
+}
+
+.search-results tr td{
+    font-size: 0.9vw;
+}
+
+.search-results th{
+    font-size: 0.9vw;
+}
+
+.table-head{
+    text-align: left;
+}
+
+.add-btn{
+    cursor: pointer;
+    border: none;
+    margin-top: 1vw;
+    padding: 1vw 0vw;
+    background:var(--silant-white);
+}
+
+.add-btn :hover{
+    color:lightgreen;
+}
+
+.add-btn-span{
+    font-family: 'PT-Astra-Sans_Regular';
+    padding: 0.5vw 1vw;
+    color: var(--silant-white);
+    background: var(--silant-blue);
+    font-size: medium;
+}
+
+.border-bottom{
+    border-bottom: 2px solid var(--silant-blue);
+}
+
+.border-left{
+    border-left: 2px solid var(--silant-blue);
+}
+
+.border-right{
+    border-right: 2px solid var(--silant-blue);
+}
+
+.form-data{
+    font-family: 'PT-Astra-Sans_Regular';
+}
+
+.text-form{
+    vertical-align: middle;
+    height: 1.3vw;
+    width: 80%;
+    padding: 0;
+}
+
+.submit-button{
+    font-family: 'PT-Astra-Sans_Regular';
+    color: var(--silant-blue);
+    font-size: 1.5vw;
+    height: 1.9vw;
+    padding: 0vw 0vw;
+}
+
+.form-select{
+    vertical-align: middle;
+    height: 1.5vw;
+    width: 4vw;
+}
+
+.tabs-btn {
+    margin-left: 1vw;
+    color: var(--silant-blue);
+    font-family: 'PT-Astra-Sans_Italic';
+    width: 210px;
+    height: 70px;
+    cursor: pointer;
+    background: transparent;
+    border: 2px solid var(--silant-blue);
+    outline: none;
+    transition: 0.75s ease-in-out;
+}
+
+svg {
+    top: 0;
+    left: 0;
+    position: absolute;
+    fill: none;
+    stroke: var(--silant-white);
+    stroke-dasharray: 150 480;
+    stroke-dashoffset: 150;
+    transition: 0.75s ease-in-out;
+}
+
+.tabs-btn:hover {
+    color: var(--silant-white);
+    transition: 0.5s ease-in-out;
+    background: var(--silant-blue);
+}
+
+.tabs-btn:hover svg {
+    stroke-dashoffset: -480;
+}
+
+.chosen-tab{
+    font-family: 'PT-Astra-Sans_Bold-Italic';
+    box-shadow: 4.2px 2px 2px var(--silant-blue);
+}
+
+.chosen-tab-red{
+    font-family: 'PT-Astra-Sans_Bold-Italic';
+    box-shadow: 4.2px 2px 2px var(--silant-red);
+}
+
+@media (max-width: 360px) {
+    #maintenance-filter-machine-factory-number {
+        vertical-align: middle;
+        height: 2.5vw;
+        width: 80%;
+        padding: 0;
+        font-size: 2vw;
+    }
+}
+
+@media (max-width: 360px) {
+    .search-results {
+        table-layout: fixed;
+        width: 100%;
+        overflow-x: hidden;
+    }
+}
+
+@media (max-width: 360px) {
+    .search-results-body {
+        height: 10%;
+        overflow: hidden;
+    }
+}
+
+@media (max-width: 360px) {
+    .search-results th {
+        writing-mode: vertical-lr;
+        font-size: 2.5vw;
+        overflow: hidden;
+    }
+}
+
+@media (max-width: 360px) {
+    .search-results-body tr td{
+        font-size: 2vw;
+        writing-mode: vertical-lr;
+        height: 10%;
+        overflow-x: hidden;
+    }
+}
+
+@media (max-width: 360px) {
+    .add-btn-span {
+        font-size: 3vw;
+    }
+}
+
+@media (max-width: 360px) {
+    .submit-button {
+        font-size: 2.5vw;
+        height: 3.5vw;
+    }
+}
+
+@media (max-width: 360px) {
+    .tabs-btn {
+    width: 90px;
+    height: 30px;
+    }
+}
+
+@media (max-width: 360px) {
+    .tabs-btn h1 {
+        font-size: 3vw;
+    }
+}
+
+@media (max-width: 360px) {
+    svg {
+        width: 90px;
+        height: 30px;
+        top: 0;
+        left: 0;
+        position: absolute;
+        fill: none;
+        stroke: var(--silant-white);
+        stroke-dasharray: 150 480;
+        stroke-dashoffset: 150;
+        transition: 0.75s ease-in-out;
+    }
+}
+
+@media (max-width: 360px) {
+    .text-form {
+    vertical-align: middle;
+    height: 2.5vw;
+    width: 80%;
+    padding: 0;
+    font-size: 2vw;
+    }
+}
+
+@media (max-width: 360px) {
+    .form-select{
+        vertical-align:middle;
+        height: 3vw;
+        width: 4vw;
+    }
+}

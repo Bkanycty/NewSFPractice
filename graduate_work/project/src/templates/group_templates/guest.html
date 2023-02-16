@@ -1,0 +1,67 @@
+{% extends 'default.html' %}
+{% block head %}
+{% load static %}
+    <link href="{% static 'css/group_css/guest.css' %}" rel="stylesheet"/>
+
+    <script>
+        function first_entry_check(){
+        let current_url=window.location.search;
+        let elem = document.getElementById('notfound');
+        current_url == '' ? elem.hidden=true : false;
+    }
+        document.addEventListener("DOMContentLoaded", first_entry_check);
+    </script>
+{% endblock head %}
+{% block title %}
+Мой Силант
+{% endblock title %}
+{% block body %}
+<main onload="{first_entry_check()}">
+    <p><h1>Проверьте комплектацию и технические характеристики техники Силант</h1></p>
+    <form class="search-form" method="get">
+        {{ machines_filter.form.machine_factory_number }}
+        <input type="submit" value="Найти">
+    </form>
+    <div id="result">
+    {% if object_list %}
+        <table class="search-results">
+            <caption class="table-title">Информация о комплектации и технических характеристиках Вашей техники</caption>
+            <tr class="table-head">
+                <th>Модель машины</th><th>Зав. № машины</th><th>Модель двигателя</th><th>Зав. № двигателя</th><th>Модель трансмиссии</th><th>Зав. № трансмиссии</th><th>Модель ведущего моста</th><th>Зав. № ведущего моста</th><th>Модель управляемого моста</th><th>Зав. № управляемого моста</th>
+            </tr>
+            <tbody class="search-results-body">
+            {% for machine in object_list %}
+                <tr class="link-row" onclick='window.location.href="{% url "machine_detail" machine.id %}";'>
+                    <td>{{ machine.machine_model }}
+                    <td>{{ machine.machine_factory_number }}
+                    <td>{{ machine.engine_model }}
+                    <td>{{ machine.engine_factory_number }}
+                    <td>{{ machine.transmission_model }}
+                    <td>{{ machine.transmission_factory_number }}
+                    <td>{{ machine.drive_axle_model }}
+                    <td>{{ machine.drive_axle_factory_number }}
+                    <td>{{ machine.steering_axle_model }}
+                    <td>{{ machine.steering_axle_factory_number }}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <h2><p id="notfound" class="not-found">Машины с таким серийным номером не найдено</p></h2>
+    {% endif %}
+    </div>
+    <script>
+        function first_entry_check() {
+            let current_url=window.location.search;
+            console.log(current_url);
+            let elem = document.getElementById('notfound');
+            current_url == '' ? elem.hidden=true : elem.hidden=false;
+        };
+    </script>
+    <script>
+        function not_found() {
+
+        }
+    </script>
+</main>
+{% endblock body %}

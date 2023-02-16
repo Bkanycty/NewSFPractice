@@ -1,0 +1,47 @@
+.fieldWrapper{
+    border-collapse: collapse;
+    margin-top: 1vw;
+    margin-left: 30%;
+    text-align: left;
+    align-self: center;
+    font-family: 'PT-Astra-Sans_Bold';
+}
+
+@media screen and (max-width: 360px) {
+    .fieldWrapper {
+        table-layout: fixed;
+        width: 98%;
+        margin-left: 0;
+        overflow: hidden;
+    }
+}
+
+.form-label{
+    font-family: 'PT-Astra-Sans_Bold';
+}
+
+.form-data{
+    padding-left: 1vw;
+    font-family: 'PT-Astra-Sans_Regular';
+}
+
+.submit-button{
+    font-family: 'PT-Astra-Sans_Regular';
+    color: #163E6C;
+    font-size: 1.5vw;
+    height: 2vw;
+    padding: 0vw 3vw;
+}
+
+@media screen and (max-width: 360px) {
+    .submit-button {
+        font-size: 4vw;
+        height: 6vw;
+    }
+}
+
+.link-row:hover{
+    background: #163E6C;
+    color:#EBE6D6;
+    cursor:pointer;
+}

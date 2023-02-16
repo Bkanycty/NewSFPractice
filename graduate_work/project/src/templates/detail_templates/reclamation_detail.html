@@ -1,0 +1,82 @@
+{% extends 'default.html' %}
+{% block head %}
+{% load static %}
+    <link href="{% static 'css/detail_css/reclamation_detail.css' %}" rel="stylesheet"/>
+    <script>
+        window.onload = function() {
+            var logotype = document.getElementById("header-logo");
+            logotype.src = "http://127.0.0.1:8000/static/images/Logotype_accent_RGB_2.jpg";
+        }
+    </script>
+{% endblock head %}
+{% block title %}Рекламация № {{ reclamation.id }}{% endblock title %}
+
+{% block body %}
+
+<p>
+<table class="reclamation-detail">
+        <tr class="reclamation-detail">
+            <td class="form-label">Обслуживаемая техника</td>
+            <td class="form-data">{{ reclamation.reclamation_machine }}</td>
+        </tr>
+        <tr class="reclamation-detail">
+            <td class="form-label">Дата отказа</td>
+            <td class="form-data">{{ reclamation.breakdown_date }}</td>
+        </tr>
+        <tr class="reclamation-detail">
+            <td class="form-label">Наработка, м/час</td>
+            <td class="form-data">{{ reclamation.running_time }}</td>
+        </tr>
+        <tr class="reclamation-detail">
+            <td class="form-label">Узел отказа</td>
+            <td class="form-data">{{ reclamation.broken_node.name }}</td>
+        </tr>
+        <tr class="reclamation-detail">
+            <td class="form-label">Описание узла отказа</td>
+            <td class="form-data">{{ reclamation.broken_node.description }}</td>
+        </tr>
+        <tr class="reclamation-detail">
+            <td class="form-label">Описание поломки</td>
+            <td class="form-data">{{ reclamation.breakdown_description }}</td>
+        </tr>
+        <tr class="reclamation-detail">
+            <td class="form-label">Способ восстановления</td>
+            <td class="form-data">{{ reclamation.recovery_method.name }}</td>
+        </tr>
+        <tr class="reclamation-detail">
+            <td class="form-label">Описание способа восстановления</td>
+            <td class="form-data">{{ reclamation.recovery_method.description }}</td>
+        </tr>
+        <tr class="reclamation-detail">
+            <td class="form-label">Использованные запчасти</td>
+            <td class="form-data">{{ reclamation.spare_parts_used }}</td>
+        </tr>
+        <tr class="reclamation-detail">
+            <td class="form-label">Дата восстановления</td>
+            <td class="form-data">{{ reclamation.recovery_date }}</td>
+        </tr>
+        <tr class="reclamation-detail">
+            <td class="form-label">Время простоя</td>
+            <td class="form-data">{{ reclamation.downtime }} дн.</td>
+        </tr>
+        <tr class="reclamation-detail">
+            <td class="form-label">Сервисная компания</td>
+            <td class="form-data">{{ reclamation.reclamation_service_company.first_name }}</td>
+        </tr>
+        {% if is_admin %}
+            <tr class="link-row border-bottom border-left border-right" onclick='window.location.href="{% url 'reclamation_update' reclamation.id %}";' >
+                <td colspan="2" align="center">Редактировать</td>
+            </tr>
+        {% elif is_manager %}
+            <tr class="link-row border-bottom border-left border-right" onclick='window.location.href="{% url 'reclamation_update' reclamation.id %}";' >
+                <td colspan="2" align="center">Редактировать</td>
+            </tr>
+        {% elif is_service %}
+            <tr class="link-row border-bottom border-left border-right" onclick='window.location.href="{% url 'reclamation_update' reclamation.id %}";' >
+                <td colspan="2" align="center">Редактировать</td>
+            </tr>
+        {% endif %}
+    </table>
+
+{% endblock body %}
+

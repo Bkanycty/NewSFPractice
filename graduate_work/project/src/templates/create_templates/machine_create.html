@@ -1,0 +1,112 @@
+{% extends 'default.html' %}
+{% block head %}
+{% load static %}
+    <link href="{% static 'css/create_css/machine_create.css' %}" rel="stylesheet"/>
+{% endblock head %}
+
+{% block title %}
+    Ввод данных о новой машине
+{% endblock title %}
+
+{% block body %}
+
+<h2 style="margin-left: 37%;">Введите данные о машине: </h2>
+<h3>
+
+<form method="POST">
+    {% csrf_token %}
+    <table class="fieldWrapper">
+        <tr class="fieldWrapper">
+            <td class="form-label">{{ form.machine_model.label_tag }}</td>
+            <td class="form-data">{{ form.machine_model }}</td>
+            <td class="create-node"><a href="{% url 'machine_model_create' %}">Создать</a></td>
+        </tr>
+        <tr class="fieldWrapper">
+            <td class="form-label">{{ form.machine_factory_number.label_tag }}</td>
+            <td class="form-data">{{ form.machine_factory_number }}</td>
+        </tr>
+        <tr class="fieldWrapper">
+            <td class="form-label">{{ form.engine_model.label_tag }}</td>
+            <td class="form-data">{{ form.engine_model }}</td>
+            <td class="create-node"><a href="{% url 'engine_model_create' %}">Создать</a></td>
+        </tr>
+        <tr class="fieldWrapper">
+            <td class="form-label">{{ form.engine_factory_number.label_tag }}</td>
+            <td class="form-data">{{ form.engine_factory_number }}</td>
+        </tr>
+        <tr class="fieldWrapper">
+            <td class="form-label">{{ form.transmission_model.label_tag }}</td>
+            <td class="form-data">{{ form.transmission_model }}</td>
+            <td class="create-node"><a href="{% url 'transmission_model_create' %}">Создать</a></td>
+        </tr>
+        <tr class="fieldWrapper">
+            <td class="form-label">{{ form.transmission_factory_number.label_tag }}</td>
+            <td class="form-data">{{ form.transmission_factory_number }}</td>
+        </tr>
+        <tr class="fieldWrapper">
+            <td class="form-label">{{ form.drive_axle_model.label_tag }}</td>
+            <td class="form-data">{{ form.drive_axle_model }}</td>
+            <td class="create-node"><a href="{% url 'drive_axle_model_create' %}">Создать</a></td>
+        </tr>
+        <tr class="fieldWrapper">
+            <td class="form-label">{{ form.drive_axle_factory_number.label_tag }}</td>
+            <td class="form-data">{{ form.drive_axle_factory_number }}</td>
+        </tr>
+        <tr class="fieldWrapper">
+            <td class="form-label">{{ form.steering_axle_model.label_tag }}</td>
+            <td class="form-data">{{ form.steering_axle_model }}</td>
+            <td class="create-node"><a href="{% url 'steering_axle_model_create' %}">Создать</a></td>
+        </tr>
+        <tr class="fieldWrapper">
+            <td class="form-label">{{ form.steering_axle_factory_number.label_tag }}</td>
+            <td class="form-data">{{ form.steering_axle_factory_number }}</td>
+        </tr>
+        <tr class="fieldWrapper">
+            <td class="form-label">{{ form.supply_contract.label_tag }}</td>
+            <td class="form-data">{{ form.supply_contract }}</td>
+        </tr>
+        <tr class="fieldWrapper">
+            <td class="form-label">{{ form.shipping_date.label_tag }}</td>
+            <td class="form-data"><textarea name="shipping_date" class="form-data" placeholder="ГГГГ-ММ-ДД"></textarea></td>
+        </tr>
+        <tr class="fieldWrapper">
+            <td class="form-label">{{ form.end_user.label_tag }}</td>
+            <td class="form-data">{{ form.end_user }}</td>
+        </tr>
+        <tr class="fieldWrapper">
+            <td class="form-label">{{ form.delivery_address.label_tag }}</td>
+            <td class="form-data">{{ form.delivery_address }}</td>
+        </tr>
+        <tr class="fieldWrapper">
+            <td class="form-label">{{ form.complete_set.label_tag }}</td>
+            <td class="form-data">{{ form.complete_set }}</td>
+        </tr>
+        <tr class="fieldWrapper">
+            <td class="form-label">{{ form.client.label_tag }}</td>
+
+            <td class="form-data">
+                <select name="client">
+                    {% for client in clients %}
+                        <OPTION value="{{ client.id }}">{{ client.first_name }}</OPTION>
+                    {% endfor %}
+                </select>
+            </td>
+
+        </tr>
+        <tr class="fieldWrapper">
+            <td class="form-label">{{ form.service_company.label_tag }}</td>
+            <td class="form-data">
+                <select name="service_company">
+                    {% for service_company in service_companies %}
+                        <OPTION value="{{ service_company.id }}">{{ service_company.first_name }}</OPTION>
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+        <tr class="fieldWrapper">
+            <td colspan="2" align="center"><button type="submit" class="submit-button link-row" type="submit">Внести</button></td>
+        </tr>
+    </table>
+</form>
+</h3>
+{% endblock body %}

@@ -1,0 +1,37 @@
+.italic{
+    font-family: 'PT-Astra-Sans_Italic';
+}
+
+.search-form{
+    margin-top: 1vw;
+}
+
+
+
+
+
+
+.maintenance-submit-button{
+    font-family: 'PT-Astra-Sans_Regular';
+    color: #163E6C;
+    font-size: 1.5vw;
+    height: 2vw;
+    padding: 0vw 3vw;
+}
+
+
+.maintenance-detail{
+    border-collapse: collapse;
+    margin-top: 1vw;
+    text-align: left;
+    align-self: center;
+    font-family: 'PT-Astra-Sans_Bold';
+}
+.reclamation-detail{
+    border-collapse: collapse;
+    margin-top: 1vw;
+    text-align: left;
+    align-self: center;
+    font-family: 'PT-Astra-Sans_Bold';
+}
+

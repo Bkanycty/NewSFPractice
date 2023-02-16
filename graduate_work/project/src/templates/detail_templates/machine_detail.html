@@ -1,0 +1,114 @@
+{% extends 'default.html' %}
+{% block head %}
+{% load static %}
+    <link href="{% static 'css/detail_css/machine_detail.css' %}" rel="stylesheet"/>
+{% endblock head %}
+{% block title %}
+    {{ machine.machine_model }}: {{ machine.machine_factory_number }} - подробно
+{% endblock title %}
+
+{% block body %}
+
+<table class="machine-detail">
+        <tr class="machine-detail link-row-detail border-left border-right border-top" onclick='window.location.href="{% url "machine_model" machine.machine_model.id %}";'">
+            <td class="form-label">Модель техники</td>
+            <td class="form-data">{{ machine.machine_model.name }}</td>
+        </tr>
+        <tr class="machine-detail border-left border-right">
+            <td class="form-label">Заводской №</td>
+            <td class="form-data">{{ machine.machine_factory_number }}</td>
+        </tr>
+        <tr class="machine-detail border-left border-right">
+            <td class="form-label">Описание</td>
+            <td class="form-data">{{ machine.machine_model.description }}</td>
+        </tr>
+        <tr class="machine-detail link-row-detail border-left border-right" onclick='window.location.href="{% url "engine_model" machine.engine_model.id %}";'">
+            <td class="form-label">Модель двигателя</td>
+            <td class="form-data">{{ machine.engine_model.name }}</td>
+        </tr>
+        <tr class="machine-detail border-left border-right">
+            <td class="form-label">Зав. №</td>
+            <td class="form-data">{{ machine.engine_factory_number }}</td>
+        </tr>
+        <tr class="machine-detail border-left border-right">
+            <td class="form-label">Описание</td>
+            <td class="form-data">{{ machine.engine_model.description }}</td>
+        </tr>
+        <tr class="machine-detail link-row-detail border-left border-right" onclick='window.location.href="{% url "transmission_model" machine.transmission_model.id %}";'">
+            <td class="form-label">Модель трансмиссии</td>
+            <td class="form-data">{{ machine.transmission_model.name }}</td>
+        </tr>
+        <tr class="machine-detail border-left border-right">
+            <td class="form-label">Зав. №</td>
+            <td class="form-data">{{ machine.transmission_factory_number }}</td>
+        </tr>
+        <tr class="machine-detail border-left border-right">
+            <td class="form-label">Описание</td>
+            <td class="form-data">{{ machine.transmission_model.description }}</td>
+        </tr>
+        <tr class="machine-detail link-row-detail border-left border-right" onclick='window.location.href="{% url "drive_axle_model" machine.drive_axle_model.id %}";'">
+            <td class="form-label">Модель ведущего моста</td>
+            <td class="form-data">{{ machine.drive_axle_model.name }}</td>
+        </tr>
+        <tr class="machine-detail border-left border-right">
+            <td class="form-label">Зав. №</td>
+            <td class="form-data">{{ machine.drive_axle_factory_number }}</td>
+        </tr>
+        <tr class="machine-detail border-left border-right">
+            <td class="form-label">Описание</td>
+            <td class="form-data">{{ machine.drive_axle_model.description }}</td>
+        </tr>
+        <tr class="machine-detail link-row-detail border-left border-right" onclick='window.location.href="{% url "steering_axle_model" machine.steering_axle_model.id %}";'">
+            <td class="form-label">Модель управляемого моста</td>
+            <td class="form-data">{{ machine.steering_axle_model.name }}</td>
+        </tr>
+        <tr class="machine-detail border-left border-right">
+            <td class="form-label">Зав. №</td>
+            <td class="form-data">{{ machine.steering_axle_factory_number }}</td>
+        </tr>
+        <tr class="machine-detail border-left border-right">
+            <td class="form-label border-bottom">Описание</td>
+            <td class="form-data border-bottom">{{ machine.steering_axle_model.description }}</td>
+        </tr>
+        {% if not is_not_authenticated %}
+        <tr class="machine-detail border-left border-right">
+            <td class="form-label">Договор поставки №, дата</td>
+            <td class="form-data">{{ machine.supply_contract }}</td>
+        </tr>
+        <tr class="machine-detail border-left border-right">
+            <td class="form-label">Дата отгрузки с завода</td>
+            <td class="form-data">{{ machine.shipping_date }}</td>
+        </tr>
+        <tr class="machine-detail border-left border-right">
+            <td class="form-label">Грузополучатель (конечный потребитель)</td>
+            <td class="form-data">{{ machine.end_user }}</td>
+        </tr>
+        <tr class="machine-detail border-left border-right">
+            <td class="form-label">Адрес поставки (эксплуатации)</td>
+            <td class="form-data">{{ machine.delivery_address }}</td>
+        </tr>
+        <tr class="machine-detail border-left border-right">
+            <td class="form-label">Комплектация (доп. опции)</td>
+            <td class="form-data">{{ machine.complete_set }}</td>
+        </tr>
+        <tr class="machine-detail border-left border-right">
+            <td class="form-label">Клиент</td>
+            <td class="form-data">{{ machine.client.first_name }}</td>
+        </tr>
+        <tr class="machine-detail border-bottom border-left border-right">
+            <td class="form-label border-bottom">Сервисная компания</td>
+            <td class="form-data border-bottom">{{ machine.service_company.first_name }}</td>
+        </tr>
+        {% endif %}
+        {% if is_admin %}
+        <tr class="link-row border-bottom border-left border-right" onclick='window.location.href="{% url 'machine_update' machine.id %}";' >
+            <td colspan="2" align="center">Редактировать</td>
+        </tr>
+        {% elif is_manager %}
+            <tr class="link-row border-bottom border-left border-right" onclick='window.location.href="{% url 'machine_update' machine.id %}";' >
+                <td colspan="2" align="center">Редактировать</td>
+            </tr>
+        {% endif %}
+    </table>
+
+{% endblock body %}

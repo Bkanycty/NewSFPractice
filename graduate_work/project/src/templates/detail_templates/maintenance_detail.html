@@ -1,0 +1,62 @@
+{% extends 'default.html' %}
+{% block head %}
+{% load static %}
+    <link href="{% static 'css/detail_css/maintenance_detail.css' %}" rel="stylesheet"/>
+{% endblock head %}
+
+{% block title %}ТО: {{ maintenance.maintenance_machine }}{% endblock title %}
+
+{% block body %}
+
+<p>
+
+
+<table class="maintenance-detail">
+        <tr class="maintenance-detail">
+            <td class="form-label">Обслуживаемая техника</td>
+            <td class="form-data">{{ maintenance.maintenance_machine }}</td>
+        </tr>
+        <tr class="maintenance-detail">
+            <td class="form-label">Сервисная компния</td>
+            <td class="form-data">{{ maintenance.maintenance_service_company.first_name }}</td>
+        </tr>
+        <tr class="maintenance-detail">
+            <td class="form-label">Вид ТО</td>
+            <td class="form-data">{{ maintenance.maintenance_type.name }}</td>
+        </tr>
+        <tr class="maintenance-detail">
+            <td class="form-label">Описание</td>
+            <td class="form-data">{{ maintenance.maintenance_type.description }}</td>
+        </tr>
+        <tr class="maintenance-detail">
+            <td class="form-label">Дата проведения ТО</td>
+            <td class="form-data">{{ maintenance.maintenance_date }}</td>
+        </tr>
+        <tr class="maintenance-detail">
+            <td class="form-label">Наработка, м/час</td>
+            <td class="form-data">{{ maintenance.running_time }}</td>
+        </tr>
+        <tr class="maintenance-detail">
+            <td class="form-label">№ заказ-наряда</td>
+            <td class="form-data">{{ maintenance.work_order_number }}</td>
+        </tr>
+        <tr class="maintenance-detail">
+            <td class="form-label">Дата заказ-наряда</td>
+            <td class="form-data">{{ maintenance.work_order_date }}</td>
+        </tr>
+        {% if is_admin %}
+        <tr class="link-row border-bottom border-left border-right" onclick='window.location.href="{% url 'maintenance_update' maintenance.id %}";' >
+            <td colspan="2" align="center">Редактировать</td>
+        </tr>
+        {% elif is_manager %}
+            <tr class="link-row border-bottom border-left border-right" onclick='window.location.href="{% url 'maintenance_update' maintenance.id %}";' >
+                <td colspan="2" align="center">Редактировать</td>
+            </tr>
+        {% elif is_service %}
+            <tr class="link-row border-bottom border-left border-right" onclick='window.location.href="{% url 'maintenance_update' maintenance.id %}";' >
+                <td colspan="2" align="center">Редактировать</td>
+            </tr>
+        {% endif %}
+    </table>
+{% endblock body %}
+

@@ -1,0 +1,79 @@
+{% extends 'default.html' %}
+{% block head %}
+{% load static %}
+    <link href="{% static 'css/create_css/maintenance_create.css' %}" rel="stylesheet"/>
+{% endblock head %}
+
+{% block title %} Техническое обслуживание {% endblock title %}
+
+{% block body %}
+
+<h2 style="margin-left: 37%;">Введите данные о ТО: </h2>
+<h3>
+
+<form method="POST">
+    {% csrf_token %}
+    <table class="fieldWrapper">
+        <tr class="fieldWrapper">
+            <td class="form-label">{{ form.maintenance_type.label_tag }}</td>
+            <td class="form-data">{{ form.maintenance_type }}</td>
+        </tr>
+        <tr class="fieldWrapper">
+            <td class="form-label">{{ form.maintenance_date.label_tag }}</td>
+            <td class="form-data">{{ form.maintenance_date }}</td>
+        </tr>
+        <tr class="fieldWrapper">
+            <td class="form-label">{{ form.running_time.label_tag }}</td>
+            <td class="form-data">{{ form.running_time }}</td>
+        </tr>
+        <tr class="fieldWrapper">
+            <td class="form-label">{{ form.work_order_number.label_tag }}</td>
+            <td class="form-data">{{ form.work_order_number }}</td>
+        </tr>
+        <tr class="fieldWrapper">
+            <td class="form-label">{{ form.work_order_date.label_tag }}</td>
+            <td class="form-data">{{ form.work_order_date }}</td>
+        </tr>
+        <tr class="fieldWrapper">
+            <td class="form-label">{{ form.maintenance_service_company.label_tag }}</td>
+            <td class="form-data">
+                <select name="maintenance_service_company">
+                    {% if is_service %}
+                        <OPTION value="{{ user.id }}">{{ user.first_name }}</OPTION>
+                    {% else %}
+                        {% for service_company in service_companies %}
+                            <OPTION value="{{ service_company.id }}">{{ service_company.first_name }}</OPTION>
+                        {% endfor %}
+                    {% endif %}
+                </select>
+            </td>
+        </tr>
+        <tr class="fieldWrapper">
+            <td class="form-label">{{ form.maintenance_machine.label_tag }}</td>
+            <td class="form-data">
+                <select name="maintenance_machine">
+                    {% if is_client %}
+                        {% for m in client_machines %}
+                            <OPTION value="{{ m.id }}">{{ m }}</OPTION>
+                        {% endfor %}
+                    {% elif is_service %}
+                        {% for m in service_machines %}
+                        <OPTION value="{{ m.id }}">{{ m }}</OPTION>
+                        {% endfor %}
+                    {% elif is_manager %}
+                        {% for m in all_machines %}
+                        <OPTION value="{{ m.id }}">{{ m }}</OPTION>
+                        {% endfor %}
+                    {% else %}
+                        something else
+                    {% endif %}
+                </select>
+            </td>
+        </tr>
+        <tr class="fieldWrapper">
+            <td colspan="2" align="center"><button type="submit" class="submit-button link-row" type="submit">Внести</button></td>
+        </tr>
+    </table>
+</form>
+</h3>
+{% endblock body %}

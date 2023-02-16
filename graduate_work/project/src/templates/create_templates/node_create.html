@@ -1,0 +1,34 @@
+{% extends 'default.html' %}
+
+{% block head %}
+{% load static %}
+    <link href="{% static 'css/create_css/node_create.css' %}" rel="stylesheet"/>
+{% endblock head %}
+
+{% block title %}
+    Создание модуля
+{% endblock title %}
+
+{% block body %}
+
+<h2 style="margin-left: 37%;">Введите данные о модуле: </h2>
+<h3>
+
+<form method="POST">
+    {% csrf_token %}
+    <table class="fieldWrapper">
+        <tr class="fieldWrapper">
+            <td class="form-label">{{ form.name.label_tag }}</td>
+            <td class="form-data">{{ form.name }}</td>
+        </tr>
+        <tr class="fieldWrapper">
+            <td class="form-label">{{ form.description.label_tag }}</td>
+            <td class="form-data">{{ form.description }}</td>
+        </tr>
+        <tr class="fieldWrapper">
+            <td colspan="2" align="right"><button type="submit" class="submit-button link-row" type="submit">Внести</button></td>
+        </tr>
+    </table>
+</form>
+</h3>
+{% endblock body %}

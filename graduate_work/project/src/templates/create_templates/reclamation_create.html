@@ -1,0 +1,98 @@
+{% extends 'default.html' %}
+{% block head %}
+{% load static %}
+    <link href="{% static 'css/create_css/reclamation_create.css' %}" rel="stylesheet"/>
+{% endblock head %}
+
+{% block title %} Рекламация {% endblock title %}
+
+{% block body %}
+
+<h2 style="margin-left: 37%;">Введите данные о поломке: </h2>
+<h3>
+
+<form method="POST">
+    {% csrf_token %}
+    <table class="fieldWrapper">
+        <tr class="fieldWrapper">
+            <td class="form-label">{{ form.breakdown_date.label_tag }}</td>
+            <td class="form-data">{{ form.breakdown_date }}</td>
+        </tr>
+        <tr class="fieldWrapper">
+            <td class="form-label">{{ form.running_time.label_tag }}</td>
+            <td class="form-data">{{ form.running_time }}</td>
+        </tr>
+        <tr class="fieldWrapper">
+            <td class="form-label">{{ form.broken_node.label_tag }}</td>
+            <td class="form-data">{{ form.broken_node }}</td>
+        </tr>
+        <tr class="fieldWrapper">
+            <td class="form-label">{{ form.breakdown_description.label_tag }}</td>
+            <td class="form-data">{{ form.breakdown_description }}</td>
+        </tr>
+        <tr class="fieldWrapper">
+            <td class="form-label">{{ form.recovery_method.label_tag }}</td>
+            <td class="form-data">{{ form.recovery_method }}</td>
+        </tr>
+        <tr class="fieldWrapper">
+            <td class="form-label">{{ form.spare_parts_used.label_tag }}</td>
+            <td class="form-data">{{ form.spare_parts_used }}</td>
+        </tr>
+        <tr class="fieldWrapper">
+            <td class="form-label" required=False>{{ form.recovery_date.label_tag }}</td>
+            <td class="form-data">{{ form.recovery_date }}</td>
+        </tr>
+
+        <tr class="fieldWrapper">
+            <td class="form-label">{{ form.reclamation_machine.label_tag }}</td>
+            <td class="form-data">
+                <select name="reclamation_machine">
+                    <OPTION value="">---------</OPTION>
+                    {% if is_service %}
+                        {% for m in service_machines %}
+                        <OPTION value="{{ m.id }}">{{ m }}</OPTION>
+                        {% endfor %}
+                    {% elif is_manager %}
+                        {% for m in all_machines %}
+                        <OPTION value="{{ m.id }}">{{ m }}</OPTION>
+                        {% endfor %}
+                    {% else %}
+                        something else
+                    {% endif %}
+                </select>
+            </td>
+        </tr>
+            {% if is_admin %}
+            <tr>
+                <td class="form-label">{{ form.reclamation_service_company.label_tag }}</td>
+                <td class="form-data">
+                    <select name="reclamation_service_company">
+                        <OPTION value="none">---------</OPTION>
+                        {% for service_company in service_companies %}
+                            <OPTION value="{{ service_company.id }}">{{ service_company.first_name }}</OPTION>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            {% elif is_manager %}
+            <tr>
+                <td class="form-label">{{ form.reclamation_service_company.label_tag }}</td>
+                <td class="form-data">
+                    <select name="reclamation_service_company">
+                        <OPTION value="none">---------</OPTION>
+                        {% for service_company in service_companies %}
+                            <OPTION value="{{ service_company.id }}">{{ service_company.first_name }}</OPTION>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            {% endif %}
+        </tr>
+
+        <tr class="fieldWrapper">
+            <td colspan="2" align="center"><button type="submit" class="submit-button link-row" type="submit">Внести</button></td>
+        </tr>
+    </table>
+</form>
+</h3>
+{% endblock body %}

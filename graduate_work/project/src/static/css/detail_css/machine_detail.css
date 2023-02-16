@@ -1,0 +1,57 @@
+.machine-detail{
+    border-collapse: collapse;
+    margin-top: 1vw;
+    margin-left: 30%;
+    text-align: left;
+    align-self: center;
+    font-family: 'PT-Astra-Sans_Bold';
+}
+
+@media (max-width: 360px) {
+    .machine-detail {
+        margin-left: 0;
+    }
+}
+
+.form-label{
+    font-family: 'PT-Astra-Sans_Bold';
+}
+
+.form-data{
+    padding-left: 1vw;
+    font-family: 'PT-Astra-Sans_Regular';
+}
+
+.link-row:hover{
+    background: #163E6C;
+    color:#EBE6D6;
+    cursor:pointer;
+}
+
+.link-row-detail{
+    background: #163E6C;
+    color:#EBE6D6;
+    cursor:pointer;
+}
+
+.link-row-detail:hover{
+    background: #6c9bd0;
+    color:#EBE6D6;
+    cursor:pointer;
+}
+
+.border-bottom{
+    border-bottom: 2px solid #163E6C;
+}
+
+.border-left{
+    border-left: 2px solid #163E6C;
+}
+
+.border-right{
+    border-right: 2px solid #163E6C;
+}
+
+.border-top{
+    border-top: 2px solid #163E6C;
+}
