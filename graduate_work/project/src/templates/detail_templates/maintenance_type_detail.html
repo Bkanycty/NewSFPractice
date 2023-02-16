@@ -1,5 +1,9 @@
 {% extends 'detail_templates/detail_default.html' %}
-{% block extra_title %}{{ machine.machine_model.name }}{% endblock extra_title %}
+{% block extra_title %}{{ maintenance_type.name }}{% endblock extra_title %}
 
-{% block name %}{{ machine.machine_model.name }}{% endblock name %}
-{% block description %}{{ machine.machine_model.description }}{% endblock description %}
+{% block name %}{{ maintenance_type.name }}{% endblock name %}
+{% block description %}{{ maintenance_type.description }}{% endblock description %}
+
+{% block delete_node %}
+    <h4><a href="{% url 'maintenance_type_delete' maintenance_type.id %}">Удалить</a></h4>
+{% endblock delete_node %}

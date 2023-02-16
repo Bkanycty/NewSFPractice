@@ -12,6 +12,9 @@ class MachineModel(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):  # добавим абсолютный путь, чтобы после создания нас перебрасывало на страницу с товаром
+        return f'/machine_model/{self.id}'
+
 
 class EngineModel(models.Model):
     name = models.CharField(verbose_name='Модель двигателя', max_length=256, unique=True,
@@ -20,6 +23,9 @@ class EngineModel(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):  # добавим абсолютный путь, чтобы после создания нас перебрасывало на страницу с товаром
+        return f'/engine_model/{self.id}'
 
 
 class TransmissionModel(models.Model):
@@ -30,6 +36,9 @@ class TransmissionModel(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):  # добавим абсолютный путь, чтобы после создания нас перебрасывало на страницу с товаром
+        return f'/transmission_model/{self.id}'
+
 
 class DriveAxleModel(models.Model):
     name = models.CharField(verbose_name='Модель ведущего моста', max_length=256, unique=True,
@@ -38,6 +47,9 @@ class DriveAxleModel(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):  # добавим абсолютный путь, чтобы после создания нас перебрасывало на страницу с товаром
+        return f'/drive_axle_model/{self.id}'
 
 
 class SteeringAxleModel(models.Model):
@@ -48,6 +60,9 @@ class SteeringAxleModel(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):  # добавим абсолютный путь, чтобы после создания нас перебрасывало на страницу с товаром
+        return f'/steering_axle_model/{self.id}'
+
 
 class MaintenanceType(models.Model):
     name = models.CharField(verbose_name='Вид ТО', max_length=256, unique=True,
@@ -56,6 +71,9 @@ class MaintenanceType(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):  # добавим абсолютный путь, чтобы после создания нас перебрасывало на страницу с товаром
+        return f'/maintenance_type/{self.id}'
 
 
 class BreakdownType(models.Model):
@@ -66,6 +84,9 @@ class BreakdownType(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):  # добавим абсолютный путь, чтобы после создания нас перебрасывало на страницу с товаром
+        return f'/breakdown_type/{self.id}'
+
 
 class RecoveryMethod(models.Model):
     name = models.CharField(verbose_name='Способ восстановления', max_length=256, unique=True,
@@ -74,6 +95,9 @@ class RecoveryMethod(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):  # добавим абсолютный путь, чтобы после создания нас перебрасывало на страницу с товаром
+        return f'/recovery_method/{self.id}'
 
 
 class Machine(models.Model):

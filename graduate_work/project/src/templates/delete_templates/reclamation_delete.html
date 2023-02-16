@@ -1,0 +1,33 @@
+{% extends 'default.html' %}
+{% block title %} Удаление {% endblock title %}
+
+{% block body %}
+<h2>Действительно удалить?</h2>
+<table>
+    <thead>
+    <th>Машина</th>
+    <th>Дата отказа</th>
+    <th>Наработка, м/час</th>
+    <th>Узел отказа</th>
+    <th>Описание отказа</th>
+    <th>Способ восстановления</th>
+    <th>Используемые запасные части</th>
+    <th>Дата восстановления</th>
+    </thead>
+    <tr id="machine-id-{{ machine.id }}" class="link-row">
+        <td>{{ reclamation.reclamation_machine }}</td>
+        <td>{{ reclamation.breakdown_date }}</td>
+        <td>{{ reclamation.running_time }}</td>
+        <td>{{ reclamation.broken_node }}</td>
+        <td>{{ reclamation.breakdown_description }}</td>
+        <td>{{ reclamation.recovery_method }}</td>
+        <td>{{ reclamation.spare_parts_used }}</td>
+        <td>{{ reclamation.recovery_date }}</td>
+        <td>{{ reclamation.reclamation_service_company.first_name }}</td>
+    </tr>
+</table>
+
+<form method="POST">
+    {% csrf_token %}
+    <input type="submit" value="подтвердить"></form>
+{% endblock body %}

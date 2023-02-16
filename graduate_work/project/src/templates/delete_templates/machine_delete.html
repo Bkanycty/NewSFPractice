@@ -1,0 +1,48 @@
+{% extends 'default.html' %}
+{% block title %} Удаление {% endblock title %}
+
+{% block body %}
+<h2>Действительно удалить?</h2>
+<table>
+    <thead>
+    <th>Модель машины</th>
+    <th>Зав. № машины</th>
+    <th>Модель двигателя</th>
+    <th>Зав. № двигателя</th>
+    <th>Модель трансмиссии</th>
+    <th>Зав. № трансмиссии</th>
+    <th>Модель ведущего моста</th>
+    <th>Зав. № ведущего моста</th>
+    <th>Модель управляемого моста</th>
+    <th>Зав. № управляемого моста</th>
+    <th>Договор поставки №, дата</th>
+    <th>Дата отгрузки с завода</th>
+    <th>Грузополучатель</th>
+    <th>Адрес поставки</th>
+    <th>Комплектация</th>
+    <th>Сервисная компания</th>
+    </thead>
+        <tr id="machine-id-{{ machine.id }}" class="link-row">
+            <td>{{ machine.machine_model }}</td>
+            <td>{{ machine.machine_factory_number }}</td>
+            <td>{{ machine.engine_model }}</td>
+            <td>{{ machine.engine_factory_number }}</td>
+            <td>{{ machine.transmission_model }}</td>
+            <td>{{ machine.transmission_factory_number }}</td>
+            <td>{{ machine.drive_axle_model }}</td>
+            <td>{{ machine.drive_axle_factory_number }}</td>
+            <td>{{ machine.steering_axle_model }}</td>
+            <td>{{ machine.steering_axle_factory_number }}</td>
+            <td>{{ machine.supply_contract }}</td>
+            <td>{{ machine.shipping_date }}</td>
+            <td>{{ machine.end_user }}</td>
+            <td>{{ machine.delivery_address }}</td>
+            <td>{{ machine.complete_set }}</td>
+            <td>{{ machine.service_company.first_name }}</td>
+        </tr>
+</table>
+
+<form method="POST">
+    {% csrf_token %}
+    <input type="submit" value="подтвердить"></form>
+{% endblock body %}

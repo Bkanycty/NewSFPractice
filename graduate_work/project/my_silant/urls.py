@@ -6,14 +6,17 @@ urlpatterns = [
     path('machine/<int:pk>/', MachineDetail.as_view(), name='machine_detail'),
     path('machine/add', MachineCreate.as_view(), name='machine_create'),
     path('machine/<int:pk>/edit/', MachineUpdate.as_view(), name='machine_update'),
+    path('machine/<int:pk>/delete/', MachineDelete.as_view(), name='machine_delete'),
 
     path('maintenance/<int:pk>/', MaintenanceDetail.as_view(), name='maintenance_detail'),
     path('maintenance/add', MaintenanceCreate.as_view(), name='maintenance_create'),
     path('maintenance/<int:pk>/edit/', MaintenanceUpdate.as_view(), name='maintenance_update'),
+    path('maintenance/<int:pk>/delete/', MaintenanceDelete.as_view(), name='maintenance_delete'),
 
     path('reclamation/<int:pk>/', ReclamationDetail.as_view(), name='reclamation_detail'),
     path('reclamation/add', ReclamationCreate.as_view(), name='reclamation_create'),
     path('reclamation/<int:pk>/edit/', ReclamationUpdate.as_view(), name='reclamation_update'),
+    path('reclamation/<int:pk>/delete/', ReclamationDelete.as_view(), name='reclamation_delete'),
 
     path('machine_model/<int:pk>/', MachineModelDetail.as_view(), name='machine_model'),
     path('machine_model/add', MachineModelCreate.as_view(), name='machine_model_create'),

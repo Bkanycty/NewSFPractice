@@ -14,15 +14,17 @@
 <button class="add-btn" onclick="show_transmission_models()"><span><h1>трансмиссии</h1></span></button>
 <button class="add-btn" onclick="show_drive_axle_models()"><span><h1>ведущие мосты</h1></span></button>
 <button class="add-btn" onclick="show_steering_axle_models()"><span><h1>управляемые мосты</h1></span></button>
-<button class="add-btn" onclick="show_transmission_models()"><span><h1>Виды ТО</h1></span></button>
-<button class="add-btn" onclick="show_transmission_models()"><span><h1>Характеры отказа</h1></span></button>
-<button class="add-btn" onclick="show_transmission_models()"><span><h1>Способы восстановления</h1></span></button>
+<button class="add-btn" onclick="show_maintenance_types()"><span><h1>Виды ТО</h1></span></button>
+<button class="add-btn" onclick="show_breakdown_types()"><span><h1>Характеры отказа</h1></span></button>
+<button class="add-btn" onclick="show_recovery_methods()"><span><h1>Способы восстановления</h1></span></button>
 </div>
 
 <h4 style="text-align: center;">Объекты:</h4>
-<button class="add-btn"><span><h1>Техника</h1></span></button>
-<button class="add-btn"><span><h1>Техобслуживания</h1></span></button>
-<button class="add-btn"><span><h1>Рекламации</h1></span></button>
+<div>
+    <button class="add-btn" onclick="show_machines()"><span><h1>Техника</h1></span></button>
+    <button class="add-btn" onclick="show_maintenances()"><span><h1>Техобслуживания</h1></span></button>
+    <button class="add-btn" onclick="show_reclamations()"><span><h1>Рекламации</h1></span></button>
+</div>
 <hr>
 
 <div id="content">
@@ -84,19 +86,71 @@
     };
 </script>
 
+<script>
+    function show_maintenance_types() {
+        var elem = document.getElementById("content");
+        var addBtn = "<button class='add-btn' id='add-btn' type='button'><h3>Создать</h3></button>";
+        var content = "<table class='search-results'><thead><th>Название</th><th>Описание</th></thead><tbody>{% for maintenance_type in maintenance_types %}<tr><td>{{ maintenance_type.name }}<td>{{ maintenance_type.description }}<td><a href='{% url 'maintenance_type_update' maintenance_type.id %}'>Редактировать</a></td><td><a href='{% url 'maintenance_type_delete' maintenance_type.id %}'>Удалить</a></td></tr>{% endfor %}</tbody></table>";
+        elem.innerHTML = addBtn + content;
+        var link_btn = document.getElementById('add-btn')
+        link_btn.setAttribute("onclick", 'window.location.href="{% url "maintenance_type_create" %}"');
+    };
+</script>
+
+<script>
+    function show_breakdown_types() {
+        var elem = document.getElementById("content");
+        var addBtn = "<button class='add-btn' id='add-btn' type='button'><h3>Создать</h3></button>";
+        var content = "<table class='search-results'><thead><th>Название</th><th>Описание</th></thead><tbody>{% for broken_node in broken_nodes %}<tr><td>{{ broken_node.name }}<td>{{ broken_node.description }}<td><a href='{% url 'breakdown_type_update' broken_node.id %}'>Редактировать</a></td><td><a href='{% url 'breakdown_type_delete' broken_node.id %}'>Удалить</a></td></tr>{% endfor %}</tbody></table>";
+        elem.innerHTML = addBtn + content;
+        var link_btn = document.getElementById('add-btn')
+        link_btn.setAttribute("onclick", 'window.location.href="{% url "breakdown_type_create" %}"');
+    };
+</script>
+
+<script>
+    function show_recovery_methods() {
+        var elem = document.getElementById("content");
+        var addBtn = "<button class='add-btn' id='add-btn' type='button'><h3>Создать</h3></button>";
+        var content = "<table class='search-results'><thead><th>Название</th><th>Описание</th></thead><tbody>{% for recovery_method in recovery_methods %}<tr><td>{{ recovery_method.name }}<td>{{ recovery_method.description }}<td><a href='{% url 'recovery_method_update' recovery_method.id %}'>Редактировать</a></td><td><a href='{% url 'recovery_method_delete' recovery_method.id %}'>Удалить</a></td></tr>{% endfor %}</tbody></table>";
+        elem.innerHTML = addBtn + content;
+        var link_btn = document.getElementById('add-btn')
+        link_btn.setAttribute("onclick", 'window.location.href="{% url "recovery_method_create" %}"');
+    };
+</script>
+
+<script>
+    function show_machines() {
+        var elem = document.getElementById("content");
+        var addBtn = "<button class='add-btn' id='add-btn' type='button'><h3>Создать</h3></button>";
+        var content = "<table class='search-results'><thead><th>Модель машины</th><th>Зав. № машины</th><th>Модель двигателя</th><th>Зав. № двигателя</th><th>Модель трансмиссии</th><th>Зав. № трансмиссии</th><th>Модель ведущего моста</th><th>Зав. № ведущего моста</th><th>Модель управляемого моста</th><th>Зав. № управляемого моста</th><th>Договор поставки №, дата</th><th>Дата отгрузки с завода</th><th>Грузополучатель</th><th>Адрес поставки</th><th>Сервисная компания</th></thead><tbody>{% for machine in machines %}<tr><td>{{ machine.machine_model }}</td><td>{{ machine.machine_factory_number }}</td><td>{{ machine.engine_model }}</td><td>{{ machine.engine_factory_number }}</td><td>{{ machine.transmission_model }}</td><td>{{ machine.transmission_factory_number }}</td><td>{{ machine.drive_axle_model }}</td><td>{{ machine.drive_axle_factory_number }}</td><td>{{ machine.steering_axle_model }}</td><td>{{ machine.steering_axle_factory_number }}</td><td>{{ machine.supply_contract }}</td><td>{{ machine.shipping_date }}</td><td>{{ machine.end_user }}</td><td>{{ machine.delivery_address }}</td><td>{{ machine.service_company.first_name }}</td>}<td><a href='{% url 'machine_update' machine.id %}'>Редактировать</a></td><td><a href='{% url 'machine_delete' machine.id %}'>Удалить</a></td></tr>{% endfor %}</tbody></table>";
+        elem.innerHTML = addBtn + content;
+        var link_btn = document.getElementById('add-btn');
+        link_btn.setAttribute("onclick", 'window.location.href="{% url "machine_create" %}"');
+    };
+</script>
+
+<script>
+    function show_maintenances() {
+        var elem = document.getElementById("content");
+        var addBtn = "<button class='add-btn' id='add-btn' type='button'><h3>Создать</h3></button>";
+        var content = "<table class='search-results'><th>Модель</th><th>Заводской номер</th><th>Вид ТО</th><th>Дата проведения ТО</th><th>Наработка, м/час</th><th>№ заказ-наряда</th><th>Дата заказ-наряда</th><th>Организация, проводившая ТО</th><tbody>{% for maintenance in maintenances %}<tr><td>{{ maintenance.maintenance_machine.machine_model.name }}</td><td>{{ maintenance.maintenance_machine.machine_factory_number }}</td><td>{{ maintenance.maintenance_type }}</td><td>{{ maintenance.maintenance_date }}</td><td>{{ maintenance.running_time }}</td><td>{{ maintenance.work_order_number }}</td><td>{{ maintenance.work_order_date }}</td><td>{{ maintenance.maintenance_service_company.first_name }}</td><td><a href='{% url 'maintenance_update' maintenance.id %}'>Редактировать</a></td><td><a href='{% url 'maintenance_delete' maintenance.id %}'>Удалить</a></td></tr>{% endfor %}</tbody></table>";
+        elem.innerHTML = addBtn + content;
+        var link_btn = document.getElementById('add-btn')
+        link_btn.setAttribute("onclick", 'window.location.href="{% url "maintenance_create" %}"');
+    };
+</script>
+
+<script>
+    function show_reclamations() {
+        var elem = document.getElementById("content");
+        var addBtn = "<button class='add-btn' id='add-btn' type='button'><h3>Создать</h3></button>";
+        var content = "<table class='search-results'><thead><th>Машина</th><th>Дата отказа</th><th>Наработка, м/час</th><th>Узел отказа</th><th>Описание отказа</th><th>Способ восстановления</th><th>Используемые запасные части</th><th>Дата восстановления</th></thead><tbody>{% for reclamation in reclamations %}<tr><td>{{ reclamation.reclamation_machine }}</td><td>{{ reclamation.breakdown_date }}</td><td>{{ reclamation.running_time }}</td><td>{{ reclamation.broken_node }}</td><td>{{ reclamation.breakdown_description }}</td><td>{{ reclamation.recovery_method }}</td><td>{{ reclamation.spare_parts_used }}</td><td>{{ reclamation.recovery_date }}</td><td>{{ reclamation.reclamation_service_company.first_name }}</td><td><a href='{% url 'reclamation_update' reclamation.id %}'>Редактировать</a></td><td><a href='{% url 'reclamation_delete' reclamation.id %}'>Удалить</a></td></tr>{% endfor %}</tbody></table>";
+        elem.innerHTML = addBtn + content;
+        var link_btn = document.getElementById('add-btn')
+        link_btn.setAttribute("onclick", 'window.location.href="{% url "reclamation_create" %}"');
+    };
+</script>
 
 
-
-<!-- <table>
-    <thead>
-        <th>Название</th><th>Описание</th>
-    </thead>
-    <tbody>
-        <tr>
-            {% for elem in elems %}
-            <td>{{ elem.something }}
-            {% endfor %}
-        </tr>
-    </tbody>
-</table> -->
 {% endblock body %}

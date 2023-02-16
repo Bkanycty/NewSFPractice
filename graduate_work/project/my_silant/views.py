@@ -37,6 +37,7 @@ class ManagerTools(TemplateView):
 
         return context
 
+
 class MachinesList(ListView):
     model = Machine
     template_name = 'Main.html'
@@ -213,6 +214,7 @@ class MachineCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
 
 
 class MachineUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    model = Machine
     template_name = 'create_templates/machine_create.html'
     form_class = MachineForm
     permission_required = ('my_silant.change_machine',)
@@ -231,14 +233,14 @@ class MachineUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
 
 class MachineDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Machine
-    template_name = 'delete_templates/delete.html'
+    template_name = 'delete_templates/machine_delete.html'
     success_url = "/"
     permission_required = ('my_silant.delete_machine',)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         _id = self.kwargs.get('pk')
-        context['elem_to_delete'] = RecoveryMethod.objects.get(id=_id)
+        context['elem_to_delete'] = Machine.objects.get(id=_id)
 
         return context
 
@@ -331,14 +333,14 @@ class MaintenanceUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView)
 
 class MaintenanceDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Maintenance
-    template_name = 'delete_templates/delete.html'
+    template_name = 'delete_templates/maintenance_delete.html'
     success_url = "/"
     permission_required = ('my_silant.delete_maintenance',)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         _id = self.kwargs.get('pk')
-        context['elem_to_delete'] = RecoveryMethod.objects.get(id=_id)
+        context['elem_to_delete'] = Maintenance.objects.get(id=_id)
 
         return context
 
@@ -443,14 +445,14 @@ class ReclamationUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView)
 
 class ReclamationDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Reclamation
-    template_name = 'delete_templates/delete.html'
+    template_name = 'delete_templates/maintenance_delete.html'
     success_url = "/"
     permission_required = ('my_silant.delete_reclamations',)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         _id = self.kwargs.get('pk')
-        context['elem_to_delete'] = RecoveryMethod.objects.get(id=_id)
+        context['elem_to_delete'] = Reclamation.objects.get(id=_id)
 
         return context
 
@@ -473,7 +475,7 @@ class MachineModelCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView
         new_node = MachineModel.objects.create(name=name, description=description)
         new_node.save()
 
-        return redirect('machine_create')
+        return redirect('manager_tools')
 
 
 class MachineModelUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
@@ -482,13 +484,9 @@ class MachineModelUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView
     form_class = MachineModelForm
     permission_required = ('my_silant.change_machinemodel',)
 
-    def post(self, request, *args, **kwargs):
-        name = request.POST['name']
-        description = request.POST['description']
-        new_node = MachineModel.objects.create(name=name, description=description)
-        new_node.save()
-
-        return redirect('/')
+    def get_object(self, **kwargs):
+        _id = self.kwargs.get('pk')
+        return MachineModel.objects.get(pk=_id)
 
 
 class MachineModelDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
@@ -523,7 +521,7 @@ class EngineModelCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView)
         new_node = EngineModel.objects.create(name=name, description=description)
         new_node.save()
 
-        return redirect('machine_create')
+        return redirect('manager_tools')
 
 
 class EngineModelUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
@@ -532,13 +530,9 @@ class EngineModelUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView)
     form_class = EngineModelForm
     permission_required = ('my_silant.change_enginemodel',)
 
-    def post(self, request, *args, **kwargs):
-        name = request.POST['name']
-        description = request.POST['description']
-        new_node = MachineModel.objects.create(name=name, description=description)
-        new_node.save()
-
-        return redirect('/')
+    def get_object(self, **kwargs):
+        _id = self.kwargs.get('pk')
+        return EngineModel.objects.get(pk=_id)
 
 
 class EngineModelDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
@@ -573,7 +567,7 @@ class TransmissionModelCreate(LoginRequiredMixin, PermissionRequiredMixin, Creat
         new_node = TransmissionModel.objects.create(name=name, description=description)
         new_node.save()
 
-        return redirect('machine_create')
+        return redirect('manager_tools')
 
 
 class TransmissionModelUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
@@ -582,13 +576,9 @@ class TransmissionModelUpdate(LoginRequiredMixin, PermissionRequiredMixin, Updat
     form_class = TransmissionModelForm
     permission_required = ('my_silant.change_transmissionmodel',)
 
-    def post(self, request, *args, **kwargs):
-        name = request.POST['name']
-        description = request.POST['description']
-        new_node = MachineModel.objects.create(name=name, description=description)
-        new_node.save()
-
-        return redirect('/')
+    def get_object(self, **kwargs):
+        _id = self.kwargs.get('pk')
+        return TransmissionModel.objects.get(pk=_id)
 
 
 class TransmissionModelDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
@@ -623,7 +613,7 @@ class DriveAxleModelCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateVi
         new_node = DriveAxleModel.objects.create(name=name, description=description)
         new_node.save()
 
-        return redirect('machine_create')
+        return redirect('manager_tools')
 
 
 class DriveAxleModelUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
@@ -632,13 +622,9 @@ class DriveAxleModelUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateVi
     form_class = DriveAxleModelForm
     permission_required = ('my_silant.change_driveaxlemodel',)
 
-    def post(self, request, *args, **kwargs):
-        name = request.POST['name']
-        description = request.POST['description']
-        new_node = MachineModel.objects.create(name=name, description=description)
-        new_node.save()
-
-        return redirect('/')
+    def get_object(self, **kwargs):
+        _id = self.kwargs.get('pk')
+        return DriveAxleModel.objects.get(pk=_id)
 
 
 class DriveAxleModelDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
@@ -673,7 +659,7 @@ class SteeringAxleModelCreate(LoginRequiredMixin, PermissionRequiredMixin, Creat
         new_node = SteeringAxleModel.objects.create(name=name, description=description)
         new_node.save()
 
-        return redirect('machine_create')
+        return redirect('manager_tools')
 
 
 class SteeringAxleModelUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
@@ -682,13 +668,9 @@ class SteeringAxleModelUpdate(LoginRequiredMixin, PermissionRequiredMixin, Updat
     form_class = SteeringAxleModelForm
     permission_required = ('my_silant.change_steeringaxlemodel',)
 
-    def post(self, request, *args, **kwargs):
-        name = request.POST['name']
-        description = request.POST['description']
-        new_node = MachineModel.objects.create(name=name, description=description)
-        new_node.save()
-
-        return redirect('/')
+    def get_object(self, **kwargs):
+        _id = self.kwargs.get('pk')
+        return SteeringAxleModel.objects.get(pk=_id)
 
 
 class SteeringAxleModelDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
@@ -723,7 +705,7 @@ class MaintenanceTypeCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateV
         new_node = MaintenanceType.objects.create(name=name, description=description)
         new_node.save()
 
-        return redirect('machine_create')
+        return redirect('manager_tools')
 
 
 class MaintenanceTypeUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
@@ -732,13 +714,9 @@ class MaintenanceTypeUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateV
     form_class = MaintenanceTypeForm
     permission_required = ('my_silant.change_maintenancetype',)
 
-    def post(self, request, *args, **kwargs):
-        name = request.POST['name']
-        description = request.POST['description']
-        new_node = MachineModel.objects.create(name=name, description=description)
-        new_node.save()
-
-        return redirect('/')
+    def get_object(self, **kwargs):
+        _id = self.kwargs.get('pk')
+        return MaintenanceType.objects.get(pk=_id)
 
 
 class MaintenanceTypeDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
@@ -773,7 +751,7 @@ class BreakdownTypeCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateVie
         new_node = BreakdownType.objects.create(name=name, description=description)
         new_node.save()
 
-        return redirect('machine_create')
+        return redirect('manager_tools')
 
 
 class BreakdownTypeUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
@@ -782,13 +760,9 @@ class BreakdownTypeUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateVie
     form_class = BreakdownTypeForm
     permission_required = ('my_silant.change_breakdowntype',)
 
-    def post(self, request, *args, **kwargs):
-        name = request.POST['name']
-        description = request.POST['description']
-        new_node = MachineModel.objects.create(name=name, description=description)
-        new_node.save()
-
-        return redirect('/')
+    def get_object(self, **kwargs):
+        _id = self.kwargs.get('pk')
+        return BreakdownType.objects.get(pk=_id)
 
 
 class BreakdownTypeDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
@@ -823,7 +797,7 @@ class RecoveryMethodCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateVi
         new_node = RecoveryMethod.objects.create(name=name, description=description)
         new_node.save()
 
-        return redirect('machine_create')
+        return redirect('manager_tools')
 
 
 class RecoveryMethodUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
@@ -832,13 +806,9 @@ class RecoveryMethodUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateVi
     form_class = RecoveryMethodForm
     permission_required = ('my_silant.change_recoverymethod',)
 
-    def post(self, request, *args, **kwargs):
-        name = request.POST['name']
-        description = request.POST['description']
-        new_node = MachineModel.objects.create(name=name, description=description)
-        new_node.save()
-
-        return redirect('/')
+    def get_object(self, **kwargs):
+        _id = self.kwargs.get('pk')
+        return RecoveryMethod.objects.get(pk=_id)
 
 
 class RecoveryMethodDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):

@@ -1,5 +1,5 @@
 {% extends 'detail_templates/detail_default.html' %}
-{% block extra_title %}{{ machine.machine_model.name }}{% endblock extra_title %}
+{% block extra_title %}{{ breakdown_type.name }}{% endblock extra_title %}
 
-{% block name %}{{ machine.machine_model.name }}{% endblock name %}
-{% block description %}{{ machine.machine_model.description }}{% endblock description %}
+{% block name %}{{ breakdown_type.name }}{% endblock name %}
+{% block description %}{{ breakdown_type.description }}{% endblock description %}

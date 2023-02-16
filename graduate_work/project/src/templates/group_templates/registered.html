@@ -182,13 +182,13 @@
             <tr id="machine-id-{{ machine.id }}" class="link-row" onclick='window.location.href="{% url 'machine_detail' machine.id %}";' >
                 <td>{{ machine.machine_model }}</td>
                 <td>{{ machine.machine_factory_number }}</td>
-                <td>{{ machine.engine_model }}</a></td>
+                <td>{{ machine.engine_model }}</td>
                 <td>{{ machine.engine_factory_number }}</td>
-                <td>{{ machine.transmission_model }}</a></td>
+                <td>{{ machine.transmission_model }}</td>
                 <td>{{ machine.transmission_factory_number }}</td>
-                <td>{{ machine.drive_axle_model }}</a></td>
+                <td>{{ machine.drive_axle_model }}</td>
                 <td>{{ machine.drive_axle_factory_number }}</td>
-                <td>{{ machine.steering_axle_model }}</a></td>
+                <td>{{ machine.steering_axle_model }}</td>
                 <td>{{ machine.steering_axle_factory_number }}</td>
                 <td>{{ machine.supply_contract }}</td>
                 <td>{{ machine.shipping_date }}</td>
@@ -203,13 +203,13 @@
             <tr id="machine-id-{{ machine.id }}" class="link-row" onclick='window.location.href="{% url 'machine_detail' machine.id %}";' >
                 <td>{{ machine.machine_model }}</td>
                 <td>{{ machine.machine_factory_number }}</td>
-                <td>{{ machine.engine_model }}</a></td>
+                <td>{{ machine.engine_model }}</td>
                 <td>{{ machine.engine_factory_number }}</td>
-                <td>{{ machine.transmission_model }}</a></td>
+                <td>{{ machine.transmission_model }}</td>
                 <td>{{ machine.transmission_factory_number }}</td>
-                <td>{{ machine.drive_axle_model }}</a></td>
+                <td>{{ machine.drive_axle_model }}</td>
                 <td>{{ machine.drive_axle_factory_number }}</td>
-                <td>{{ machine.steering_axle_model }}</a></td>
+                <td>{{ machine.steering_axle_model }}</td>
                 <td>{{ machine.steering_axle_factory_number }}</td>
                 <td>{{ machine.supply_contract }}</td>
                 <td>{{ machine.shipping_date }}</td>
@@ -224,13 +224,13 @@
             <tr id="machine-id-{{ machine.id }}" class="link-row" onclick='window.location.href="{% url 'machine_detail' machine.id %}";' >
                 <td>{{ machine.machine_model }}</td>
                 <td>{{ machine.machine_factory_number }}</td>
-                <td>{{ machine.engine_model }}</a></td>
+                <td>{{ machine.engine_model }}</td>
                 <td>{{ machine.engine_factory_number }}</td>
-                <td>{{ machine.transmission_model }}</a></td>
+                <td>{{ machine.transmission_model }}</td>
                 <td>{{ machine.transmission_factory_number }}</td>
-                <td>{{ machine.drive_axle_model }}</a></td>
+                <td>{{ machine.drive_axle_model }}</td>
                 <td>{{ machine.drive_axle_factory_number }}</td>
-                <td>{{ machine.steering_axle_model }}</a></td>
+                <td>{{ machine.steering_axle_model }}</td>
                 <td>{{ machine.steering_axle_factory_number }}</td>
                 <td>{{ machine.supply_contract }}</td>
                 <td>{{ machine.shipping_date }}</td>
@@ -246,13 +246,13 @@
                 <tr id="machine-id-{{ machine.id }}" class="link-row" onclick='window.location.href="{% url 'machine_detail' machine.id %}";' >
                     <td>{{ machine.machine_model }}</td>
                     <td>{{ machine.machine_factory_number }}</td>
-                    <td>{{ machine.engine_model }}</a></td>
+                    <td>{{ machine.engine_model }}</td>
                     <td>{{ machine.engine_factory_number }}</td>
-                    <td>{{ machine.transmission_model }}</a></td>
+                    <td>{{ machine.transmission_model }}</td>
                     <td>{{ machine.transmission_factory_number }}</td>
-                    <td>{{ machine.drive_axle_model }}</a></td>
+                    <td>{{ machine.drive_axle_model }}</td>
                     <td>{{ machine.drive_axle_factory_number }}</td>
-                    <td>{{ machine.steering_axle_model }}</a></td>
+                    <td>{{ machine.steering_axle_model }}</td>
                     <td>{{ machine.steering_axle_factory_number }}</td>
                     <td>{{ machine.supply_contract }}</td>
                     <td>{{ machine.shipping_date }}</td>
@@ -334,9 +334,9 @@
                     <td>{{ maintenance.maintenance_machine.machine_factory_number }}</td>
                     <td>{{ maintenance.maintenance_type }}</td>
                     <td>{{ maintenance.maintenance_date }}</td>
-                    <td>{{ maintenance.running_time }}</a></td>
+                    <td>{{ maintenance.running_time }}</td>
                     <td>{{ maintenance.work_order_number }}</td>
-                    <td>{{ maintenance.work_order_date }}</a></td>
+                    <td>{{ maintenance.work_order_date }}</td>
                     <td>{{ maintenance.maintenance_service_company.first_name }}</td>
                 </tr>
             {% endfor %}
@@ -347,9 +347,9 @@
                 <td>{{ maintenance.maintenance_machine.machine_factory_number }}</td>
                 <td>{{ maintenance.maintenance_type }}</td>
                 <td>{{ maintenance.maintenance_date }}</td>
-                <td>{{ maintenance.running_time }}</a></td>
+                <td>{{ maintenance.running_time }}</td>
                 <td>{{ maintenance.work_order_number }}</td>
-                <td>{{ maintenance.work_order_date }}</a></td>
+                <td>{{ maintenance.work_order_date }}</td>
                 <td>{{ maintenance.maintenance_service_company.first_name }}</td>
             </tr>
             {% endfor %}
@@ -361,9 +361,9 @@
                         <td>{{ maintenance.maintenance_machine.machine_factory_number }}</td>
                         <td>{{ maintenance.maintenance_type }}</td>
                         <td>{{ maintenance.maintenance_date }}</td>
-                        <td>{{ maintenance.running_time }}</a></td>
+                        <td>{{ maintenance.running_time }}</td>
                         <td>{{ maintenance.work_order_number }}</td>
-                        <td>{{ maintenance.work_order_date }}</a></td>
+                        <td>{{ maintenance.work_order_date }}</td>
                         <td>{{ maintenance.maintenance_service_company.first_name }}</td>
                 {% endif %}
                     </tr>
@@ -376,9 +376,9 @@
                     <td>{{ maintenance.maintenance_machine.machine_factory_number }}</td>
                     <td>{{ maintenance.maintenance_type }}</td>
                     <td>{{ maintenance.maintenance_date }}</td>
-                    <td>{{ maintenance.running_time }}</a></td>
+                    <td>{{ maintenance.running_time }}</td>
                     <td>{{ maintenance.work_order_number }}</td>
-                    <td>{{ maintenance.work_order_date }}</a></td>
+                    <td>{{ maintenance.work_order_date }}</td>
                     <td>{{ maintenance.maintenance_service_company.first_name }}</td>
             {% endif %}
                 </tr>
@@ -481,9 +481,9 @@
                     <td>{{ reclamation.breakdown_date }}</td>
                     <td>{{ reclamation.running_time }}</td>
                     <td>{{ reclamation.broken_node }}</td>
-                    <td>{{ reclamation.breakdown_description }}</a></td>
+                    <td>{{ reclamation.breakdown_description }}</td>
                     <td>{{ reclamation.recovery_method }}</td>
-                    <td>{{ reclamation.spare_parts_used }}</a></td>
+                    <td>{{ reclamation.spare_parts_used }}</td>
                     <td>{{ reclamation.recovery_date }}</td>
                     <td>{{ reclamation.reclamation_service_company.first_name }}</td>
                 </tr>
@@ -495,9 +495,9 @@
                 <td>{{ reclamation.breakdown_date }}</td>
                 <td>{{ reclamation.running_time }}</td>
                 <td>{{ reclamation.broken_node }}</td>
-                <td>{{ reclamation.breakdown_description }}</a></td>
+                <td>{{ reclamation.breakdown_description }}</td>
                 <td>{{ reclamation.recovery_method }}</td>
-                <td>{{ reclamation.spare_parts_used }}</a></td>
+                <td>{{ reclamation.spare_parts_used }}</td>
                 <td>{{ reclamation.recovery_date }}</td>
                 <td>{{ reclamation.reclamation_service_company.first_name }}</td>
             </tr>
@@ -510,9 +510,9 @@
                         <td>{{ reclamation.breakdown_date }}</td>
                         <td>{{ reclamation.running_time }}</td>
                         <td>{{ reclamation.broken_node }}</td>
-                        <td>{{ reclamation.breakdown_description }}</a></td>
+                        <td>{{ reclamation.breakdown_description }}</td>
                         <td>{{ reclamation.recovery_method }}</td>
-                        <td>{{ reclamation.spare_parts_used }}</a></td>
+                        <td>{{ reclamation.spare_parts_used }}</td>
                         <td>{{ reclamation.recovery_date }}</td>
                         <td>{{ reclamation.reclamation_service_company.first_name }}</td>
                 {% endif %}
@@ -526,9 +526,9 @@
                     <td>{{ reclamation.breakdown_date }}</td>
                     <td>{{ reclamation.running_time }}</td>
                     <td>{{ reclamation.broken_node }}</td>
-                    <td>{{ reclamation.breakdown_description }}</a></td>
+                    <td>{{ reclamation.breakdown_description }}</td>
                     <td>{{ reclamation.recovery_method }}</td>
-                    <td>{{ reclamation.spare_parts_used }}</a></td>
+                    <td>{{ reclamation.spare_parts_used }}</td>
                     <td>{{ reclamation.recovery_date }}</td>
                     <td>{{ reclamation.reclamation_service_company.first_name }}</td>
             {% endif %}
