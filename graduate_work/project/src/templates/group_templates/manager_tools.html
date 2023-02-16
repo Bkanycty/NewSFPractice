@@ -1,0 +1,102 @@
+{% extends 'default.html' %}
+{% block head %}
+{% load static %}
+    <link href="{% static 'css/group_css/manager_tools.css' %}" rel="stylesheet"/>
+{% endblock head %}
+{% block title %}
+    Редактор справочников
+{% endblock title %}
+{% block body %}
+<h4 style="text-align: center;">Модели:</h4>
+<div style="display: block;">
+<button class="add-btn" onclick="show_machine_models()"><span><h1>машины</h1></span></button>
+<button class="add-btn" onclick="show_engine_models()"><span><h1>двигатели</h1></span></button>
+<button class="add-btn" onclick="show_transmission_models()"><span><h1>трансмиссии</h1></span></button>
+<button class="add-btn" onclick="show_drive_axle_models()"><span><h1>ведущие мосты</h1></span></button>
+<button class="add-btn" onclick="show_steering_axle_models()"><span><h1>управляемые мосты</h1></span></button>
+<button class="add-btn" onclick="show_transmission_models()"><span><h1>Виды ТО</h1></span></button>
+<button class="add-btn" onclick="show_transmission_models()"><span><h1>Характеры отказа</h1></span></button>
+<button class="add-btn" onclick="show_transmission_models()"><span><h1>Способы восстановления</h1></span></button>
+</div>
+
+<h4 style="text-align: center;">Объекты:</h4>
+<button class="add-btn"><span><h1>Техника</h1></span></button>
+<button class="add-btn"><span><h1>Техобслуживания</h1></span></button>
+<button class="add-btn"><span><h1>Рекламации</h1></span></button>
+<hr>
+
+<div id="content">
+
+</div>
+
+<script>
+    function show_machine_models() {
+        var elem = document.getElementById("content");
+        var addBtn = "<button class='add-btn' id='add-btn' type='button'><h3>Создать</h3></button>";
+        var content = "<table class='search-results'><thead><th>Название</th><th>Описание</th></thead><tbody>{% for machine_model in machine_models %}<tr><td>{{ machine_model.name }}<td>{{ machine_model.description }}<td><a href='{% url 'machine_model_update' machine_model.id %}'>Редактировать</a></td><td><a href='{% url 'machine_model_delete' machine_model.id %}'>Удалить</a></td></tr>{% endfor %}</tbody></table>";
+        elem.innerHTML = addBtn + content;
+        var link_btn = document.getElementById('add-btn')
+        link_btn.setAttribute("onclick", 'window.location.href="{% url "engine_model_create" %}"');
+    };
+</script>
+
+<script>
+    function show_engine_models() {
+        var elem = document.getElementById("content");
+        var addBtn = "<button class='add-btn' id='add-btn' type='button'><h3>Создать</h3></button>";
+        var content = "<table class='search-results'><thead><th>Название</th><th>Описание</th></thead><tbody>{% for engine_model in engine_models %}<tr><td>{{ engine_model.name }}<td>{{ engine_model.description }}<td><a href='{% url 'engine_model_update' engine_model.id %}'>Редактировать</a></td><td><a href='{% url 'engine_model_delete' engine_model.id %}'>Удалить</a></td></tr>{% endfor %}</tbody></table>";
+        elem.innerHTML = addBtn + content;
+        var link_btn = document.getElementById('add-btn')
+        link_btn.setAttribute("onclick", 'window.location.href="{% url "engine_model_create" %}"');
+    };
+</script>
+
+<script>
+    function show_transmission_models() {
+        var elem = document.getElementById("content");
+        var addBtn = "<button class='add-btn' id='add-btn' type='button'><h3>Создать</h3></button>";
+        var content = "<table class='search-results'><thead><th>Название</th><th>Описание</th></thead><tbody>{% for transmission_model in transmission_models %}<tr><td>{{ transmission_model.name }}<td>{{ transmission_model.description }}<td><a href='{% url 'transmission_model_update' transmission_model.id %}'>Редактировать</a></td><td><a href='{% url 'transmission_model_delete' transmission_model.id %}'>Удалить</a></td></tr>{% endfor %}</tbody></table>";
+        elem.innerHTML = addBtn + content;
+        var link_btn = document.getElementById('add-btn')
+        link_btn.setAttribute("onclick", 'window.location.href="{% url "transmission_model_create" %}"');
+    };
+</script>
+
+<script>
+    function show_drive_axle_models() {
+        var elem = document.getElementById("content");
+        var addBtn = "<button class='add-btn' id='add-btn' type='button'><h3>Создать</h3></button>";
+        var content = "<table class='search-results'><thead><th>Название</th><th>Описание</th></thead><tbody>{% for drive_axle_model in drive_axle_models %}<tr><td>{{ drive_axle_model.name }}<td>{{ drive_axle_model.description }}<td><a href='{% url 'drive_axle_model_update' drive_axle_model.id %}'>Редактировать</a></td><td><a href='{% url 'drive_axle_model_delete' drive_axle_model.id %}'>Удалить</a></td></tr>{% endfor %}</tbody></table>";
+        elem.innerHTML = addBtn + content;
+        var link_btn = document.getElementById('add-btn')
+        link_btn.setAttribute("onclick", 'window.location.href="{% url "drive_axle_model_create" %}"');
+    };
+</script>
+
+<script>
+    function show_steering_axle_models() {
+        var elem = document.getElementById("content");
+        var addBtn = "<button class='add-btn' id='add-btn' type='button'><h3>Создать</h3></button>";
+        var content = "<table class='search-results'><thead><th>Название</th><th>Описание</th></thead><tbody>{% for steering_axle_model in steering_axle_models %}<tr><td>{{ steering_axle_model.name }}<td>{{ steering_axle_model.description }}<td><a href='{% url 'steering_axle_model_update' steering_axle_model.id %}'>Редактировать</a></td><td><a href='{% url 'steering_axle_model_delete' steering_axle_model.id %}'>Удалить</a></td></tr>{% endfor %}</tbody></table>";
+        elem.innerHTML = addBtn + content;
+        var link_btn = document.getElementById('add-btn')
+        link_btn.setAttribute("onclick", 'window.location.href="{% url "steering_axle_model_create" %}"');
+    };
+</script>
+
+
+
+
+<!-- <table>
+    <thead>
+        <th>Название</th><th>Описание</th>
+    </thead>
+    <tbody>
+        <tr>
+            {% for elem in elems %}
+            <td>{{ elem.something }}
+            {% endfor %}
+        </tr>
+    </tbody>
+</table> -->
+{% endblock body %}

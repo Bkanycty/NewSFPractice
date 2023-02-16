@@ -1,5 +1,9 @@
 {% extends 'detail_templates/detail_default.html' %}
-{% block extra_title %}{{ machine.machine_model.name }}{% endblock extra_title %}
+{% block extra_title %}{{ recovery_method.name }}{% endblock extra_title %}
 
-{% block name %}{{ machine.machine_model.name }}{% endblock name %}
-{% block description %}{{ machine.machine_model.description }}{% endblock description %}
+{% block name %}{{ recovery_method.name }}{% endblock name %}
+{% block description %}{{ recovery_method.description }}{% endblock description %}
+
+{% block delete_node %}
+    <h4><a href="{% url 'recovery_method_delete' recovery_method.id %}">Удалить</a></h4>
+{% endblock delete_node %}

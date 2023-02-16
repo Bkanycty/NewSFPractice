@@ -1,0 +1,30 @@
+{% extends 'default.html' %}
+{% block title %} Удаление {% endblock title %}
+
+{% block body %}
+<h2>Действительно удалить?</h2>
+<table>
+    <thead>
+        <th>
+            Название
+        </th>
+        <th>
+            Описание
+        </th>
+    </thead>
+    <tr>
+        <td>
+            {% block nodename %}
+            {% endblock nodename %}
+        </td>
+        <td>
+            {% block node_description %}
+            {% endblock node_description %}
+        </td>
+    </tr>
+</table>
+
+<form method="POST">
+    {% csrf_token %}
+    <input type="submit" value="подтвердить"></form>
+{% endblock body %}

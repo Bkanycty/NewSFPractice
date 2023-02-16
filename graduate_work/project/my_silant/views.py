@@ -5,7 +5,7 @@ from rest_framework import generics
 
 from .models import Machine, Maintenance, Reclamation, MaintenanceType, MachineModel, EngineModel, TransmissionModel, \
     DriveAxleModel, SteeringAxleModel, BreakdownType, RecoveryMethod
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from .filters import MachineFilter
 from .forms import MaintenanceForm, MachineForm, ReclamationForm, MachineModelForm, EngineModelForm, \
     TransmissionModelForm, DriveAxleModelForm, SteeringAxleModelForm, MaintenanceTypeForm, BreakdownTypeForm, \
@@ -13,6 +13,29 @@ from .forms import MaintenanceForm, MachineForm, ReclamationForm, MachineModelFo
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.shortcuts import redirect
 
+
+class ManagerTools(TemplateView):
+    template_name = 'group_templates/manager_tools.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['machines'] = Machine.objects.order_by('shipping_date')
+        context['maintenances'] = Maintenance.objects.order_by('maintenance_date')
+        context['reclamations'] = Reclamation.objects.order_by('breakdown_date')
+
+        context['clients'] = User.objects.filter(groups=1)
+        context['service_companies'] = User.objects.filter(groups=2)
+
+        context['machine_models'] = MachineModel.objects.all()
+        context['engine_models'] = EngineModel.objects.all()
+        context['transmission_models'] = TransmissionModel.objects.all()
+        context['drive_axle_models'] = DriveAxleModel.objects.all()
+        context['steering_axle_models'] = SteeringAxleModel.objects.all()
+        context['maintenance_types'] = MaintenanceType.objects.all()
+        context['broken_nodes'] = BreakdownType.objects.all()
+        context['recovery_methods'] = RecoveryMethod.objects.all()
+
+        return context
 
 class MachinesList(ListView):
     model = Machine
@@ -137,86 +160,6 @@ class MachineDetail(DetailView):
         return context
 
 
-class MachineModelDetail(DetailView):
-    model = MachineModel
-    template_name = 'detail_templates/machine_model_detail.html'
-    context_object_name = 'machine_model'
-
-
-class EngineModelDetail(DetailView):
-    model = EngineModel
-    template_name = 'detail_templates/engine_model_detail.html'
-    context_object_name = 'engine_model'
-
-
-class TransmissionModelDetail(DetailView):
-    model = TransmissionModel
-    template_name = 'detail_templates/transmission_model_detail.html'
-    context_object_name = 'transmission_model'
-
-
-class DriveAxleModelDetail(DetailView):
-    model = DriveAxleModel
-    template_name = 'detail_templates/drive_axle_model_detail.html'
-    context_object_name = 'drive_axle_model'
-
-
-class SteeringAxleModelDetail(DetailView):
-    model = SteeringAxleModel
-    template_name = 'detail_templates/steering_axle_model_detail.html'
-    context_object_name = 'steering_axle_model'
-
-
-class MaintenanceTypeDetail(DetailView):
-    model = MaintenanceType
-    template_name = 'detail_templates/maintenance_type_detail.html'
-    context_object_name = 'maintenance_type'
-
-
-class BreakdownTypeDetail(DetailView):
-    model = BreakdownType
-    template_name = 'detail_templates/breakdown_type_detail.html'
-    context_object_name = 'breakdown_type'
-
-
-class RecoveryMethodDetail(DetailView):
-    model = RecoveryMethod
-    template_name = 'detail_templates/recovery_method_detail.html'
-    context_object_name = 'recovery_method'
-
-
-class MaintenanceDetail(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
-    model = Maintenance
-    template_name = 'detail_templates/maintenance_detail.html'
-    context_object_name = 'maintenance'
-    permission_required = ('my_silant.view_maintenance',)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['is_not_authenticated'] = not self.request.user.is_authenticated
-        context['is_client'] = self.request.user.groups.filter(name='clients').exists()
-        context['is_service'] = self.request.user.groups.filter(name='service_companies').exists()
-        context['is_manager'] = self.request.user.groups.filter(name='managers').exists()
-
-        return context
-
-
-class ReclamationDetail(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
-    model = Reclamation
-    template_name = 'detail_templates/reclamation_detail.html'
-    context_object_name = 'reclamation'
-    permission_required = ('my_silant.view_reclamations',)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['is_not_authenticated'] = not self.request.user.is_authenticated
-        context['is_client'] = self.request.user.groups.filter(name='clients').exists()
-        context['is_service'] = self.request.user.groups.filter(name='service_companies').exists()
-        context['is_manager'] = self.request.user.groups.filter(name='managers').exists()
-
-        return context
-
-
 class MachineCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     form_class = MachineForm
     model = Machine
@@ -284,6 +227,36 @@ class MachineUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     def get_object(self, **kwargs):
         _id = self.kwargs.get('pk')
         return Machine.objects.get(pk=_id)
+
+
+class MachineDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+    model = Machine
+    template_name = 'delete_templates/delete.html'
+    success_url = "/"
+    permission_required = ('my_silant.delete_machine',)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        _id = self.kwargs.get('pk')
+        context['elem_to_delete'] = RecoveryMethod.objects.get(id=_id)
+
+        return context
+
+
+class MaintenanceDetail(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
+    model = Maintenance
+    template_name = 'detail_templates/maintenance_detail.html'
+    context_object_name = 'maintenance'
+    permission_required = ('my_silant.view_maintenance',)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_not_authenticated'] = not self.request.user.is_authenticated
+        context['is_client'] = self.request.user.groups.filter(name='clients').exists()
+        context['is_service'] = self.request.user.groups.filter(name='service_companies').exists()
+        context['is_manager'] = self.request.user.groups.filter(name='managers').exists()
+
+        return context
 
 
 class MaintenanceCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
@@ -354,6 +327,36 @@ class MaintenanceUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView)
     def get_object(self, **kwargs):
         _id = self.kwargs.get('pk')
         return Maintenance.objects.get(pk=_id)
+
+
+class MaintenanceDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+    model = Maintenance
+    template_name = 'delete_templates/delete.html'
+    success_url = "/"
+    permission_required = ('my_silant.delete_maintenance',)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        _id = self.kwargs.get('pk')
+        context['elem_to_delete'] = RecoveryMethod.objects.get(id=_id)
+
+        return context
+
+
+class ReclamationDetail(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
+    model = Reclamation
+    template_name = 'detail_templates/reclamation_detail.html'
+    context_object_name = 'reclamation'
+    permission_required = ('my_silant.view_reclamations',)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_not_authenticated'] = not self.request.user.is_authenticated
+        context['is_client'] = self.request.user.groups.filter(name='clients').exists()
+        context['is_service'] = self.request.user.groups.filter(name='service_companies').exists()
+        context['is_manager'] = self.request.user.groups.filter(name='managers').exists()
+
+        return context
 
 
 class ReclamationCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
@@ -438,6 +441,26 @@ class ReclamationUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView)
         return Reclamation.objects.get(pk=_id)
 
 
+class ReclamationDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+    model = Reclamation
+    template_name = 'delete_templates/delete.html'
+    success_url = "/"
+    permission_required = ('my_silant.delete_reclamations',)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        _id = self.kwargs.get('pk')
+        context['elem_to_delete'] = RecoveryMethod.objects.get(id=_id)
+
+        return context
+
+
+class MachineModelDetail(DetailView):
+    model = MachineModel
+    template_name = 'detail_templates/machine_model_detail.html'
+    context_object_name = 'machine_model'
+
+
 class MachineModelCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     form_class = MachineModelForm
     model = MachineModel
@@ -451,6 +474,41 @@ class MachineModelCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView
         new_node.save()
 
         return redirect('machine_create')
+
+
+class MachineModelUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    model = MachineModel
+    template_name = 'create_templates/node_create.html'
+    form_class = MachineModelForm
+    permission_required = ('my_silant.change_machinemodel',)
+
+    def post(self, request, *args, **kwargs):
+        name = request.POST['name']
+        description = request.POST['description']
+        new_node = MachineModel.objects.create(name=name, description=description)
+        new_node.save()
+
+        return redirect('/')
+
+
+class MachineModelDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+    model = MachineModel
+    template_name = 'delete_templates/delete.html'
+    success_url = "/"
+    permission_required = ('my_silant.delete_machinemodel',)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        _id = self.kwargs.get('pk')
+        context['elem_to_delete'] = MachineModel.objects.get(id=_id)
+
+        return context
+
+
+class EngineModelDetail(DetailView):
+    model = EngineModel
+    template_name = 'detail_templates/engine_model_detail.html'
+    context_object_name = 'engine_model'
 
 
 class EngineModelCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
@@ -468,6 +526,41 @@ class EngineModelCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView)
         return redirect('machine_create')
 
 
+class EngineModelUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    model = EngineModel
+    template_name = 'create_templates/node_create.html'
+    form_class = EngineModelForm
+    permission_required = ('my_silant.change_enginemodel',)
+
+    def post(self, request, *args, **kwargs):
+        name = request.POST['name']
+        description = request.POST['description']
+        new_node = MachineModel.objects.create(name=name, description=description)
+        new_node.save()
+
+        return redirect('/')
+
+
+class EngineModelDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+    model = EngineModel
+    template_name = 'delete_templates/delete.html'
+    success_url = "/"
+    permission_required = ('my_silant.delete_enginemodel',)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        _id = self.kwargs.get('pk')
+        context['elem_to_delete'] = EngineModel.objects.get(id=_id)
+
+        return context
+
+
+class TransmissionModelDetail(DetailView):
+    model = TransmissionModel
+    template_name = 'detail_templates/transmission_model_detail.html'
+    context_object_name = 'transmission_model'
+
+
 class TransmissionModelCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     form_class = TransmissionModelForm
     model = TransmissionModel
@@ -481,6 +574,41 @@ class TransmissionModelCreate(LoginRequiredMixin, PermissionRequiredMixin, Creat
         new_node.save()
 
         return redirect('machine_create')
+
+
+class TransmissionModelUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    model = TransmissionModel
+    template_name = 'create_templates/node_create.html'
+    form_class = TransmissionModelForm
+    permission_required = ('my_silant.change_transmissionmodel',)
+
+    def post(self, request, *args, **kwargs):
+        name = request.POST['name']
+        description = request.POST['description']
+        new_node = MachineModel.objects.create(name=name, description=description)
+        new_node.save()
+
+        return redirect('/')
+
+
+class TransmissionModelDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+    model = TransmissionModel
+    template_name = 'delete_templates/delete.html'
+    success_url = "/"
+    permission_required = ('my_silant.delete_transmissionmodel',)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        _id = self.kwargs.get('pk')
+        context['elem_to_delete'] = TransmissionModel.objects.get(id=_id)
+
+        return context
+
+
+class DriveAxleModelDetail(DetailView):
+    model = DriveAxleModel
+    template_name = 'detail_templates/drive_axle_model_detail.html'
+    context_object_name = 'drive_axle_model'
 
 
 class DriveAxleModelCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
@@ -498,6 +626,41 @@ class DriveAxleModelCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateVi
         return redirect('machine_create')
 
 
+class DriveAxleModelUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    model = DriveAxleModel
+    template_name = 'create_templates/node_create.html'
+    form_class = DriveAxleModelForm
+    permission_required = ('my_silant.change_driveaxlemodel',)
+
+    def post(self, request, *args, **kwargs):
+        name = request.POST['name']
+        description = request.POST['description']
+        new_node = MachineModel.objects.create(name=name, description=description)
+        new_node.save()
+
+        return redirect('/')
+
+
+class DriveAxleModelDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+    model = DriveAxleModel
+    template_name = 'delete_templates/delete.html'
+    success_url = "/"
+    permission_required = ('my_silant.delete_driveaxlemodel',)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        _id = self.kwargs.get('pk')
+        context['elem_to_delete'] = DriveAxleModel.objects.get(id=_id)
+
+        return context
+
+
+class SteeringAxleModelDetail(DetailView):
+    model = SteeringAxleModel
+    template_name = 'detail_templates/steering_axle_model_detail.html'
+    context_object_name = 'steering_axle_model'
+
+
 class SteeringAxleModelCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     form_class = SteeringAxleModelForm
     model = SteeringAxleModel
@@ -511,6 +674,41 @@ class SteeringAxleModelCreate(LoginRequiredMixin, PermissionRequiredMixin, Creat
         new_node.save()
 
         return redirect('machine_create')
+
+
+class SteeringAxleModelUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    model = SteeringAxleModel
+    template_name = 'create_templates/node_create.html'
+    form_class = SteeringAxleModelForm
+    permission_required = ('my_silant.change_steeringaxlemodel',)
+
+    def post(self, request, *args, **kwargs):
+        name = request.POST['name']
+        description = request.POST['description']
+        new_node = MachineModel.objects.create(name=name, description=description)
+        new_node.save()
+
+        return redirect('/')
+
+
+class SteeringAxleModelDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+    model = SteeringAxleModel
+    template_name = 'delete_templates/delete.html'
+    success_url = "/"
+    permission_required = ('my_silant.delete_steeringaxlemodel',)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        _id = self.kwargs.get('pk')
+        context['elem_to_delete'] = SteeringAxleModel.objects.get(id=_id)
+
+        return context
+
+
+class MaintenanceTypeDetail(DetailView):
+    model = MaintenanceType
+    template_name = 'detail_templates/maintenance_type_detail.html'
+    context_object_name = 'maintenance_type'
 
 
 class MaintenanceTypeCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
@@ -528,6 +726,41 @@ class MaintenanceTypeCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateV
         return redirect('machine_create')
 
 
+class MaintenanceTypeUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    model = MaintenanceType
+    template_name = 'create_templates/node_create.html'
+    form_class = MaintenanceTypeForm
+    permission_required = ('my_silant.change_maintenancetype',)
+
+    def post(self, request, *args, **kwargs):
+        name = request.POST['name']
+        description = request.POST['description']
+        new_node = MachineModel.objects.create(name=name, description=description)
+        new_node.save()
+
+        return redirect('/')
+
+
+class MaintenanceTypeDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+    model = MaintenanceType
+    template_name = 'delete_templates/delete.html'
+    success_url = "/"
+    permission_required = ('my_silant.delete_maintenancetype',)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        _id = self.kwargs.get('pk')
+        context['elem_to_delete'] = MaintenanceType.objects.get(id=_id)
+
+        return context
+
+
+class BreakdownTypeDetail(DetailView):
+    model = BreakdownType
+    template_name = 'detail_templates/breakdown_type_detail.html'
+    context_object_name = 'breakdown_type'
+
+
 class BreakdownTypeCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     form_class = BreakdownTypeForm
     model = BreakdownType
@@ -541,6 +774,41 @@ class BreakdownTypeCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateVie
         new_node.save()
 
         return redirect('machine_create')
+
+
+class BreakdownTypeUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    model = BreakdownType
+    template_name = 'create_templates/node_create.html'
+    form_class = BreakdownTypeForm
+    permission_required = ('my_silant.change_breakdowntype',)
+
+    def post(self, request, *args, **kwargs):
+        name = request.POST['name']
+        description = request.POST['description']
+        new_node = MachineModel.objects.create(name=name, description=description)
+        new_node.save()
+
+        return redirect('/')
+
+
+class BreakdownTypeDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+    model = BreakdownType
+    template_name = 'delete_templates/delete.html'
+    success_url = "/"
+    permission_required = ('my_silant.delete_breakdowntype',)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        _id = self.kwargs.get('pk')
+        context['elem_to_delete'] = BreakdownType.objects.get(id=_id)
+
+        return context
+
+
+class RecoveryMethodDetail(DetailView):
+    model = RecoveryMethod
+    template_name = 'detail_templates/recovery_method_detail.html'
+    context_object_name = 'recovery_method'
 
 
 class RecoveryMethodCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
@@ -558,29 +826,33 @@ class RecoveryMethodCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateVi
         return redirect('machine_create')
 
 
-# @api_view(['GET', 'POST', 'UPDATE'])
-# def machine_models_api(request):
-#     if request.method == 'GET':
-#         machine_models = MachineModel.objects.all()
-#         serializer = MachineModelSerializer(machine_models, many=True)
-#
-#         return Response({'data': serializer.data})
-#
-#     elif request.method == 'POST':
-#         name = request.POST['name']
-#         description = request.POST['description']
-#         machine_model = MachineModel.objects.create(name=name, description=description)
-#         machine_model.save()
-#
-#         return Response(status=status.HTTP_200_OK)
-#
-#     elif request.method == 'UPDATE':
-#         machine_model = MachineModel.objects.get(id=request.data['id'])
-#         machine_model.name = request.POST['name']
-#         machine_model.description = request.POST['description']
-#         machine_model.save()
-#
-#         return Response(status=status.HTTP_200_OK)
+class RecoveryMethodUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    model = RecoveryMethod
+    template_name = 'create_templates/node_create.html'
+    form_class = RecoveryMethodForm
+    permission_required = ('my_silant.change_recoverymethod',)
+
+    def post(self, request, *args, **kwargs):
+        name = request.POST['name']
+        description = request.POST['description']
+        new_node = MachineModel.objects.create(name=name, description=description)
+        new_node.save()
+
+        return redirect('/')
+
+
+class RecoveryMethodDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+    model = RecoveryMethod
+    template_name = 'delete_templates/delete.html'
+    success_url = "/"
+    permission_required = ('my_silant.delete_recoverymethod',)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        _id = self.kwargs.get('pk')
+        context['elem_to_delete'] = RecoveryMethod.objects.get(id=_id)
+
+        return context
 
 
 class MachineListApiView(generics.ListAPIView):

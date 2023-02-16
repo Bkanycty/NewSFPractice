@@ -1,0 +1,28 @@
+.add-btn{
+    cursor: pointer;
+    border: none;
+    background:var(--silant-blue);
+    color: var(--silant-white);
+    
+}
+.add-btn span{
+    text-align: center;
+    font-family: 'PT-Astra-Sans_Regular';
+    color: var(--silant-white);
+    background: var(--silant-blue);
+    
+}
+.add-btn :hover{
+    color:lightgreen;
+}
+
+.search-results{
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1vw;
+    margin-right: 50%;
+    text-align: left;
+    border: 2px solid var(--silant-blue);
+    border-radius: 10px;
+    align-self: center;
+}

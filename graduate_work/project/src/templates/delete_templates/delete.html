@@ -1,0 +1,9 @@
+{% extends 'delete_templates/delete_default.html' %}
+
+{% block nodename %}
+    {{ elem_to_delete.name }}
+{% endblock nodename %}
+
+{% block node_description %}
+    {{ elem_to_delete.description }}
+{% endblock node_description %}
