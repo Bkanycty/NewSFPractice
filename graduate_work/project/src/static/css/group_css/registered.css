@@ -133,12 +133,12 @@ svg {
 
 .chosen-tab{
     font-family: 'PT-Astra-Sans_Bold-Italic';
-    box-shadow: 4.2px 2px 2px var(--silant-blue);
+    box-shadow: 8px 5px 4px var(--silant-blue);
 }
 
 .chosen-tab-red{
     font-family: 'PT-Astra-Sans_Bold-Italic';
-    box-shadow: 4.2px 2px 2px var(--silant-red);
+    box-shadow: 8px 5px 4px var(--silant-red);
 }
 
 .tabs-img {
@@ -264,3 +264,17 @@ svg {
         width: 1.5rem;
     }
 }
+
+
+@media (max-width: 427px) {
+    .chosen-tab{
+        box-shadow: 4.2px 2px 2px var(--silant-blue);
+    }
+}
+@media (max-width: 427px) {
+    .chosen-tab-red{
+        box-shadow: 4.2px 2px 2px var(--silant-red);
+    }
+}
+
+
