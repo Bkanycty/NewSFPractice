@@ -2,15 +2,7 @@
 {% block head %}
 {% load static %}
     <link href="{% static 'css/group_css/guest.css' %}" rel="stylesheet"/>
-
-    <script>
-        function first_entry_check(){
-        let current_url=window.location.search;
-        let elem = document.getElementById('notfound');
-        current_url == '' ? elem.hidden=true : false;
-    }
-        document.addEventListener("DOMContentLoaded", first_entry_check);
-    </script>
+    <script src="{% static 'js/guest/first_entry_check.js' %}" type="text/javascript"></script>
 {% endblock head %}
 {% block title %}
 Мой Силант
@@ -50,18 +42,5 @@
         <h2><p id="notfound" class="not-found">Машины с таким серийным номером не найдено</p></h2>
     {% endif %}
     </div>
-    <script>
-        function first_entry_check() {
-            let current_url=window.location.search;
-            console.log(current_url);
-            let elem = document.getElementById('notfound');
-            current_url == '' ? elem.hidden=true : elem.hidden=false;
-        };
-    </script>
-    <script>
-        function not_found() {
-
-        }
-    </script>
 </main>
 {% endblock body %}

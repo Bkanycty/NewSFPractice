@@ -205,7 +205,7 @@ class ReclamationDetail(LoginRequiredMixin, PermissionRequiredMixin, DetailView)
     model = Reclamation
     template_name = 'detail_templates/reclamation_detail.html'
     context_object_name = 'reclamation'
-    permission_required = ('my_silant.view_reclamation',)
+    permission_required = ('my_silant.view_reclamations',)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

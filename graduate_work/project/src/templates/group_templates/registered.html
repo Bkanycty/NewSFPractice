@@ -2,29 +2,13 @@
 {% block head %}
 {% load static %}
     <link href="{% static 'css/group_css/registered.css' %}" rel="stylesheet"/>
-<script>
-    function place_svg() {
-        function getCoords(elem) {
-        let box = elem.getBoundingClientRect();
-
-            return {
-                top: box.top + window.pageYOffset,
-                right: box.right + window.pageXOffset,
-                bottom: box.bottom + window.pageYOffset,
-                left: box.left + window.pageXOffset
-            };
-        };
-
-        document.getElementById('general-svg').style.top = getCoords(document.getElementById('general')).top
-        document.getElementById('general-svg').style.left = getCoords(document.getElementById('general')).left
-        document.getElementById('maintenances-svg').style.top = getCoords(document.getElementById('maintenances')).top
-        document.getElementById('maintenances-svg').style.left = getCoords(document.getElementById('maintenances')).left
-        document.getElementById('reclamations-svg').style.top = getCoords(document.getElementById('reclamations')).top
-        document.getElementById('reclamations-svg').style.left = getCoords(document.getElementById('reclamations')).left
-    };
-    document.addEventListener("DOMContentLoaded", place_svg);
-    window.addEventListener('resize', place_svg);
-</script>
+    <script src="{% static 'js/registered/replace_svg.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/registered/maintenance_tab_filter.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/registered/general_tab_filter.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/registered/reclamation_tab_filter.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/registered/reset_maintenance_filters.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/registered/reset_general_filters.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/registered/reset_reclamation_filters.js' %}" type="text/javascript"></script>
 {% endblock head %}
 {% block title %}
     Мой Силант {{ user }}
@@ -34,7 +18,7 @@
     <div class="user"><h1>{{ user.first_name }} {{ user.last_name }}</h1></div>
     <div id="tab-description" class="user"><h2>Информация о комплектации и технических характеристиках Вашей техники</h2></div>
 <div class="tabs">
-    <button id="general" class="tabs-btn chosen-tab" onclick="general_information();place_svg();">
+    <button id="general" class="tabs-btn chosen-tab" onclick="general_information();replace_svg();">
         <div style="display: inline-flex;">
             <img class="tabs-img" alt="Логотип" src="{% static 'images/general_info.jpg' %}" >
             <h1 id="general-tab-button-text">Общая инфо</h1></div>
@@ -43,7 +27,7 @@
             <polyline points="179,1 179,59 1,59 1,1 179,1" class="hl-line" />
         </svg>
     </button>
-    <button id="maintenances" class="tabs-btn" onclick="maintenances();place_svg();">
+    <button id="maintenances" class="tabs-btn" onclick="maintenances();replace_svg();">
         <div style="display: inline-flex;">
             <img class="tabs-img" alt="Логотип" src="{% static 'images/TO.jpg' %}" >
             <h1 id="maintenances-tab-button-text" style="margin-left: 1rem;">ТО</h1></div>
@@ -52,7 +36,7 @@
             <polyline points="179,1 179,59 1,59 1,1 179,1" class="hl-line" />
         </svg>
     </button>
-    <button id="reclamations" class="tabs-btn" onclick="reclamations();place_svg();">
+    <button id="reclamations" class="tabs-btn" onclick="reclamations();replace_svg();">
         <div style="display: inline-flex;">
             <img class="tabs-img" alt="Логотип" src="{% static 'images/reclamations.jpg' %}" >
             <h1 id="reclamations-tab-button-text">Рекламации</h1></div>
@@ -640,240 +624,6 @@
         if (addMaintenance) {addMaintenance.hidden = true;};
         reclamationsTabData.hidden = false;
         if (addReclamation) {addReclamation.hidden = false;};
-    };
-</script>
-
-<script>
-    function maintenance_filter() {
-        var machine_factory_number = document.getElementById('maintenance-filter-machine-factory-number');
-        var maintenance_type = document.getElementById('maintenance-filter-maintenance-type');
-        var service_company = document.getElementById('maintenance-filter-service-company');
-        var filters = [];
-        
-        function show_all() {
-            var rows_to_show = document.getElementById('maintenance-tab-table-data').children;
-            for (var i = 0; i < rows_to_show.length; i+=1) {
-                var row = rows_to_show[i];
-                row.style.display = '';
-            };
-        };
-        show_all();
-
-        machine_factory_number.value != '' ? filters.push(machine_factory_number.value) : false;
-        maintenance_type.value != '' ? filters.push(maintenance_type.value) : false;
-        service_company.value != '' ? filters.push(service_company.value) : false;
-
-        if (filters.length != 0) {
-            var rows = document.getElementById('maintenance-tab-table-data').children;
-            for (var i = 0; i < rows.length; i+=1) {
-                var row = rows[i]; // Определяем строки для фильтрации
-                var data_to_filter = []; // Список значений в ячейках строки
-
-                for (var j = 0; j < row.children.length; j+=1) {
-                    var td = row.children[j].textContent;
-                    data_to_filter.push(td); // Закидываем содержимое ячеек в список
-                    };
-                    var check_list = []; // Список true/false значений
-                    for (let k = 0; k < filters.length; k+=1) {
-                        check_list.push(data_to_filter.includes(filters[k]));
-                    };
-                    let check = check_list.every(function(elem) { // функция проверки, все ли фильтры находятся в строке
-                        if (elem == true) {
-                            return true;
-                        } else {
-                            return false;
-                        };
-                    });
-                    if (check == false) { // если не все фильтры в строке, она скрывается
-                        let row_to_hide = document.getElementById(row.id);
-                        row_to_hide.style.display = 'none';
-                    };
-                };
-        }
-        else { // ничего не делаем, если все фильтры сброшены
-            ;
-            };
-    };
-</script>
-
-<script>
-    function general_filter() {
-        var machine_model = document.getElementById('general-filter-machine-model');
-        var machine_factory_number = document.getElementById('general-filter-machine-factory-number');
-        var engine_model = document.getElementById('general-filter-engine-model');
-        var transmission_model = document.getElementById('general-filter-transmission-model');
-        var drive_axle_model = document.getElementById('general-filter-drive-axle-model');
-        var steering_axle_model = document.getElementById('general-filter-steering-axle-model');
-        var filters = [];
-        
-        function show_all() {
-            var rows_to_show = document.getElementById('general-tab-table-data').children;
-            for (var i = 0; i < rows_to_show.length; i+=1) {
-                var row = rows_to_show[i];
-                row.style.display = '';
-            };
-        };
-        show_all();
-
-        machine_model.value != '' ? filters.push(machine_model.value) : false;
-        machine_factory_number.value != '' ? filters.push(machine_factory_number.value) : false;
-        engine_model.value != '' ? filters.push(engine_model.value) : false;
-        transmission_model.value != '' ? filters.push(transmission_model.value) : false;
-        drive_axle_model.value != '' ? filters.push(drive_axle_model.value) : false;
-        steering_axle_model.value != '' ? filters.push(steering_axle_model.value) : false;
-
-        if (filters.length != 0) {
-            var rows = document.getElementById('general-tab-table-data').children;
-            for (var i = 0; i < rows.length; i+=1) {
-                var row = rows[i]; // Определяем строки для фильтрации
-                var data_to_filter = []; // Список значений в ячейках строки
-
-                for (var j = 0; j < row.children.length; j+=1) {
-                    var td = row.children[j].textContent;
-                    data_to_filter.push(td); // Закидываем содержимое ячеек в список
-                    };
-                var check_list = []; // Список true/false значений
-                for (let k = 0; k < filters.length; k+=1) {
-                    check_list.push(data_to_filter.includes(filters[k]));
-                };
-                let check = check_list.every(function(elem) { // функция проверки, все ли фильтры находятся в строке
-                    if (elem == true) {
-                        return true;
-                    } else {
-                        return false;
-                    };
-                });
-                if (check == false) { // если не все фильтры в строке, она скрывается
-                    let row_to_hide = document.getElementById(row.id);
-                    row_to_hide.style.display = 'none';
-                };
-            };
-        }
-        else { // ничего не делаем, если все фильтры сброшены
-            ;
-            };
-    };
-</script>
-
-<script>
-    function reclamation_filter() {
-        var broken_node = document.getElementById('reclamation-filter-broken-node');
-        var recovery_method = document.getElementById('reclamation-filter-recovery-method');
-        var service_company = document.getElementById('reclamation-filter-service-company');
-        var filters = [];
-        
-        function show_all() {
-            var rows_to_show = document.getElementById('reclamation-tab-table-data').children;
-            for (var i = 0; i < rows_to_show.length; i+=1) {
-                var row = rows_to_show[i];
-                row.style.display = '';
-            };
-        };
-        show_all();
-
-        broken_node.value != '' ? filters.push(broken_node.value) : false;
-        recovery_method.value != '' ? filters.push(recovery_method.value) : false;
-        service_company.value != '' ? filters.push(service_company.value) : false;
-
-        if (filters.length != 0) {
-            var rows = document.getElementById('reclamation-tab-table-data').children;
-            for (var i = 0; i < rows.length; i+=1) {
-                var row = rows[i]; // Определяем строки для фильтрации
-                var data_to_filter = []; // Список значений в ячейках строки
-
-                for (var j = 0; j < row.children.length; j+=1) {
-                    var td = row.children[j].textContent;
-                    data_to_filter.push(td); // Закидываем содержимое ячеек в список
-                    };
-                var check_list = []; // Список true/false значений
-                for (let k = 0; k < filters.length; k+=1) {
-                    check_list.push(data_to_filter.includes(filters[k]));
-                };
-                let check = check_list.every(function(elem) { // функция проверки, все ли фильтры находятся в строке
-                    if (elem == true) {
-                        return true;
-                    } else {
-                        return false;
-                    };
-                });
-                if (check == false) { // если не все фильтры в строке, она скрывается
-                    let row_to_hide = document.getElementById(row.id);
-                    row_to_hide.style.display = 'none';
-                };
-            };
-        }
-        else { // ничего не делаем, если все фильтры сброшены
-            ;
-            };
-    };
-</script>
-
-<script>
-    function reset_maintenance_filters() {
-        var machine_factory_number = document.getElementById('maintenance-filter-machine-factory-number');
-        var maintenance_type = document.getElementById('maintenance-filter-maintenance-type');
-        var service_company = document.getElementById('maintenance-filter-service-company');
-
-        machine_factory_number.value = '';
-        maintenance_type.value = '';
-        service_company.value = '';
-
-        function show_all() {
-            var rows_to_show = document.getElementById('maintenance-tab-table-data').children;
-            for (var i = 0; i < rows_to_show.length; i+=1) {
-                var row = rows_to_show[i];
-                row.style.display = '';
-            };
-        };
-        show_all();
-    };
-</script>
-
-<script>
-    function reset_general_filters() {
-        var machine_model = document.getElementById('general-filter-machine-model');
-        var machine_factory_number = document.getElementById('general-filter-machine-factory-number');
-        var engine_model = document.getElementById('general-filter-engine-model');
-        var transmission_model = document.getElementById('general-filter-transmission-model');
-        var drive_axle_model = document.getElementById('general-filter-drive-axle-model');
-        var steering_axle_model = document.getElementById('general-filter-steering-axle-model');
-
-        machine_model.value = '';
-        machine_factory_number.value = '';
-        engine_model.value = '';
-        transmission_model.value = '';
-        drive_axle_model.value = '';
-        steering_axle_model.value = '';
-
-        function show_all() {
-            var rows_to_show = document.getElementById('general-tab-table-data').children;
-            for (var i = 0; i < rows_to_show.length; i+=1) {
-                var row = rows_to_show[i];
-                row.style.display = '';
-            };
-        };
-        show_all();
-    };
-</script>
-
-<script>
-    function reset_reclamation_filters() {
-        var broken_node = document.getElementById('reclamation-filter-broken-node');
-        var recovery_method = document.getElementById('reclamation-filter-recovery-method');
-        var service_company = document.getElementById('reclamation-filter-service-company');
-
-        broken_node.value = '';
-        recovery_method.value = '';
-        service_company.value = '';
-
-        function show_all() {
-            var rows_to_show = document.getElementById('reclamation-tab-table-data').children;
-            for (var i = 0; i < rows_to_show.length; i+=1) {
-                var row = rows_to_show[i];
-                row.style.display = '';
-            };
-        };
-        show_all();
     };
 </script>
 
