@@ -35,22 +35,28 @@
     <div id="tab-description" class="user"><h2>Информация о комплектации и технических характеристиках Вашей техники</h2></div>
 <div class="tabs">
     <button id="general" class="tabs-btn chosen-tab" onclick="general_information();place_svg();">
-        <h1 id="general-tab-button-text">Общая инфо</h1>
-        <svg id="general-svg" width="210px" height="70px" viewBox="0 0 180 60">
+        <div style="display: inline-flex;">
+            <img class="tabs-img" alt="Логотип" src="{% static 'images/general_info.jpg' %}" >
+            <h1 id="general-tab-button-text">Общая инфо</h1></div>
+        <svg id="general-svg" width="240px" height="80px" viewBox="0 0 180 60">
             <polyline points="179,1 179,59 1,59 1,1 179,1" class="bg-line" />
             <polyline points="179,1 179,59 1,59 1,1 179,1" class="hl-line" />
         </svg>
     </button>
     <button id="maintenances" class="tabs-btn" onclick="maintenances();place_svg();">
-        <h1 id="maintenances-tab-button-text">ТО</h1>
-        <svg id="maintenances-svg" width="210px" height="70px" viewBox="0 0 180 60">
+        <div style="display: inline-flex;">
+            <img class="tabs-img" alt="Логотип" src="{% static 'images/TO.jpg' %}" >
+            <h1 id="maintenances-tab-button-text" style="margin-left: 1rem;">ТО</h1></div>
+        <svg id="maintenances-svg" width="240px" height="80px" viewBox="0 0 180 60">
             <polyline points="179,1 179,59 1,59 1,1 179,1" class="bg-line" />
             <polyline points="179,1 179,59 1,59 1,1 179,1" class="hl-line" />
         </svg>
     </button>
     <button id="reclamations" class="tabs-btn" onclick="reclamations();place_svg();">
-        <h1 id="reclamations-tab-button-text">Рекламации</h1>
-        <svg id="reclamations-svg" width="210px" height="70px" viewBox="0 0 180 60">
+        <div style="display: inline-flex;">
+            <img class="tabs-img" alt="Логотип" src="{% static 'images/reclamations.jpg' %}" >
+            <h1 id="reclamations-tab-button-text">Рекламации</h1></div>
+        <svg id="reclamations-svg" width="240px" height="80px" viewBox="0 0 180 60">
             <polyline points="179,1 179,59 1,59 1,1 179,1" class="bg-line" />
             <polyline points="179,1 179,59 1,59 1,1 179,1" class="hl-line" />
         </svg>
@@ -593,7 +599,7 @@
         var addReclamation = document.getElementById('reclamations-tab-btn');
 
         logo.src = "{% static 'images/Logotype_accent_RGB_1.jpg' %}"
-        tabDescription.innerHTML =  window.innerWidth <= 360 ? "<h2>Информация о проведённых ТО Вашей техники<br></br></h2>" : "<h2>Информация о проведённых ТО Вашей техники</h2>";
+        tabDescription.innerHTML =  window.innerWidth <= 974 ? "<h2>Информация о проведённых ТО Вашей техники<br></br></h2>" : "<h2>Информация о проведённых ТО Вашей техники</h2>";
         generalTabButton.classList.remove("chosen-tab");
         maintenancesTabButton.classList.add("chosen-tab");
         reclamationsTabButton.classList.remove("chosen-tab-red");
@@ -623,7 +629,7 @@
         var addReclamation = document.getElementById('reclamations-tab-btn');
 
         logo.src = "{% static 'images/Logotype_accent_RGB_2.jpg' %}"
-        tabDescription.innerHTML = window.innerWidth <= 360 ? "<h2>Информация о поломках Вашей техники<br></br></h2>" : "<h2>Информация о поломках Вашей техники</h2>";
+        tabDescription.innerHTML = window.innerWidth <= 974 ? "<h2>Информация о поломках Вашей техники<br></br></h2>" : "<h2>Информация о поломках Вашей техники</h2>";
         generalTabButton.classList.remove("chosen-tab");
         maintenancesTabButton.classList.remove("chosen-tab");
         reclamationsTabButton.classList.add("chosen-tab-red");

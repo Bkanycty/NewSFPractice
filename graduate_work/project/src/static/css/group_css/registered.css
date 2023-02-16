@@ -101,8 +101,8 @@
     margin-left: 1vw;
     color: var(--silant-blue);
     font-family: 'PT-Astra-Sans_Italic';
-    width: 210px;
-    height: 70px;
+    width: 240px;
+    height: 80px;
     cursor: pointer;
     background: transparent;
     border: 2px solid var(--silant-blue);
@@ -141,7 +141,13 @@ svg {
     box-shadow: 4.2px 2px 2px var(--silant-red);
 }
 
-@media (max-width: 360px) {
+.tabs-img {
+    align-self: center;
+    height: 3rem;
+    width: 3rem;
+}
+
+@media (max-width: 974px) {
     #maintenance-filter-machine-factory-number {
         vertical-align: middle;
         height: 2.5vw;
@@ -151,7 +157,7 @@ svg {
     }
 }
 
-@media (max-width: 360px) {
+@media (max-width: 974px) {
     .search-results {
         table-layout: fixed;
         width: 100%;
@@ -159,14 +165,14 @@ svg {
     }
 }
 
-@media (max-width: 360px) {
+@media (max-width: 974px) {
     .search-results-body {
-        height: 10%;
+        height: 15%;
         overflow: hidden;
     }
 }
 
-@media (max-width: 360px) {
+@media (max-width: 974px) {
     .search-results th {
         writing-mode: vertical-lr;
         font-size: 2.5vw;
@@ -174,45 +180,46 @@ svg {
     }
 }
 
-@media (max-width: 360px) {
+@media (max-width: 974px) {
     .search-results-body tr td{
         font-size: 2vw;
         writing-mode: vertical-lr;
-        height: 10%;
+        height: 15%;
         overflow-x: hidden;
+        vertical-align:text-bottom;
     }
 }
 
-@media (max-width: 360px) {
+@media (max-width: 974px) {
     .add-btn-span {
         font-size: 3vw;
     }
 }
 
-@media (max-width: 360px) {
+@media (max-width: 974px) {
     .submit-button {
         font-size: 2.5vw;
         height: 3.5vw;
     }
 }
 
-@media (max-width: 360px) {
+@media (max-width: 974px) {
     .tabs-btn {
-    width: 90px;
-    height: 30px;
+    width: 30vw;
+    height: 10vw;
     }
 }
 
-@media (max-width: 360px) {
+@media (max-width: 974px) {
     .tabs-btn h1 {
         font-size: 3vw;
     }
 }
 
-@media (max-width: 360px) {
+@media (max-width: 974px) {
     svg {
-        width: 90px;
-        height: 30px;
+        width: 30vw;
+        height: 10vw;
         top: 0;
         left: 0;
         position: absolute;
@@ -224,7 +231,7 @@ svg {
     }
 }
 
-@media (max-width: 360px) {
+@media (max-width: 974px) {
     .text-form {
     vertical-align: middle;
     height: 2.5vw;
@@ -234,10 +241,26 @@ svg {
     }
 }
 
-@media (max-width: 360px) {
+@media (max-width: 974px) {
     .form-select{
         vertical-align:middle;
         height: 3vw;
         width: 4vw;
+    }
+}
+
+@media (max-width: 569px) {
+    .tabs-img {
+        align-self: center;
+        height: 3rem;
+        width: 3rem;
+    }
+}
+
+@media (max-width: 427px) {
+    .tabs-img {
+        align-self: center;
+        height: 1.5rem;
+        width: 1.5rem;
     }
 }

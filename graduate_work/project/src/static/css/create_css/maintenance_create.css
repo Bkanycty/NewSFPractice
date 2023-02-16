@@ -7,7 +7,7 @@
     font-family: 'PT-Astra-Sans_Bold';
 }
 
-@media screen and (max-width: 360px) {
+@media screen and (max-width: 974px) {
     .fieldWrapper {
         table-layout: fixed;
         width: 98%;
@@ -33,7 +33,7 @@
     padding: 0vw 3vw;
 }
 
-@media screen and (max-width: 360px) {
+@media screen and (max-width: 974px) {
     .submit-button {
         font-size: 4vw;
         height: 6vw;

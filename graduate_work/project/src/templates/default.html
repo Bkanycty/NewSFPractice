@@ -18,7 +18,10 @@
     <header>
         <div class="header-first">
             <div><img id="header-logo" class="logo" alt="Логотип" src="{% static 'images/Logotype_accent_RGB_1.jpg' %}" onclick='window.location.href="/";'></div>
-            <div><a class="contact-info"><h1>+7-8352-20-12-09, telegram</h1></a></div>
+            <div style="display: inline-flex;">
+                <img class="tabs-img" alt="Логотип" src="{% static 'images/Telegram_logo.png' %}" >
+                <a class="contact-info"><h1>+7-8352-20-12-09</h1></a>
+            </div>
             {% if not user.is_authenticated %}
                 <div>
                     <a class="authorization" href="/accounts/login/"><h1>Войти</h1></a>
@@ -29,8 +32,9 @@
                 </div>
             {% endif %}
         </div>
+        <hr>
         <div class="header-second">
-            <h1>Электронная сервисная книжка "Мой Силант"</h1>
+            <h1 onclick="log_width()">Электронная сервисная книжка "Мой Силант"</h1>
         </div>
     </header>
 
@@ -38,8 +42,10 @@
     {% endblock body %}
 
     <footer>
-        <div>
-            <a class="contact-info"><h1>+7-8352-20-12-09, telegram</h1></a>
+        <div><img class="logo" alt="Логотип" src="{% static 'images/Russia_leader.jpg' %}" ></div>
+        <div style="display: inline-flex;">
+            <img class="tabs-img" alt="Логотип" src="{% static 'images/Telegram_logo.png' %}" >
+            <a class="contact-info"><h1>+7-8352-20-12-09</h1></a>
         </div>
         <div>
             <a class="my-silant"><h1>Мой силант 2022</h1></a>

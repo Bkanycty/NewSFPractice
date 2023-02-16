@@ -7,7 +7,7 @@
     font-family: 'PT-Astra-Sans_Bold';
 }
 
-@media (max-width: 360px) {
+@media (max-width: 974px) {
     .fieldWrapper {
         table-layout: fixed;
         width: 100%;
@@ -25,7 +25,7 @@
     font-family: 'PT-Astra-Sans_Regular';
 }
 
-@media screen and (max-width: 360px) {
+@media screen and (max-width: 974px) {
     #id_breakdown_description {
         height: 33vw;
         width: 98%;
@@ -33,7 +33,7 @@
     };
 }
 
-@media screen and (max-width: 360px) {
+@media screen and (max-width: 974px) {
     #id_spare_parts_used {
         height: 33vw;
         width: 98%;
@@ -49,7 +49,7 @@
     padding: 0vw 3vw;
 }
 
-@media screen and (max-width: 360px) {
+@media screen and (max-width: 974px) {
     .submit-button {
         font-size: 4vw;
         height: 6vw;

@@ -7,7 +7,7 @@
     font-family: 'PT-Astra-Sans_Bold';
 }
 
-@media screen and (max-width: 360px) {
+@media screen and (max-width: 974px) {
     .fieldWrapper {
         table-layout: fixed;
         width: 98%;
@@ -25,51 +25,51 @@
     font-family: 'PT-Astra-Sans_Regular';
 }
 
-@media screen and (max-width: 360px) {
+@media screen and (max-width: 974px) {
     #id_machine_factory_number {
         width: 90%;
     }
 }
 
-@media screen and (max-width: 360px) {
+@media screen and (max-width: 974px) {
     #id_engine_factory_number {
         width: 90%;
     }
 }
 
-@media screen and (max-width: 360px) {
+@media screen and (max-width: 974px) {
     #id_transmission_factory_number {
         width: 90%;
     }
 }
 
-@media screen and (max-width: 360px) {
+@media screen and (max-width: 974px) {
     #id_drive_axle_factory_number {
         width: 90%;
     }
 }
 
-@media screen and (max-width: 360px) {
+@media screen and (max-width: 974px) {
     #id_steering_axle_factory_number {
         width: 90%;
     }
 }
-@media screen and (max-width: 360px) {
+@media screen and (max-width: 974px) {
     #id_supply_contract {
         width: 90%;
     }
 }
-@media screen and (max-width: 360px) {
+@media screen and (max-width: 974px) {
     #id_end_user {
         width: 90%;
     }
 }
-@media screen and (max-width: 360px) {
+@media screen and (max-width: 974px) {
     #id_delivery_address {
         width: 90%;
     }
 }
-@media screen and (max-width: 360px) {
+@media screen and (max-width: 974px) {
     #id_complete_set {
         width: 90%;
     }
@@ -84,7 +84,7 @@
     padding: 0vw 3vw;
 }
 
-@media screen and (max-width: 360px) {
+@media screen and (max-width: 974px) {
     .submit-button {
         font-size: 4vw;
         height: 6vw;
@@ -112,7 +112,7 @@
     color: #EBE6D6;
 }
 
-@media screen and (max-width: 360px) {
+@media screen and (max-width: 974px) {
     .create-node {
         width: 12vw;
     }

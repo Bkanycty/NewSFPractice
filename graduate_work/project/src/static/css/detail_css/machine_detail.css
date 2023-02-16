@@ -7,7 +7,7 @@
     font-family: 'PT-Astra-Sans_Bold';
 }
 
-@media (max-width: 360px) {
+@media (max-width: 974px) {
     .machine-detail {
         margin-left: 0;
     }

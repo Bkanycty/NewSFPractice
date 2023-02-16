@@ -89,13 +89,19 @@ footer{
     margin-bottom: 0;
 }
 
-@media (max-width: 360px) {
+.tabs-img {
+    align-self: center;
+    height: 3rem;
+    width: 3rem;
+}
+
+@media (max-width: 974px) {
     body {
        margin: 0;
     }
 }
 
-@media (max-width: 360px) {
+@media (max-width: 974px) {
     main{
         margin-top: 0.5vw;
         border: 2px solid var(--silant-blue);
@@ -103,30 +109,34 @@ footer{
         padding: 0vw 0.5vw 0.5vw 0.5vw;
     }
 }
-@media (max-width: 360px) {
+@media (max-width: 974px) {
     h1 {
         font-size: 4vw;
     }
 }
 
-@media (max-width: 360px) {
+@media (max-width: 974px) {
     h2 {
         font-size: 3.5vw;
     }
 }
 
-@media (max-width: 360px) {
+@media (max-width: 974px) {
     h3 {
         font-size: 3vw;
     }
 }
 
 .logo{
-    height: 96px;
+    height: 7rem;
 }
 
-@media (max-width: 360px) {
+
+
+
+@media (max-width: 427px) {
     .logo {
-        height: 48px;
+        align-self: center;
+        height: 4rem;
     }
 }
