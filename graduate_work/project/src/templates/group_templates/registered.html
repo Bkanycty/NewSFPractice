@@ -48,9 +48,9 @@
 </div>
 <table id="general-info-tab" class="search-results">
     {% if is_admin %}
-        <button id="general-info-tab-btn" type="button" class="add-btn" onclick='window.location.href="{% url 'machine_create' %}";'><span class="add-btn-span">Добавить машину</span></button>
+        <button id="general-info-tab-btn" type="button" class="add-btn" onclick='window.location.href="{% url 'manager_tools' %}";'><span class="add-btn-span">Справочники</span></button>
     {% elif is_manager %}
-        <button id="general-info-tab-btn" type="button" class="add-btn" onclick='window.location.href="{% url 'machine_create' %}";'><span class="add-btn-span">Добавить машину</span></button>
+        <button id="general-info-tab-btn" type="button" class="add-btn" onclick='window.location.href="{% url 'manager_tools' %}";'><span class="add-btn-span">Справочники</span></button>
     {% endif %}
     <form class="search-form" method="get">
         <tr class="border-bottom border-left border-right form-head" align="center">
@@ -269,7 +269,13 @@
 
 
 <table id="maintenance-tab" class="search-results" hidden>
-    <button hidden id="maintenance-tab-btn" type="button" class="add-btn" onclick='window.location.href="{% url 'maintenance_create' %}";'><span class="add-btn-span">Внести данные о ТО</span></button>
+    {% if is_admin %}
+        <button hidden id="maintenance-tab-btn" type="button" class="add-btn" onclick='window.location.href="{% url 'manager_tools' %}";'><span class="add-btn-span">Справочники</span></button>
+    {% elif is_manager %}
+        <button hidden id="maintenance-tab-btn" type="button" class="add-btn" onclick='window.location.href="{% url 'manager_tools' %}";'><span class="add-btn-span">Справочники</span></button>
+    {% else %}
+        <button hidden id="maintenance-tab-btn" type="button" class="add-btn" onclick='window.location.href="{% url 'maintenance_create' %}";'><span class="add-btn-span">Внести данные о ТО</span></button>
+    {% endif %}
     <form class="search-form">
         <tr class="border-bottom border-left border-right form-head" align="center">
             <td></td>
@@ -389,9 +395,9 @@
 
 <table id="reclamations-tab" class="search-results" hidden>
     {% if is_admin %}
-        <button hidden id="reclamations-tab-btn" type="button" class="add-btn" onclick='window.location.href="{% url 'reclamation_create' %}";'><span class="add-btn-span">Зарегистрировать рекламацию</span></button>
+        <button hidden id="reclamations-tab-btn" type="button" class="add-btn" onclick='window.location.href="{% url 'manager_tools' %}";'><span class="add-btn-span">Справочники</span></button>
     {% elif is_manager %}
-        <button hidden id="reclamations-tab-btn" type="button" class="add-btn" onclick='window.location.href="{% url 'reclamation_create' %}";'><span class="add-btn-span">Зарегистрировать рекламацию</span></button>
+        <button hidden id="reclamations-tab-btn" type="button" class="add-btn" onclick='window.location.href="{% url 'manager_tools' %}";'><span class="add-btn-span">Справочники</span></button>
     {% elif is_service %}
         <button hidden id="reclamations-tab-btn" type="button" class="add-btn" onclick='window.location.href="{% url 'reclamation_create' %}";'><span class="add-btn-span">Зарегистрировать рекламацию</span></button>
     {% endif %}
